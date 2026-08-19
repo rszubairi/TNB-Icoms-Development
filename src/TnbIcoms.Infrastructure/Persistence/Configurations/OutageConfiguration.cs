@@ -17,6 +17,7 @@ public class OutageConfiguration : IEntityTypeConfiguration<Outage>
         builder.Property(x => x.Description).IsRequired();
         builder.Property(x => x.RequestorStatus).IsRequired().HasMaxLength(50);
         builder.Property(x => x.GnmStatus).IsRequired().HasMaxLength(50);
+        builder.HasIndex(x => x.OutageNumber).IsUnique();
 
         builder.HasOne(x => x.Zone)
             .WithMany()
@@ -41,6 +42,11 @@ public class OutageConfiguration : IEntityTypeConfiguration<Outage>
         builder.HasOne(x => x.Project)
             .WithMany()
             .HasForeignKey(x => x.ProjectId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.CreatedByUser)
+            .WithMany()
+            .HasForeignKey(x => x.CreatedBy)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -1,0 +1,205 @@
+<div class="page-header">
+  <h1 class="font-display">Create Outage</h1>
+  <p class="page-subtitle">Outage type (Planned/Unplanned/Emergency) is assigned automatically from the dates and voltage you select.</p>
+</div>
+
+@if (successMessage()) {
+  <div class="card success-card">
+    <p class="success-text">{{ successMessage() }}</p>
+    @if (successConflicts().length > 0) {
+      <div class="conflict-warning">
+        <strong>Conflicting Lines warning:</strong> the following outages overlap on a line configured as conflicting:
+        <ul>
+          @for (c of successConflicts(); track c.outageNumber) {
+            <li>{{ c.outageNumber }} — {{ c.equipmentName }}</li>
+          }
+        </ul>
+      </div>
+    }
+    @for (warning of successWarnings(); track warning) {
+      <div class="conflict-warning">{{ warning }}</div>
+    }
+    <div class="success-actions">
+      <button type="button" class="btn-secondary" (click)="createAnother()">Create Another</button>
+      <button type="button" class="btn-primary" (click)="goToRepository()">Go to Data Repository</button>
+    </div>
+  </div>
+} @else {
+  <div class="layout-grid">
+    <div class="card form-card">
+      <div class="form-grid">
+        <div>
+          <label class="form-label">Zone</label>
+          <select class="form-select" [ngModel]="zoneId()" (ngModelChange)="onZoneChange($event)">
+            <option [value]="null">Select zone…</option>
+            @for (zone of zones(); track zone.zoneId) { <option [value]="zone.zoneId">{{ zone.zoneName }}</option> }
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Station</label>
+          <select class="form-select" [disabled]="!zoneId()" [ngModel]="stationId()" (ngModelChange)="onStationChange($event)">
+            <option [value]="null">Select station…</option>
+            @for (station of stationsForZone(); track station.stationId) { <option [value]="station.stationId">{{ station.stationName }}</option> }
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Voltage</label>
+          <select class="form-select" [ngModel]="voltageLevelId()" (ngModelChange)="onVoltageChange($event)">
+            <option [value]="null">Select voltage…</option>
+            @for (level of voltageLevels(); track level.voltageLevelId) { <option [value]="level.voltageLevelId">{{ level.levelName }}</option> }
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Equipment Type</label>
+          <select class="form-select" [disabled]="!voltageLevelId()" [ngModel]="equipmentTypeId()" (ngModelChange)="onEquipmentTypeChange($event)">
+            <option [value]="null">Select type…</option>
+            @for (type of equipmentTypes(); track type.equipmentTypeId) { <option [value]="type.equipmentTypeId">{{ type.typeName }}</option> }
+          </select>
+        </div>
+        <div class="span-2">
+          <label class="form-label">Equipment</label>
+          <select class="form-select" [disabled]="!equipmentTypeId()" [ngModel]="primaryEquipmentId()" (ngModelChange)="onPrimaryEquipmentChange($event)">
+            <option [value]="null">Select equipment…</option>
+            @for (equipment of equipmentList(); track equipment.equipmentId) { <option [value]="equipment.equipmentId">{{ equipment.equipmentName }}</option> }
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">Additional Equipment Type</label>
+          <select class="form-select" [disabled]="!stationId()" [ngModel]="additionalEquipmentTypeId()" (ngModelChange)="onAdditionalTypeChange($event)">
+            <option [value]="null">None</option>
+            @for (type of additionalEquipmentTypes(); track type.equipmentTypeId) { <option [value]="type.equipmentTypeId">{{ type.typeName }}</option> }
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Additional Equipment</label>
+          <div class="multi-select">
+            @if (additionalEquipmentList().length === 0) {
+              <span class="hint-text">Select an additional equipment type first</span>
+            }
+            @for (equipment of additionalEquipmentList(); track equipment.equipmentId) {
+              <label class="checkbox-row">
+                <input type="checkbox" [checked]="isAdditionalChecked(equipment.equipmentId)" (change)="toggleAdditionalEquipment(equipment.equipmentId, $any($event.target).checked)" />
+                <span>{{ equipment.equipmentName }}</span>
+              </label>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Outage Type (Work)</label>
+          <select class="form-select" [ngModel]="workTypeCode()" (ngModelChange)="workTypeCode.set($event)">
+            <option value="Dead">Dead</option>
+            <option value="Live">Live</option>
+          </select>
+        </div>
+        <div class="ptw-field">
+          <label class="checkbox-row">
+            <input type="checkbox" [ngModel]="hasPtw()" (ngModelChange)="hasPtw.set($event)" />
+            <span>PTW (notify TOMS of daily Authorisation/Un-authorisation)</span>
+          </label>
+        </div>
+
+        <div>
+          <label class="form-label">Date Start</label>
+          <div class="date-time-row">
+            <input class="form-input" type="date" [ngModel]="startDate()" (ngModelChange)="startDate.set($event)" />
+            <input class="form-input" type="time" step="1800" [ngModel]="startTime()" (ngModelChange)="startTime.set($event)" />
+          </div>
+        </div>
+        <div>
+          <label class="form-label">Date End</label>
+          <div class="date-time-row">
+            <input class="form-input" type="date" [ngModel]="endDate()" (ngModelChange)="endDate.set($event)" />
+            <input class="form-input" type="time" step="1800" [ngModel]="endTime()" (ngModelChange)="endTime.set($event)" />
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Sequence</label>
+          <select class="form-select" [ngModel]="sequenceId()" (ngModelChange)="sequenceId.set($event ? +$event : null)">
+            <option [value]="null">Select sequence…</option>
+            @for (s of sequences(); track s.dropdownValueId) { <option [value]="s.dropdownValueId">{{ s.valueLabel }}</option> }
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Restoration</label>
+          <select class="form-select" [ngModel]="restorationId()" (ngModelChange)="restorationId.set($event ? +$event : null)">
+            <option [value]="null">Select restoration time…</option>
+            @for (r of restorations(); track r.dropdownValueId) { <option [value]="r.dropdownValueId">{{ r.valueLabel }}</option> }
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">Job Type</label>
+          <select class="form-select" [ngModel]="jobTypeId()" (ngModelChange)="jobTypeId.set($event ? +$event : null)">
+            <option [value]="null">Select job type…</option>
+            @for (j of jobTypes(); track j.dropdownValueId) { <option [value]="j.dropdownValueId">{{ j.valueLabel }}</option> }
+          </select>
+        </div>
+        @if (requiresProject()) {
+          <div>
+            <label class="form-label">Project</label>
+            <select class="form-select" [ngModel]="projectId()" (ngModelChange)="projectId.set($event ? +$event : null)">
+              <option [value]="null">Select project…</option>
+              @for (p of projects(); track p.projectId) { <option [value]="p.projectId">{{ p.projectName }}</option> }
+            </select>
+          </div>
+        }
+
+        <div class="span-2">
+          <label class="form-label">Description</label>
+          <textarea class="form-input description-input" rows="4" [ngModel]="description()" (ngModelChange)="description.set($event)"></textarea>
+        </div>
+      </div>
+
+      <div class="pic-block">
+        <div class="pic-header">
+          <label class="form-label">Person In Charge (PIC)</label>
+          @if (!showPicForm()) {
+            <button type="button" class="btn-outline" (click)="openPicForm()">+ Add PIC</button>
+          }
+        </div>
+
+        @if (showPicForm()) {
+          <div class="pic-form">
+            <input class="form-input" type="text" placeholder="Name" [ngModel]="picDraft().picName" (ngModelChange)="updatePicField('picName', $event)" />
+            <input class="form-input" type="email" placeholder="Email" [ngModel]="picDraft().picEmail" (ngModelChange)="updatePicField('picEmail', $event)" />
+            <input class="form-input" type="text" placeholder="Phone (optional)" [ngModel]="picDraft().picPhone" (ngModelChange)="updatePicField('picPhone', $event)" />
+            <div class="pic-form-actions">
+              <button type="button" class="btn-secondary" (click)="cancelPicForm()">Cancel</button>
+              <button type="button" class="btn-primary" (click)="addPic()">Add</button>
+            </div>
+          </div>
+        }
+
+        @if (pics().length > 0) {
+          <div class="pic-list">
+            @for (pic of pics(); track $index) {
+              <div class="pic-chip">
+                <span>{{ pic.picName }} ({{ pic.picEmail }})</span>
+                <button type="button" class="pic-remove" (click)="removePic($index)">✕</button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      @if (formError()) {
+        <div class="form-alert">{{ formError() }}</div>
+      }
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" [disabled]="saving()" (click)="saveDraft()">Save as Draft</button>
+        <button type="button" class="btn-primary" [disabled]="saving()" (click)="submitOutage()">
+          {{ saving() ? 'Submitting…' : 'Submit Outage Request' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="card info-sidebar">
+      <h2 class="sidebar-heading">Information</h2>
+      <p class="sidebar-hint">Single Line Diagram, Conflicting Lines, and Equipment History become available once a station and equipment are selected and this outage is saved. Conflicting-line warnings are shown after you submit.</p>
+    </div>
+  </div>
+}

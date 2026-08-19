@@ -5,8 +5,8 @@ public class OutagePic
     public int OutagePicId { get; set; }
     public int OutageId { get; set; }
     public string PicName { get; set; } = string.Empty;
-    public string? PicContact { get; set; }
-    public string? PicRole { get; set; } // Requestor PIC, GCU PIC, etc.
+    public string PicEmail { get; set; } = string.Empty;
+    public string? PicPhone { get; set; }
 
     public Outage? Outage { get; set; }
 }

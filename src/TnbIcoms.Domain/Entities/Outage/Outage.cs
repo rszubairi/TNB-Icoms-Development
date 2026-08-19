@@ -1,3 +1,4 @@
+using TnbIcoms.Domain.Entities.Auth;
 using TnbIcoms.Domain.Entities.Config;
 
 namespace TnbIcoms.Domain.Entities.Outage;
@@ -58,6 +59,7 @@ public class Outage
     public VoltageLevel? VoltageLevel { get; set; }
     public Equipment? PrimaryEquipment { get; set; }
     public Project? Project { get; set; }
+    public User? CreatedByUser { get; set; }
 
     public ICollection<OutageAdditionalEquipment> AdditionalEquipment { get; set; } = new List<OutageAdditionalEquipment>();
     public ICollection<OutagePic> Pics { get; set; } = new List<OutagePic>();

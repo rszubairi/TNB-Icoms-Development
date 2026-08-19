@@ -1,0 +1,96 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">{{ config().title }}</h1>
+    <p class="page-subtitle">{{ config().subtitle }}</p>
+  </div>
+  <a class="btn-primary" routerLink="/outages/new">+ Create Outage</a>
+</div>
+
+@if (actionError()) {
+  <div class="card"><p class="state-message error">{{ actionError() }}</p></div>
+}
+
+<div class="card table-card">
+  @if (!config().readOnly && outages().length > 0) {
+    <div class="bulk-bar">
+      <label class="checkbox-row">
+        <input type="checkbox" [checked]="allChecked()" (change)="toggleAll($any($event.target).checked)" />
+        <span>Select All ({{ selectedIds().size }} selected)</span>
+      </label>
+      <div class="bulk-actions">
+        <button type="button" class="btn-secondary" [disabled]="processing() || selectedIds().size === 0" (click)="bulkPrimary()">
+          {{ config().primaryLabel }} Checked Items
+        </button>
+        @if (config().secondaryLabel) {
+          <button type="button" class="btn-outline danger" [disabled]="processing() || selectedIds().size === 0" (click)="bulkSecondary()">
+            {{ config().secondaryLabel }} Checked Items
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  @if (loading()) {
+    <p class="state-message">Loading…</p>
+  } @else if (errorMessage()) {
+    <p class="state-message error">{{ errorMessage() }}</p>
+  } @else if (outages().length === 0) {
+    <p class="state-message">No outages in this list.</p>
+  } @else {
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            @if (!config().readOnly) { <th></th> }
+            <th>ID</th>
+            <th>Start / End</th>
+            <th>Station</th>
+            <th>Equipment / Job</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (outage of outages(); track outage.outageId) {
+            <tr>
+              @if (!config().readOnly) {
+                <td>
+                  <input type="checkbox" [checked]="isChecked(outage.outageId)" (change)="toggleOne(outage.outageId, $any($event.target).checked)" />
+                </td>
+              }
+              <td class="mono">{{ outage.outageNumber }}<div class="cell-subtext">Code: {{ outage.outageCode }}</div></td>
+              <td>
+                {{ outage.plannedStartAt | date: 'medium' }}
+                <div class="cell-subtext">to {{ outage.plannedEndAt | date: 'medium' }}</div>
+              </td>
+              <td>{{ outage.stationName }}<div class="cell-subtext">{{ outage.zoneName }}</div></td>
+              <td>
+                {{ outage.equipmentName }}
+                <div class="cell-subtext">{{ outage.jobTypeLabel }}</div>
+              </td>
+              <td class="description-cell">{{ outage.description }}</td>
+              <td>
+                <span class="status-badge status-pending">{{ outage.requestorStatus }}</span>
+                @if (outage.plannerStatus) { <span class="status-badge status-confirmed">{{ outage.plannerStatus }}</span> }
+                <div class="cell-subtext">GNM: {{ outage.gnmStatus }}</div>
+              </td>
+              <td class="actions-cell">
+                @if (!config().readOnly) {
+                  <button type="button" class="btn-outline row-action" [disabled]="rowBusyId() === outage.outageId" (click)="primaryAction(outage)">
+                    {{ rowBusyId() === outage.outageId ? '…' : config().primaryLabel }}
+                  </button>
+                  @if (config().secondaryLabel) {
+                    <button type="button" class="btn-outline row-action danger" [disabled]="rowBusyId() === outage.outageId" (click)="secondaryAction(outage)">
+                      {{ config().secondaryLabel }}
+                    </button>
+                  }
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

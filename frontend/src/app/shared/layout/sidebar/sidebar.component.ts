@@ -34,7 +34,11 @@ export class SidebarComponent {
     { label: 'Transmission Lines', path: '/admin/transmission-lines' },
     { label: 'Conflicting Lines', path: '/admin/conflicting-lines' },
     { label: 'Linking Lines', path: '/admin/linking-lines' },
-    { label: 'Outage Intake', disabled: true },
+    { label: 'Create Outage', path: '/outages/new' },
+    { label: 'Outage Pending Review', path: '/outages/pending-review' },
+    { label: 'Confirmation Page', path: '/outages/confirmation' },
+    { label: 'Outage Pending Approval', path: '/outages/pending-approval' },
+    { label: 'Data Repository', path: '/outages/repository' },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }
   ];

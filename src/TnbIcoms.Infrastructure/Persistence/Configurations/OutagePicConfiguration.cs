@@ -11,8 +11,8 @@ public class OutagePicConfiguration : IEntityTypeConfiguration<OutagePic>
         builder.ToTable("OutagePics", schema: "dbo");
         builder.HasKey(x => x.OutagePicId);
         builder.Property(x => x.PicName).IsRequired().HasMaxLength(200);
-        builder.Property(x => x.PicContact).HasMaxLength(50);
-        builder.Property(x => x.PicRole).HasMaxLength(50);
+        builder.Property(x => x.PicEmail).IsRequired().HasMaxLength(256);
+        builder.Property(x => x.PicPhone).HasMaxLength(30);
 
         builder.HasOne(x => x.Outage)
             .WithMany(x => x.Pics)

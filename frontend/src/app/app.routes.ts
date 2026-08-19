@@ -18,6 +18,8 @@ import { MnemonicComponent } from './features/admin/mnemonic/mnemonic.component'
 import { TransmissionLinesComponent } from './features/admin/transmission-lines/transmission-lines.component';
 import { ConflictingLinesComponent } from './features/admin/conflicting-lines/conflicting-lines.component';
 import { LinkingLinesComponent } from './features/admin/linking-lines/linking-lines.component';
+import { OutageCreateComponent } from './features/outages/outage-create/outage-create.component';
+import { OutageListComponent } from './features/outages/outage-list/outage-list.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -49,6 +51,11 @@ export const routes: Routes = [
       { path: 'admin/transmission-lines', component: TransmissionLinesComponent },
       { path: 'admin/conflicting-lines', component: ConflictingLinesComponent },
       { path: 'admin/linking-lines', component: LinkingLinesComponent },
+      { path: 'outages/new', component: OutageCreateComponent },
+      { path: 'outages/pending-review', component: OutageListComponent, data: { mode: 'pendingReview' } },
+      { path: 'outages/confirmation', component: OutageListComponent, data: { mode: 'confirmation' } },
+      { path: 'outages/pending-approval', component: OutageListComponent, data: { mode: 'pendingApproval' } },
+      { path: 'outages/repository', component: OutageListComponent, data: { mode: 'repository' } },
       { path: '**', redirectTo: 'admin/users' }
     ]
   },

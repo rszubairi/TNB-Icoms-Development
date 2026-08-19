@@ -19,6 +19,7 @@ using TnbIcoms.Application.LinkingLines;
 using TnbIcoms.Application.Mnemonics;
 using TnbIcoms.Application.Lookups;
 using TnbIcoms.Application.Organisations;
+using TnbIcoms.Application.Outages;
 using TnbIcoms.Application.OutageScheduleWindows;
 using TnbIcoms.Application.OutageTypeRules;
 using TnbIcoms.Application.Projects;
@@ -105,6 +106,7 @@ builder.Services.AddScoped<IMnemonicService, MnemonicService>();
 builder.Services.AddScoped<ITransmissionLineService, TransmissionLineService>();
 builder.Services.AddScoped<IConflictingLineService, ConflictingLineService>();
 builder.Services.AddScoped<ILinkingLineService, LinkingLineService>();
+builder.Services.AddScoped<IOutageService, OutageService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

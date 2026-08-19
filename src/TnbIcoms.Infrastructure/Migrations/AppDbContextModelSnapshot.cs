@@ -1551,6 +1551,11 @@ namespace TnbIcoms.Infrastructure.Migrations
 
                     b.HasKey("OutageId");
 
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("OutageNumber")
+                        .IsUnique();
+
                     b.HasIndex("PrimaryEquipmentId");
 
                     b.HasIndex("ProjectId");
@@ -1653,18 +1658,19 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.Property<int>("OutageId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PicContact")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("PicEmail")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PicName")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("PicRole")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("PicPhone")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("OutagePicId");
 
@@ -2213,6 +2219,12 @@ namespace TnbIcoms.Infrastructure.Migrations
 
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Outage.Outage", b =>
                 {
+                    b.HasOne("TnbIcoms.Domain.Entities.Auth.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("TnbIcoms.Domain.Entities.Config.Equipment", "PrimaryEquipment")
                         .WithMany()
                         .HasForeignKey("PrimaryEquipmentId")
@@ -2241,6 +2253,8 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .HasForeignKey("ZoneId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("CreatedByUser");
 
                     b.Navigation("PrimaryEquipment");
 
