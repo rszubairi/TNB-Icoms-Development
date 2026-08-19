@@ -24,7 +24,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<PagedResult<UserListItemDto>>> ListAsync(UserListQuery query)
     {
-        var users = _dbContext.Users
+        var users = _dbContext.AppUsers
             .Include(u => u.Role)
             .Include(u => u.Zone)
             .Where(u => !u.IsDeleted)
@@ -78,7 +78,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<UserDetailDto>> GetByIdAsync(int userId)
     {
-        var user = await _dbContext.Users
+        var user = await _dbContext.AppUsers
             .Include(u => u.Role)
             .Include(u => u.Zone)
             .Include(u => u.GcuStations)
@@ -94,7 +94,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<UserDetailDto>> CreateAsync(CreateUserRequestDto request, int createdByUserId)
     {
-        var existing = await _dbContext.Users.AnyAsync(u => u.Email == request.Email && !u.IsDeleted);
+        var existing = await _dbContext.AppUsers.AnyAsync(u => u.Email == request.Email && !u.IsDeleted);
         if (existing)
         {
             return ApiResponse<UserDetailDto>.Fail("A user with this email already exists.");
@@ -139,7 +139,7 @@ public class UserService : IUserService
             domainUser.GcuStations.Add(new UserGcuStation { StationId = stationId });
         }
 
-        _dbContext.Users.Add(domainUser);
+        _dbContext.AppUsers.Add(domainUser);
         await _dbContext.SaveChangesAsync();
 
         await _emailSender.SendAsync(
@@ -152,7 +152,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<UserDetailDto>> UpdateAsync(int userId, UpdateUserRequestDto request, int updatedByUserId)
     {
-        var user = await _dbContext.Users
+        var user = await _dbContext.AppUsers
             .Include(u => u.GcuStations)
             .FirstOrDefaultAsync(u => u.UserId == userId && !u.IsDeleted);
 
@@ -201,7 +201,7 @@ public class UserService : IUserService
 
     public async Task<ApiResponse<object>> DeactivateAsync(int userId, int updatedByUserId)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId && !u.IsDeleted);
+        var user = await _dbContext.AppUsers.FirstOrDefaultAsync(u => u.UserId == userId && !u.IsDeleted);
         if (user is null)
         {
             return ApiResponse<object>.Fail("User not found.");

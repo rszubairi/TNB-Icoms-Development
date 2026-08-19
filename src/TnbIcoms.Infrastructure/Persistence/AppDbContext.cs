@@ -16,8 +16,8 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     }
 
     // Auth schema
-    public DbSet<AuthEntities.User> Users => Set<AuthEntities.User>();
-    public DbSet<AuthEntities.Role> Roles => Set<AuthEntities.Role>();
+    public DbSet<AuthEntities.User> AppUsers => Set<AuthEntities.User>();
+    public DbSet<AuthEntities.Role> AppRoles => Set<AuthEntities.Role>();
     public DbSet<AuthEntities.RolePermission> RolePermissions => Set<AuthEntities.RolePermission>();
     public DbSet<AuthEntities.UserGcuStation> UserGcuStations => Set<AuthEntities.UserGcuStation>();
     public DbSet<AuthEntities.RoleTransferRequest> RoleTransferRequests => Set<AuthEntities.RoleTransferRequest>();

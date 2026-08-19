@@ -15,7 +15,7 @@ public class RoleService : IRoleService
 
     public async Task<ApiResponse<List<RoleLookupDto>>> ListAsync()
     {
-        var roles = await _dbContext.Roles
+        var roles = await _dbContext.AppRoles
             .Where(r => r.IsActive)
             .OrderBy(r => r.RoleName)
             .Select(r => new RoleLookupDto

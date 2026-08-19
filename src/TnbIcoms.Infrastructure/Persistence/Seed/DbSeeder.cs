@@ -33,9 +33,9 @@ public static class DbSeeder
 
         foreach (var seed in roleSeeds)
         {
-            if (!await dbContext.Roles.AnyAsync(r => r.RoleCode == seed.Code))
+            if (!await dbContext.AppRoles.AnyAsync(r => r.RoleCode == seed.Code))
             {
-                dbContext.Roles.Add(new Role
+                dbContext.AppRoles.Add(new Role
                 {
                     RoleName = seed.Name,
                     RoleCode = seed.Code,
@@ -46,7 +46,7 @@ public static class DbSeeder
         }
         await dbContext.SaveChangesAsync();
 
-        var sysAdminRole = await dbContext.Roles.FirstAsync(r => r.RoleCode == "SYSADMIN");
+        var sysAdminRole = await dbContext.AppRoles.FirstAsync(r => r.RoleCode == "SYSADMIN");
 
         var centralZone = await dbContext.Zones.FirstOrDefaultAsync(z => z.ZoneAbbr == "CTL");
         if (centralZone is null)
@@ -84,10 +84,10 @@ public static class DbSeeder
             await userManager.AddToRoleAsync(identityAdmin, sysAdminRole.RoleCode);
         }
 
-        var domainAdmin = await dbContext.Users.FirstOrDefaultAsync(u => u.AspNetUserId == identityAdmin.Id);
+        var domainAdmin = await dbContext.AppUsers.FirstOrDefaultAsync(u => u.AspNetUserId == identityAdmin.Id);
         if (domainAdmin is null)
         {
-            dbContext.Users.Add(new User
+            dbContext.AppUsers.Add(new User
             {
                 TnbId = DefaultAdminTnbId,
                 FullName = "System Administrator",

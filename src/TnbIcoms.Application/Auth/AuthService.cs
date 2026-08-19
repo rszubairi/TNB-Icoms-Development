@@ -48,7 +48,7 @@ public class AuthService : IAuthService
             return ApiResponse<LoginResponseDto>.Fail("Invalid credentials.");
         }
 
-        var domainUser = await _dbContext.Users
+        var domainUser = await _dbContext.AppUsers
             .Include(u => u.Role)
             .Include(u => u.Zone)
             .FirstOrDefaultAsync(u => u.AspNetUserId == identityUser.Id);
