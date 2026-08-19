@@ -7,6 +7,7 @@ import { OrganisationsComponent } from './features/admin/organisations/organisat
 import { VoltageEquipmentComponent } from './features/admin/voltage-equipment/voltage-equipment.component';
 import { EquipmentComponent } from './features/admin/equipment/equipment.component';
 import { OffPointsComponent } from './features/admin/off-points/off-points.component';
+import { DropdownValuesComponent } from './features/admin/dropdown-values/dropdown-values.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -27,6 +28,7 @@ export const routes: Routes = [
       { path: 'admin/voltage-equipment', component: VoltageEquipmentComponent },
       { path: 'admin/equipment', component: EquipmentComponent },
       { path: 'admin/off-points', component: OffPointsComponent },
+      { path: 'admin/dropdown-values', component: DropdownValuesComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]
   },

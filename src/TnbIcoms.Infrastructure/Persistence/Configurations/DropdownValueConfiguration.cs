@@ -13,5 +13,7 @@ public class DropdownValueConfiguration : IEntityTypeConfiguration<DropdownValue
         builder.Property(x => x.CategoryCode).IsRequired().HasMaxLength(50);
         builder.Property(x => x.ValueCode).IsRequired().HasMaxLength(50);
         builder.Property(x => x.ValueLabel).IsRequired().HasMaxLength(200);
+        builder.Property(x => x.ParentCode).HasMaxLength(50);
+        builder.HasIndex(x => new { x.CategoryCode, x.ValueCode }).IsUnique();
     }
 }

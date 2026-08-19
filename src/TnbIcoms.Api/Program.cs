@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TnbIcoms.Application.Auth;
 using TnbIcoms.Application.Common;
+using TnbIcoms.Application.DropdownValues;
 using TnbIcoms.Application.Email;
 using TnbIcoms.Application.Equipment;
 using TnbIcoms.Application.EquipmentTypes;
@@ -79,6 +80,7 @@ builder.Services.AddScoped<IVoltageLevelService, VoltageLevelService>();
 builder.Services.AddScoped<IEquipmentTypeService, EquipmentTypeService>();
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IDropdownValueService, DropdownValueService>();
+builder.Services.AddScoped<IDropdownValueAdminService, DropdownValueAdminService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

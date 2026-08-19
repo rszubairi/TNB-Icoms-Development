@@ -1,0 +1,114 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Dropdown Management</h1>
+    <p class="page-subtitle">Configure system-wide dropdown options and control their display order.</p>
+  </div>
+</div>
+
+@if (errorMessage() && categories().length === 0) {
+  <div class="card">
+    <p class="state-message error">{{ errorMessage() }}</p>
+  </div>
+} @else {
+  <div class="layout-grid">
+    <div class="card category-panel">
+      <p class="category-heading">Categories</p>
+      @for (category of categories(); track category.code) {
+        <button
+          type="button"
+          class="category-item"
+          [class.active]="category.code === selectedCategoryCode()"
+          (click)="selectCategory(category.code)"
+        >
+          {{ category.label }}
+        </button>
+      }
+    </div>
+
+    <div class="card values-panel">
+      @if (selectedCategory(); as category) {
+        <div class="panel-header">
+          <div>
+            <h2>{{ category.label }}</h2>
+            <p class="panel-subheading">
+              @if (category.code === 'JobType') {
+                Execution order and outage-type visibility.
+              } @else {
+                Execution order protocols.
+              }
+            </p>
+          </div>
+          @if (!isEditMode()) {
+            <button type="button" class="btn-outline" (click)="startCreate()">+ Add</button>
+          }
+        </div>
+
+        <div class="inline-form">
+          <input
+            class="form-input"
+            type="text"
+            placeholder="Enter new option…"
+            [ngModel]="draft().valueLabel"
+            (ngModelChange)="updateLabel($event)"
+          />
+          @if (category.hasParent) {
+            <select class="form-select" [ngModel]="draft().parentCode" (ngModelChange)="updateParentCode($event)">
+              <option [value]="null">All outage types</option>
+              @for (parent of outageTypeParents(); track parent) {
+                <option [value]="parent">{{ parent }}</option>
+              }
+            </select>
+          }
+          @if (isEditMode()) {
+            <label class="checkbox-row">
+              <input type="checkbox" [ngModel]="draft().isActive" (ngModelChange)="updateIsActive($event)" />
+              <span>Active</span>
+            </label>
+          }
+          <div class="inline-form-actions">
+            @if (isEditMode()) {
+              <button type="button" class="btn-secondary" (click)="resetForm()">Cancel</button>
+            }
+            <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
+              {{ saving() ? 'Saving…' : (isEditMode() ? 'Save' : 'Add') }}
+            </button>
+          </div>
+          @if (formError()) {
+            <div class="form-alert">{{ formError() }}</div>
+          }
+        </div>
+
+        <div class="value-list">
+          @if (loading()) {
+            <p class="state-message">Loading…</p>
+          } @else if (values().length === 0) {
+            <p class="state-message">No options configured yet.</p>
+          } @else {
+            @for (value of values(); track value.dropdownValueId; let i = $index; let last = $last) {
+              <div class="value-row" [class.inactive]="!value.isActive">
+                <span class="value-order">{{ i + 1 }}</span>
+                <div class="value-main">
+                  <span class="value-label">{{ value.valueLabel }}</span>
+                  @if (value.parentCode) {
+                    <span class="status-badge status-confirmed">{{ value.parentCode }}</span>
+                  }
+                  @if (!value.isActive) {
+                    <span class="status-badge status-inactive">Inactive</span>
+                  }
+                </div>
+                <div class="value-actions">
+                  <button type="button" class="icon-btn" [disabled]="i === 0 || rowBusyId() === value.dropdownValueId" (click)="move(value, 'up')">↑</button>
+                  <button type="button" class="icon-btn" [disabled]="last || rowBusyId() === value.dropdownValueId" (click)="move(value, 'down')">↓</button>
+                  <button type="button" class="icon-btn" (click)="startEdit(value)">Edit</button>
+                  @if (value.isActive) {
+                    <button type="button" class="icon-btn danger" [disabled]="rowBusyId() === value.dropdownValueId" (click)="deactivate(value)">✕</button>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

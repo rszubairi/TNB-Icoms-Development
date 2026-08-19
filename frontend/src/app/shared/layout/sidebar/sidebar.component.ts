@@ -24,6 +24,7 @@ export class SidebarComponent {
     { label: 'Voltage & Equipment Types', path: '/admin/voltage-equipment' },
     { label: 'Equipment Directory', path: '/admin/equipment' },
     { label: 'Off-Point Management', path: '/admin/off-points' },
+    { label: 'Dropdown Management', path: '/admin/dropdown-values' },
     { label: 'Outage Intake', disabled: true },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }
