@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TnbIcoms.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+74630235b601f1e856a82ce6ed5e761299212e4f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4e76d81fe7990fdf68c224600db4c4e860ec1c7")]
 [assembly: System.Reflection.AssemblyProductAttribute("TnbIcoms.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TnbIcoms.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
