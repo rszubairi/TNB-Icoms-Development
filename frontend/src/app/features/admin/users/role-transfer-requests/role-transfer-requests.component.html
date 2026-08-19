@@ -1,0 +1,71 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Role Transfer Requests</h1>
+    <p class="page-subtitle">Review and action pending user role transfer requests.</p>
+  </div>
+</div>
+
+<div class="card table-card">
+  @if (loading()) {
+    <p class="state-message">Loading requests…</p>
+  } @else if (notAvailable()) {
+    <p class="state-message">
+      Role transfer requests are not yet available — the backend endpoint has not been implemented yet.
+    </p>
+  } @else if (requests().length === 0) {
+    <p class="state-message">No pending role transfer requests.</p>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>TNB ID</th>
+          <th>Name</th>
+          <th>Current Role</th>
+          <th>Requested Role</th>
+          <th>Requested</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (req of requests(); track req.id) {
+          <tr>
+            <td class="mono">{{ req.tnbId }}</td>
+            <td>{{ req.fullName }}</td>
+            <td>{{ req.currentRoleName }}</td>
+            <td>{{ req.requestedRoleName }}</td>
+            <td>{{ req.requestedAt | date: 'mediumDate' }}</td>
+            <td>
+              <span
+                class="status-badge"
+                [class.status-pending]="req.status === 'Pending'"
+                [class.status-confirmed]="req.status === 'Approved'"
+                [class.status-inactive]="req.status === 'Rejected'"
+              >
+                {{ req.status }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              @if (req.status === 'Pending') {
+                <button
+                  class="btn-secondary row-action"
+                  [disabled]="processingId() === req.id"
+                  (click)="approve(req.id)"
+                >
+                  Approve
+                </button>
+                <button
+                  class="btn-danger row-action"
+                  [disabled]="processingId() === req.id"
+                  (click)="reject(req.id)"
+                >
+                  Reject
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

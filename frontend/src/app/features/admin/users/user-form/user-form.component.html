@@ -1,0 +1,92 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">{{ isEditMode ? 'Edit User' : 'Add User' }}</h1>
+    <p class="page-subtitle">{{ isEditMode ? tnbId : 'Create a new system user account.' }}</p>
+  </div>
+  <a class="btn-outline" routerLink="/admin/users">Back to List</a>
+</div>
+
+<div class="card form-card">
+  @if (loading()) {
+    <p class="state-message">Loading user…</p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div>
+          <label class="form-label" for="tnbId">TNB ID</label>
+          <input id="tnbId" class="form-input" type="text" formControlName="tnbId" />
+        </div>
+        <div>
+          <label class="form-label" for="fullName">Full Name</label>
+          <input id="fullName" class="form-input" type="text" formControlName="fullName" />
+        </div>
+        <div>
+          <label class="form-label" for="email">Email</label>
+          <input id="email" class="form-input" type="email" formControlName="email" />
+        </div>
+        <div>
+          <label class="form-label" for="phoneNumber">Phone Number</label>
+          <input id="phoneNumber" class="form-input" type="text" formControlName="phoneNumber" />
+        </div>
+        <div>
+          <label class="form-label" for="roleId">Role</label>
+          <select id="roleId" class="form-select" formControlName="roleId">
+            <option value="">Select role…</option>
+            @for (role of roles(); track role.id) {
+              <option [value]="role.id">{{ role.name }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="zoneId">Zone</label>
+          <select id="zoneId" class="form-select" formControlName="zoneId">
+            <option value="">Select zone…</option>
+            @for (zone of zones(); track zone.id) {
+              <option [value]="zone.id">{{ zone.name }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="organisationId">Organisation</label>
+          <input id="organisationId" class="form-input" type="text" formControlName="organisationId" placeholder="Organisation ID" />
+        </div>
+        <div>
+          <label class="form-label" for="gcuTypeId">GCU Type</label>
+          <input id="gcuTypeId" class="form-input" type="text" formControlName="gcuTypeId" placeholder="GCU Type ID" />
+        </div>
+      </div>
+
+      <div class="stations-block">
+        <label class="form-label">GCU Stations</label>
+        <div class="stations-grid">
+          @for (station of gcuStationOptions(); track station) {
+            <label class="checkbox-row">
+              <input
+                type="checkbox"
+                [checked]="isStationChecked(station)"
+                (change)="toggleStation(station, $any($event.target).checked)"
+              />
+              <span>{{ station }}</span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <label class="checkbox-row active-toggle">
+        <input type="checkbox" formControlName="isActive" />
+        <span>Active</span>
+      </label>
+
+      @if (errorMessage()) {
+        <div class="form-alert">{{ errorMessage() }}</div>
+      }
+
+      <div class="form-actions">
+        <a class="btn-secondary" routerLink="/admin/users">Cancel</a>
+        <button type="submit" class="btn-primary" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : (isEditMode ? 'Save Changes' : 'Create User') }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

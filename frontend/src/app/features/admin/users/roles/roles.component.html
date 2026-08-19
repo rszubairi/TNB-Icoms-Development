@@ -1,0 +1,45 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Roles &amp; Permissions</h1>
+    <p class="page-subtitle">Read-only role directory. Permission editing is planned for a later phase.</p>
+  </div>
+</div>
+
+<div class="card notice">
+  Permission matrix editing is not part of Phase 1. This screen currently lists configured roles only.
+</div>
+
+<div class="card table-card">
+  @if (loading()) {
+    <p class="state-message">Loading roles…</p>
+  } @else if (errorMessage()) {
+    <p class="state-message error">{{ errorMessage() }}</p>
+  } @else if (roles().length === 0) {
+    <p class="state-message">No roles configured.</p>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Role Name</th>
+          <th>Description</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (role of roles(); track role.id) {
+          <tr>
+            <td>{{ role.name }}</td>
+            <td>{{ role.description }}</td>
+            <td>
+              @if (role.isExternal) {
+                <span class="status-badge status-pending">External / GCU</span>
+              } @else {
+                <span class="status-badge status-confirmed">Internal / TNB</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

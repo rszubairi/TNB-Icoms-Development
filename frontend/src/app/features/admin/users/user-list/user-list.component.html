@@ -1,0 +1,76 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">User Management</h1>
+    <p class="page-subtitle">Manage system users, roles and zone assignments.</p>
+  </div>
+  <a class="btn-primary" routerLink="/admin/users/new">+ Add User</a>
+</div>
+
+<div class="card filter-bar">
+  <input
+    class="form-input search-input"
+    type="text"
+    placeholder="Search by name, TNB ID or email…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+  <select class="form-select" [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
+    <option value="">All Roles</option>
+    @for (role of roles(); track role.id) {
+      <option [value]="role.id">{{ role.name }}</option>
+    }
+  </select>
+  <select class="form-select" [ngModel]="zoneFilter()" (ngModelChange)="zoneFilter.set($event)">
+    <option value="">All Zones</option>
+    @for (zone of zones(); track zone.id) {
+      <option [value]="zone.id">{{ zone.name }}</option>
+    }
+  </select>
+</div>
+
+<div class="card table-card">
+  @if (loading()) {
+    <p class="state-message">Loading users…</p>
+  } @else if (errorMessage()) {
+    <p class="state-message error">{{ errorMessage() }}</p>
+  } @else if (filteredUsers().length === 0) {
+    <p class="state-message">No users match your filters.</p>
+  } @else {
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>TNB ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Zone</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of filteredUsers(); track user.tnbId) {
+            <tr>
+              <td class="mono">{{ user.tnbId }}</td>
+              <td>{{ user.fullName }}</td>
+              <td>{{ user.email }}</td>
+              <td><span class="status-badge status-agreed">{{ user.roleName }}</span></td>
+              <td><span class="status-badge status-confirmed">{{ user.zoneName }}</span></td>
+              <td>
+                @if (user.isActive) {
+                  <span class="status-badge status-confirmed">Active</span>
+                } @else {
+                  <span class="status-badge status-inactive">Inactive</span>
+                }
+              </td>
+              <td class="actions-cell">
+                <a class="btn-outline row-action" [routerLink]="['/admin/users', user.tnbId]">Edit</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

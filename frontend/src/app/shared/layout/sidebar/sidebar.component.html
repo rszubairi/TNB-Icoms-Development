@@ -1,0 +1,26 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">TNB</div>
+    <div>
+      <p class="brand-title font-display">ICOMS 2.0</p>
+      <p class="brand-subtitle">Grid System Operation</p>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    @for (item of navItems; track item.label) {
+      @if (item.path) {
+        <a
+          class="nav-link"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: false }"
+        >
+          {{ item.label }}
+        </a>
+      } @else {
+        <span class="nav-link disabled">{{ item.label }}</span>
+      }
+    }
+  </nav>
+</aside>

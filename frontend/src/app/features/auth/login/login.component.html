@@ -1,0 +1,94 @@
+<div class="login-page">
+  <div class="hero-panel">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-brand">
+        <div class="hero-logo">TNB</div>
+        <div>
+          <p class="hero-eyebrow">Grid System Operation</p>
+          <h1 class="hero-title">ICOMS 2.0</h1>
+        </div>
+      </div>
+      <h2 class="hero-tagline">Integrated Commissioning &amp; Outage Management System</h2>
+      <p class="hero-description">
+        A unified, secure and fully auditable workflow for outage intake, technical study,
+        multi-tier approvals, execution tracking and shift handovers across the national grid.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-value">11M+</span>
+          <span class="hero-stat-label">Customers</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">99.9%</span>
+          <span class="hero-stat-label">Grid Uptime</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">24/7</span>
+          <span class="hero-stat-label">GSO Monitoring</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-panel">
+    <div class="form-card">
+      <h2 class="font-display">Sign In</h2>
+      <p class="form-subtitle">Enter your Staff ID or email to access the administration portal.</p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+        <div>
+          <label class="form-label" for="identifier">Staff ID / Email</label>
+          <input
+            id="identifier"
+            class="form-input"
+            type="text"
+            formControlName="identifier"
+            placeholder="e.g. T123456 or name@tnb.com.my"
+            autocomplete="username"
+          />
+          @if (form.controls.identifier.invalid && form.controls.identifier.touched) {
+            <p class="form-error">Staff ID or email is required.</p>
+          }
+        </div>
+
+        <div>
+          <label class="form-label" for="password">Password</label>
+          <input
+            id="password"
+            class="form-input"
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          @if (form.controls.password.invalid && form.controls.password.touched) {
+            <p class="form-error">Password is required.</p>
+          }
+        </div>
+
+        <div class="form-row-between">
+          <label class="checkbox-row">
+            <input type="checkbox" formControlName="rememberMe" />
+            <span>Remember me</span>
+          </label>
+          <a href="javascript:void(0)" class="forgot-link">Forgot password?</a>
+        </div>
+
+        @if (errorMessage()) {
+          <div class="form-alert">{{ errorMessage() }}</div>
+        }
+
+        <button type="submit" class="btn-primary full-width" [disabled]="submitting()">
+          {{ submitting() ? 'Signing in…' : 'Sign In' }}
+        </button>
+
+        <div class="divider"><span>or</span></div>
+
+        <button type="button" class="btn-blue full-width" (click)="onCorporateSso()">
+          Corporate AD / SSO
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

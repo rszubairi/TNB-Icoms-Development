@@ -1,0 +1,13 @@
+:host {
+  display: block;
+}
+
+.shell-main {
+  margin-left: 18rem;
+  min-height: 100vh;
+  background-color: var(--enterprise-bg);
+}
+
+.shell-content {
+  padding: 2rem;
+}
