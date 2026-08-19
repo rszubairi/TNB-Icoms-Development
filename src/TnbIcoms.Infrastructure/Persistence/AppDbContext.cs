@@ -36,6 +36,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<OutageTypeRule> OutageTypeRules => Set<OutageTypeRule>();
     public DbSet<OutageScheduleWindow> OutageScheduleWindows => Set<OutageScheduleWindow>();
     public DbSet<AuthorisationPersonnel> AuthorisationPersonnel => Set<AuthorisationPersonnel>();
+    public DbSet<SystemSetting> SystemSettings => Set<SystemSetting>();
 
     // dbo (Outage) schema
     public DbSet<OutageEntities.Outage> Outages => Set<OutageEntities.Outage>();

@@ -19,6 +19,7 @@ using TnbIcoms.Application.OutageTypeRules;
 using TnbIcoms.Application.Projects;
 using TnbIcoms.Application.Roles;
 using TnbIcoms.Application.Stations;
+using TnbIcoms.Application.SystemSettings;
 using TnbIcoms.Application.Users;
 using TnbIcoms.Application.VoltageLevels;
 using TnbIcoms.Infrastructure.Identity;
@@ -89,6 +90,7 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IOutageTypeRuleService, OutageTypeRuleService>();
 builder.Services.AddScoped<IOutageScheduleWindowService, OutageScheduleWindowService>();
 builder.Services.AddScoped<IAuthorisationPersonnelService, AuthorisationPersonnelService>();
+builder.Services.AddScoped<ISystemSettingService, SystemSettingService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

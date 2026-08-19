@@ -29,6 +29,7 @@ export class SidebarComponent {
     { label: 'Outage Type Configuration', path: '/admin/outage-type-rules' },
     { label: 'Outage Scheduling', path: '/admin/outage-scheduling' },
     { label: 'Authorisation Personnel', path: '/admin/authorisation-personnel' },
+    { label: 'Change Request Settings', path: '/admin/change-request-settings' },
     { label: 'Outage Intake', disabled: true },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }

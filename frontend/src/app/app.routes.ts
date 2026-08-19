@@ -12,6 +12,7 @@ import { ProjectsComponent } from './features/admin/projects/projects.component'
 import { OutageTypeRulesComponent } from './features/admin/outage-type-rules/outage-type-rules.component';
 import { OutageSchedulingComponent } from './features/admin/outage-scheduling/outage-scheduling.component';
 import { AuthorisationPersonnelComponent } from './features/admin/authorisation-personnel/authorisation-personnel.component';
+import { ChangeRequestSettingsComponent } from './features/admin/change-request-settings/change-request-settings.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -37,6 +38,7 @@ export const routes: Routes = [
       { path: 'admin/outage-type-rules', component: OutageTypeRulesComponent },
       { path: 'admin/outage-scheduling', component: OutageSchedulingComponent },
       { path: 'admin/authorisation-personnel', component: AuthorisationPersonnelComponent },
+      { path: 'admin/change-request-settings', component: ChangeRequestSettingsComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]
   },

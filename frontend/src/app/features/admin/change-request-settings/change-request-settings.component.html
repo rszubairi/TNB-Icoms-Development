@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h1 class="font-display">Change Request Settings</h1>
+  <p class="page-subtitle">Configure how many days before an outage's start date a Requestor may submit a Change Request, before it is pushed to the KIV list.</p>
+</div>
+
+@if (errorMessage() && loading()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else {
+  <div class="card settings-card">
+    <div class="setting-row">
+      <div>
+        <label class="form-label" for="days">Outage Submission Window (Days)</label>
+        <p class="setting-hint">Select the number of days from the start of an outage that users are permitted to submit a change request.</p>
+      </div>
+      <span class="required-badge">Required</span>
+    </div>
+
+    <input
+      id="days"
+      class="form-input days-input"
+      type="number"
+      min="1"
+      [disabled]="loading()"
+      [ngModel]="days()"
+      (ngModelChange)="updateDays(+$event)"
+    />
+
+    @if (errorMessage()) {
+      <div class="form-alert">{{ errorMessage() }}</div>
+    }
+    @if (saveMessage()) {
+      <div class="save-banner">{{ saveMessage() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-primary" [disabled]="saving() || loading()" (click)="save()">
+        {{ saving() ? 'Saving…' : 'Save Changes' }}
+      </button>
+    </div>
+  </div>
+}
