@@ -1,0 +1,162 @@
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-top: 0.25rem;
+  max-width: 65ch;
+}
+
+.form-card {
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.sidebar-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.form-alert {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.lookup-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lookup-row .form-input {
+  flex: 1;
+}
+
+.lookup-result {
+  font-size: 0.78rem;
+  color: #15803d;
+  margin: 0.35rem 0 0;
+}
+
+.lookup-error {
+  font-size: 0.78rem;
+  color: #e11d48;
+  margin: 0.35rem 0 0;
+}
+
+.checklist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.6rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #374151;
+}
+
+.table-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  padding: 0.8rem 1.2rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #f3f4f6;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 0.8rem 1.2rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.86rem;
+  color: #1f2937;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: #f9fafb;
+}
+
+.mono {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+}
+
+.status-badge {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.4rem;
+  background-color: #eef2ff;
+  color: #4338ca;
+}
+
+.state-message {
+  padding: 2.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.state-message.error {
+  color: #e11d48;
+}

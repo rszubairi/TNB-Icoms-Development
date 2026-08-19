@@ -11,8 +11,10 @@ public class CommissioningMemoConfiguration : IEntityTypeConfiguration<Commissio
         builder.ToTable("CommissioningMemos", schema: "dbo");
         builder.HasKey(x => x.CommissioningMemoId);
         builder.Property(x => x.MemoNo).IsRequired().HasMaxLength(50);
-        builder.Property(x => x.Content).IsRequired();
+        builder.Property(x => x.MemoType).IsRequired().HasMaxLength(30);
+        builder.Property(x => x.SwitchingProgram).IsRequired();
         builder.Property(x => x.Status).IsRequired().HasMaxLength(30);
+        builder.HasIndex(x => x.MemoNo).IsUnique();
 
         builder.HasOne(x => x.Outage)
             .WithMany(x => x.CommissioningMemos)

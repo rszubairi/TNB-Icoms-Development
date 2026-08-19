@@ -31,6 +31,8 @@ import { ForcedOutageCreateComponent } from './features/gnc/forced-outage-create
 import { HandoverComponent } from './features/handover/handover.component';
 import { SldListComponent } from './features/sld/sld-list/sld-list.component';
 import { SldDetailComponent } from './features/sld/sld-detail/sld-detail.component';
+import { MemoListComponent } from './features/commissioning-memos/memo-list/memo-list.component';
+import { MemoDetailComponent } from './features/commissioning-memos/memo-detail/memo-detail.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -78,6 +80,8 @@ export const routes: Routes = [
       { path: 'handover', component: HandoverComponent },
       { path: 'sld', component: SldListComponent },
       { path: 'sld/:id', component: SldDetailComponent },
+      { path: 'commissioning-memos', component: MemoListComponent },
+      { path: 'commissioning-memos/:id', component: MemoDetailComponent },
       { path: 'outages/:id', component: OutageDetailComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]

@@ -1,0 +1,99 @@
+<div class="page-header">
+  <a class="back-link" routerLink="/commissioning-memos">← Back to Commissioning Memos</a>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+}
+
+@if (!loading() && !errorMessage() && memo(); as m) {
+  <div class="layout-grid">
+    <div class="card detail-card">
+      <h1 class="font-display">{{ m.memoNo }}</h1>
+      <div class="detail-meta">
+        <span class="status-badge">{{ m.status }}</span>
+        <span class="cell-subtext">{{ m.memoType }} · Outage {{ m.outageNumber }}</span>
+      </div>
+
+      @if (m.commissioningResult) { <p class="field-block"><strong>Commissioning Result:</strong> {{ m.commissioningResult }}</p> }
+      @if (m.rejectionReason) { <p class="field-block warning"><strong>Last rejection reason:</strong> {{ m.rejectionReason }}</p> }
+
+      <h2 class="sidebar-heading">Switching Program</h2>
+      <p class="field-block">{{ m.switchingProgram }}</p>
+
+      @if (m.dataForm) {
+        <h2 class="sidebar-heading">Data Form</h2>
+        <p class="field-block">{{ m.dataForm }}</p>
+      }
+
+      @if (m.memoType !== 'EmergencyCommissioning') {
+        <h2 class="sidebar-heading">Commissioning Requirement Documents</h2>
+        <ul class="checklist-view">
+          <li [class.checked]="m.iomEndorsed">IOM Endorsed</li>
+          <li [class.checked]="m.mtepProtectionLetter">MTEP Protection Letter</li>
+          <li [class.checked]="m.residentEngineerCertification">Resident Engineer Certification</li>
+          <li [class.checked]="m.formG">Form G</li>
+          <li [class.checked]="m.formH">Form H</li>
+          <li [class.checked]="m.meteringEmailChain">Metering Email Chain</li>
+          <li [class.checked]="m.scadaEmailChain">SCADA Email Chain</li>
+          <li [class.checked]="m.hgsoLetterForGenerationPmu">HGSO Letter (Generation PMU)</li>
+        </ul>
+      }
+
+      <div class="timeline">
+        <div class="timeline-row"><span>Engineer PIC</span><span>{{ m.engineerPicApprovedByName ?? 'pending' }} @if (m.engineerPicApprovedAt) { · {{ m.engineerPicApprovedAt | date: 'short' }} }</span></div>
+        <div class="timeline-row"><span>S/E</span><span>{{ m.seApprovedByName ?? 'pending' }} @if (m.seApprovedAt) { · {{ m.seApprovedAt | date: 'short' }} }</span></div>
+        <div class="timeline-row"><span>DCE</span><span>{{ m.dceApprovedByName ?? 'pending' }} @if (m.dceApprovedAt) { · {{ m.dceApprovedAt | date: 'short' }} }</span></div>
+        <div class="timeline-row"><span>CE GNM</span><span>{{ m.ceGnmApprovedByName ?? 'pending' }} @if (m.ceGnmApprovedAt) { · {{ m.ceGnmApprovedAt | date: 'short' }} }</span></div>
+        <div class="timeline-row"><span>Final Sign-off</span><span>{{ m.finalApprovedByName ?? 'pending' }} @if (m.finalApprovedAt) { · {{ m.finalApprovedAt | date: 'short' }} }</span></div>
+      </div>
+
+      <button type="button" class="btn-secondary" (click)="downloadCoverPage()">Download Cover Page PDF</button>
+    </div>
+
+    <div class="card action-card">
+      <h2 class="sidebar-heading">Actions</h2>
+      @if (actionError()) { <div class="form-alert">{{ actionError() }}</div> }
+
+      @if (m.status !== 'Approved') {
+        <label class="form-label">Rejection Reason</label>
+        <textarea class="form-input" rows="2" [ngModel]="rejectionReason()" (ngModelChange)="rejectionReason.set($event)"></textarea>
+      }
+
+      @if (m.status === 'PendingEngineerPic') {
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="engineerPicApprove()">Approve → S/E</button>
+        <button type="button" class="btn-outline full-width" [disabled]="busy()" (click)="engineerPicReject()">Reject</button>
+      }
+      @if (m.status === 'PendingSE') {
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="seApprove()">Approve → DCE</button>
+        <button type="button" class="btn-outline full-width" [disabled]="busy()" (click)="seReject()">Reject</button>
+      }
+      @if (m.status === 'PendingDCE') {
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="dceApprove()">Approve → CE GNM</button>
+        <button type="button" class="btn-outline full-width" [disabled]="busy()" (click)="dceReject()">Reject</button>
+      }
+      @if (m.status === 'PendingCeGnm') {
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="ceGnmApprove()">Approve → Final Sign-off</button>
+        <button type="button" class="btn-outline full-width" [disabled]="busy()" (click)="ceGnmReject()">Reject</button>
+      }
+      @if (m.status === 'PendingFinalSignOff') {
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="finalApprove()">Final Approve</button>
+        <button type="button" class="btn-outline full-width" [disabled]="busy()" (click)="finalReject()">Reject</button>
+      }
+
+      @if (m.status === 'Approved') {
+        <p class="stage-hint success">Fully approved. GNC records the actual commissioning outcome below.</p>
+        <label class="form-label">Commissioning Result</label>
+        <select class="form-select" [ngModel]="commissioningResult()" (ngModelChange)="commissioningResult.set($event)">
+          <option value="InProgress">In Progress</option>
+          <option value="OnSoak">On Soak</option>
+          <option value="CommSuccessful">Commissioning Successful</option>
+          <option value="CommNotSuccessful">Commissioning Not Successful</option>
+        </select>
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="setResult()">Record Result</button>
+      }
+    </div>
+  </div>
+}

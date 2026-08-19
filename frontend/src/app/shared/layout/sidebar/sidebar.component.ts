@@ -48,6 +48,7 @@ export class SidebarComponent {
     { label: 'GNC: Authorisation in Force', path: '/gnc/authorisation-in-force' },
     { label: 'GNC: Forced Outage', path: '/gnc/forced-outage' },
     { label: 'Shift Handover', path: '/handover' },
-    { label: 'Single Line Diagrams', path: '/sld' }
+    { label: 'Single Line Diagrams', path: '/sld' },
+    { label: 'Commissioning Memos', path: '/commissioning-memos' }
   ];
 }

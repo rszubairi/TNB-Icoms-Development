@@ -1,0 +1,97 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Commissioning Memos</h1>
+    <p class="subtitle">Commissioning, Emergency Commissioning, and Decommissioning memos, routed through Engineer PIC → S/E → DCE → CE GNM → final sign-off.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn-primary" (click)="openForm()">+ New Memo</button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <h2 class="sidebar-heading">New Commissioning Memo</h2>
+    @if (formError()) { <div class="form-alert">{{ formError() }}</div> }
+
+    <label class="form-label">Outage ID</label>
+    <div class="lookup-row">
+      <input class="form-input" type="number" [ngModel]="formOutageId()" (ngModelChange)="formOutageId.set($event ? +$event : null)" />
+      <button type="button" class="btn-secondary" (click)="lookupOutage()">Look Up</button>
+    </div>
+    @if (outageLookupResult()) { <p class="lookup-result">{{ outageLookupResult() }}</p> }
+    @if (outageLookupError()) { <p class="lookup-error">{{ outageLookupError() }}</p> }
+
+    <label class="form-label">Memo Type</label>
+    <select class="form-select" [ngModel]="formMemoType()" (ngModelChange)="formMemoType.set($event)">
+      <option value="Commissioning">Commissioning</option>
+      <option value="EmergencyCommissioning">Emergency Commissioning (Switching Program only)</option>
+      <option value="Decommissioning">Decommissioning</option>
+    </select>
+
+    <label class="form-label">Switching Program</label>
+    <textarea class="form-input" rows="3" [ngModel]="formSwitchingProgram()" (ngModelChange)="formSwitchingProgram.set($event)"></textarea>
+
+    @if (formMemoType() !== 'EmergencyCommissioning') {
+      <label class="form-label">Data Form</label>
+      <textarea class="form-input" rows="3" [ngModel]="formDataForm()" (ngModelChange)="formDataForm.set($event)"></textarea>
+
+      <label class="form-label">Commissioning Requirement Documents</label>
+      <div class="checklist">
+        <label class="checkbox-row"><input type="checkbox" [ngModel]="formIomEndorsed()" (ngModelChange)="formIomEndorsed.set($event)" /><span>IOM Endorsed</span></label>
+        <label class="checkbox-row"><input type="checkbox" [ngModel]="formMtepProtectionLetter()" (ngModelChange)="formMtepProtectionLetter.set($event)" /><span>MTEP Protection Letter</span></label>
+        <label class="checkbox-row"><input type="checkbox" [ngModel]="formResidentEngineerCertification()" (ngModelChange)="formResidentEngineerCertification.set($event)" /><span>Resident Engineer Certification</span></label>
+        <label class="checkbox-row"><input type="checkbox" [ngModel]="formFormG()" (ngModelChange)="formFormG.set($event)" /><span>Form G</span></label>
+        <label class="checkbox-row"><input type="checkbox" [ngModel]="formFormH()" (ngModelChange)="formFormH.set($event)" /><span>Form H</span></label>
+        <label class="checkbox-row"><input type="checkbox" [ngModel]="formMeteringEmailChain()" (ngModelChange)="formMeteringEmailChain.set($event)" /><span>Metering Email Chain</span></label>
+        <label class="checkbox-row"><input type="checkbox" [ngModel]="formScadaEmailChain()" (ngModelChange)="formScadaEmailChain.set($event)" /><span>SCADA Email Chain</span></label>
+        <label class="checkbox-row"><input type="checkbox" [ngModel]="formHgsoLetterForGenerationPmu()" (ngModelChange)="formHgsoLetterForGenerationPmu.set($event)" /><span>HGSO Letter (Generation PMU)</span></label>
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="saving()" (click)="submit()">
+        {{ saving() ? 'Submitting…' : 'Submit' }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else if (memos().length === 0) {
+  <div class="card"><p class="state-message">No Commissioning Memos submitted yet.</p></div>
+} @else {
+  <div class="card table-card">
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Memo No.</th>
+            <th>Outage</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Result</th>
+            <th>Submitted By</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of memos(); track m.commissioningMemoId) {
+            <tr [routerLink]="['/commissioning-memos', m.commissioningMemoId]" class="clickable-row">
+              <td class="mono">{{ m.memoNo }}</td>
+              <td>{{ m.outageNumber }}</td>
+              <td>{{ m.memoType }}</td>
+              <td><span class="status-badge">{{ statusLabel(m.status) }}</span></td>
+              <td>{{ m.commissioningResult ?? '—' }}</td>
+              <td>{{ m.submittedByName }}</td>
+              <td>{{ m.submittedAt | date: 'short' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
