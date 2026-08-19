@@ -76,6 +76,7 @@
                 <div class="cell-subtext">GNM: {{ outage.gnmStatus }}</div>
               </td>
               <td class="actions-cell">
+                <a class="btn-outline row-action" [routerLink]="['/outages', outage.outageId]">View</a>
                 @if (!config().readOnly) {
                   <button type="button" class="btn-outline row-action" [disabled]="rowBusyId() === outage.outageId" (click)="primaryAction(outage)">
                     {{ rowBusyId() === outage.outageId ? '…' : config().primaryLabel }}

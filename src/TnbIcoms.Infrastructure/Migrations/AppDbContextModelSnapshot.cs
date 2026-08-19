@@ -1295,6 +1295,9 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.Property<int?>("ApprovedBy")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("BatchId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FieldName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -1318,12 +1321,17 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.Property<int>("RequestedBy")
                         .HasColumnType("int");
 
+                    b.Property<string>("ReviewComment")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("ChangeRequestId");
+
+                    b.HasIndex("BatchId");
 
                     b.HasIndex("OutageId");
 

@@ -1,0 +1,131 @@
+<div class="page-header">
+  <div>
+    <a class="back-link" routerLink="/outages/repository">← Back to Data Repository</a>
+    <h1 class="font-display">Outage {{ outage()?.outageNumber }}</h1>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+}
+
+@if (!loading() && !errorMessage() && outage(); as o) {
+  <div class="layout-grid">
+    <div class="card detail-card">
+      <div class="status-row">
+        <span class="status-badge status-pending">{{ o.requestorStatus }}</span>
+        @if (o.plannerStatus) { <span class="status-badge status-confirmed">Planner: {{ o.plannerStatus }}</span> }
+        <span class="status-badge status-confirmed">GNM: {{ o.gnmStatus }}</span>
+        @if (o.gncStatus) { <span class="status-badge status-confirmed">GNC: {{ o.gncStatus }}</span> }
+      </div>
+
+      <dl class="detail-list">
+        <div><dt>Type</dt><dd>{{ o.outageTypeCode }} ({{ o.outageCode }}) · {{ o.outageClass }} · {{ o.workTypeCode }}</dd></div>
+        <div><dt>Zone / Station</dt><dd>{{ o.zoneName }} / {{ o.stationName }}</dd></div>
+        <div><dt>Voltage</dt><dd>{{ o.voltageLevelName }}</dd></div>
+        <div><dt>Equipment</dt><dd>{{ o.equipmentName }}</dd></div>
+        <div><dt>Job Type</dt><dd>{{ o.jobTypeLabel }}</dd></div>
+        @if (o.projectName) { <div><dt>Project</dt><dd>{{ o.projectName }}</dd></div> }
+        <div><dt>Schedule</dt><dd>{{ o.plannedStartAt | date: 'medium' }} → {{ o.plannedEndAt | date: 'medium' }}</dd></div>
+        @if (o.restorationLabel) { <div><dt>Restoration</dt><dd>{{ o.restorationLabel }}</dd></div> }
+        <div><dt>Description</dt><dd>{{ o.description }}</dd></div>
+        @if (o.picNames.length > 0) { <div><dt>PIC</dt><dd>{{ o.picNames.join(', ') }}</dd></div> }
+        <div><dt>Created By</dt><dd>{{ o.createdByName }} on {{ o.createdAt | date: 'medium' }}</dd></div>
+        @if (o.justification) { <div><dt>Justification</dt><dd>{{ o.justification }}</dd></div> }
+        @if (o.highlights) { <div><dt>Highlights</dt><dd>{{ o.highlights }}</dd></div> }
+        @if (o.remark) { <div><dt>Remark</dt><dd>{{ o.remark }}</dd></div> }
+      </dl>
+    </div>
+
+    <div class="card info-sidebar">
+      @if (o.conflictingOutages.length > 0) {
+        <div class="warning-block">
+          <strong>Conflicting Lines</strong>
+          <ul>
+            @for (c of o.conflictingOutages; track c.outageId) {
+              <li>{{ c.outageNumber }} — {{ c.equipmentName }}</li>
+            }
+          </ul>
+        </div>
+      }
+      <h2 class="sidebar-heading">Change Requests</h2>
+
+      @if (canRequestChange() && !hasPendingBatch() && !showForm()) {
+        <button type="button" class="btn-primary full-width" (click)="openForm()">+ Submit Change Request</button>
+      }
+      @if (hasPendingBatch()) {
+        <p class="hint-text">A change request is already pending review.</p>
+      }
+      @if (!canRequestChange()) {
+        <p class="hint-text">This outage has been Approved or Closed. Changes now require a manual GNM request.</p>
+      }
+
+      @if (showForm()) {
+        <div class="cr-form">
+          <label class="form-label">New Date/Time (optional)</label>
+          <div class="date-time-row">
+            <input class="form-input" type="date" [ngModel]="crNewStartDate()" (ngModelChange)="crNewStartDate.set($event)" />
+            <input class="form-input" type="time" [ngModel]="crNewStartTime()" (ngModelChange)="crNewStartTime.set($event)" />
+          </div>
+          <div class="date-time-row">
+            <input class="form-input" type="date" [ngModel]="crNewEndDate()" (ngModelChange)="crNewEndDate.set($event)" />
+            <input class="form-input" type="time" [ngModel]="crNewEndTime()" (ngModelChange)="crNewEndTime.set($event)" />
+          </div>
+
+          <label class="form-label">New Voltage (optional)</label>
+          <select class="form-select" [ngModel]="crNewVoltageLevelId()" (ngModelChange)="crNewVoltageLevelId.set($event ? +$event : null)">
+            <option [value]="null">No change</option>
+            @for (v of voltageLevels(); track v.voltageLevelId) { <option [value]="v.voltageLevelId">{{ v.levelName }}</option> }
+          </select>
+
+          <label class="form-label">New Equipment (optional)</label>
+          <select class="form-select" [ngModel]="crNewEquipmentId()" (ngModelChange)="crNewEquipmentId.set($event ? +$event : null)">
+            <option [value]="null">No change</option>
+            @for (e of equipmentOptions(); track e.equipmentId) { <option [value]="e.equipmentId">{{ e.equipmentName }}</option> }
+          </select>
+
+          <label class="form-label">Reason</label>
+          <textarea class="form-input" rows="3" [ngModel]="crReason()" (ngModelChange)="crReason.set($event)"></textarea>
+
+          @if (formError()) { <div class="form-alert">{{ formError() }}</div> }
+
+          <div class="cr-form-actions">
+            <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+            <button type="button" class="btn-primary" [disabled]="saving()" (click)="submitChangeRequest()">
+              {{ saving() ? 'Submitting…' : 'Submit' }}
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (batches().length > 0) {
+        <div class="batch-list">
+          @for (batch of batches(); track batch.batchId) {
+            <div class="batch-card">
+              <div class="batch-header">
+                <span
+                  class="status-badge"
+                  [class.status-pending]="batch.status === 'Pending'"
+                  [class.status-confirmed]="batch.status === 'Approved'"
+                  [class.status-inactive]="batch.status === 'Rejected'"
+                >{{ batch.status }}</span>
+                <span class="cell-subtext">{{ batch.requestedAt | date: 'short' }}</span>
+              </div>
+              @for (field of batch.fields; track field.fieldName) {
+                <div class="field-row">
+                  <strong>{{ field.fieldName }}</strong>
+                  @if (field.oldValue) { <span class="cell-subtext"> {{ field.oldValue }} → </span> }
+                  <span>{{ field.newValue }}</span>
+                </div>
+              }
+              @if (batch.reason) { <p class="cell-subtext">Reason: {{ batch.reason }}</p> }
+              @if (batch.reviewComment) { <p class="cell-subtext">GNM comment: {{ batch.reviewComment }}</p> }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

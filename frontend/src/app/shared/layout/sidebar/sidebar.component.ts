@@ -39,6 +39,7 @@ export class SidebarComponent {
     { label: 'Confirmation Page', path: '/outages/confirmation' },
     { label: 'Outage Pending Approval', path: '/outages/pending-approval' },
     { label: 'Data Repository', path: '/outages/repository' },
+    { label: 'Change Requests', path: '/outages/change-requests' },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }
   ];

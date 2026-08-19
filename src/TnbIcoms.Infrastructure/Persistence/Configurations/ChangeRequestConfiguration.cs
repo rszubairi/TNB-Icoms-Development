@@ -12,6 +12,7 @@ public class ChangeRequestConfiguration : IEntityTypeConfiguration<ChangeRequest
         builder.HasKey(x => x.ChangeRequestId);
         builder.Property(x => x.FieldName).IsRequired().HasMaxLength(100);
         builder.Property(x => x.Status).IsRequired().HasMaxLength(30);
+        builder.HasIndex(x => x.BatchId);
 
         builder.HasOne(x => x.Outage)
             .WithMany(x => x.ChangeRequests)

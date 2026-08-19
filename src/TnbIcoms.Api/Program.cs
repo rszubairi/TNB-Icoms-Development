@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using TnbIcoms.Application.Account;
 using TnbIcoms.Application.Auth;
 using TnbIcoms.Application.AuthorisationPersonnel;
+using TnbIcoms.Application.ChangeRequests;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.ConflictingLines;
 using TnbIcoms.Application.DropdownValues;
@@ -107,6 +108,7 @@ builder.Services.AddScoped<ITransmissionLineService, TransmissionLineService>();
 builder.Services.AddScoped<IConflictingLineService, ConflictingLineService>();
 builder.Services.AddScoped<ILinkingLineService, LinkingLineService>();
 builder.Services.AddScoped<IOutageService, OutageService>();
+builder.Services.AddScoped<IChangeRequestService, ChangeRequestService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

@@ -1,0 +1,52 @@
+<div class="page-header">
+  <h1 class="font-display">Pending Change Requests</h1>
+  <p class="page-subtitle">Review and action change requests submitted against outages already in the GNM queue.</p>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else if (batches().length === 0) {
+  <div class="card"><p class="state-message">No change requests pending review.</p></div>
+} @else {
+  <div class="batch-grid">
+    @for (batch of batches(); track batch.batchId) {
+      <div class="card batch-card">
+        <div class="batch-header">
+          <a class="outage-link" [routerLink]="['/outages', batch.outageId]">{{ batch.outageNumber }}</a>
+          <span class="cell-subtext">{{ batch.requestedAt | date: 'short' }} by {{ batch.requestedByName }}</span>
+        </div>
+
+        @for (field of batch.fields; track field.fieldName) {
+          <div class="field-row">
+            <strong>{{ field.fieldName }}</strong>
+            @if (field.oldValue) { <span class="cell-subtext"> {{ field.oldValue }} → </span> }
+            <span>{{ field.newValue }}</span>
+          </div>
+        }
+
+        <p class="reason-text">Reason: {{ batch.reason }}</p>
+
+        @if (rejectingBatchId() === batch.batchId) {
+          <div class="reject-form">
+            <textarea class="form-input" rows="2" placeholder="Comment shown to the Requestor" [ngModel]="rejectComment()" (ngModelChange)="rejectComment.set($event)"></textarea>
+            <div class="reject-actions">
+              <button type="button" class="btn-secondary" (click)="cancelReject()">Cancel</button>
+              <button type="button" class="btn-primary" [disabled]="busyBatchId() === batch.batchId" (click)="confirmReject(batch)">
+                {{ busyBatchId() === batch.batchId ? 'Working…' : 'Confirm Reject' }}
+              </button>
+            </div>
+          </div>
+        } @else {
+          <div class="batch-actions">
+            <button type="button" class="btn-outline danger" [disabled]="busyBatchId() === batch.batchId" (click)="startReject(batch)">Reject</button>
+            <button type="button" class="btn-primary" [disabled]="busyBatchId() === batch.batchId" (click)="approve(batch)">
+              {{ busyBatchId() === batch.batchId ? 'Working…' : 'Approve' }}
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}
