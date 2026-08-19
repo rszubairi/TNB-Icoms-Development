@@ -26,6 +26,8 @@ export class SidebarComponent {
     { label: 'Off-Point Management', path: '/admin/off-points' },
     { label: 'Dropdown Management', path: '/admin/dropdown-values' },
     { label: 'Project Management', path: '/admin/projects' },
+    { label: 'Outage Type Configuration', path: '/admin/outage-type-rules' },
+    { label: 'Outage Scheduling', path: '/admin/outage-scheduling' },
     { label: 'Outage Intake', disabled: true },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }

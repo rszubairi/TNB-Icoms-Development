@@ -1,0 +1,138 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Outage Type Configuration</h1>
+    <p class="page-subtitle">Rules that auto-assign an outage's type based on work type, voltage, and lead time.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn-primary" (click)="startCreate()">+ Add Rule</button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <h2 class="form-heading">{{ isEditMode() ? 'Edit Rule' : 'New Rule' }}</h2>
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label" for="outageType">Outage Type</label>
+        <select id="outageType" class="form-select" [ngModel]="draft().outageTypeCode" (ngModelChange)="updateField('outageTypeCode', $event)">
+          @for (type of outageTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="workType">Work Type</label>
+        <select id="workType" class="form-select" [ngModel]="draft().workTypeCode" (ngModelChange)="updateField('workTypeCode', $event)">
+          @for (type of workTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="bounds-grid">
+      <div class="bounds-col">
+        <p class="bounds-heading">More Than</p>
+        <div class="bounds-row">
+          <input class="form-input" type="number" min="0" placeholder="Days" [ngModel]="draft().moreThanDays" (ngModelChange)="updateField('moreThanDays', $event)" />
+          <input class="form-input" type="number" min="0" placeholder="Months" [ngModel]="draft().moreThanMonths" (ngModelChange)="updateField('moreThanMonths', $event)" />
+          <input class="form-input" type="number" min="0" placeholder="Years" [ngModel]="draft().moreThanYears" (ngModelChange)="updateField('moreThanYears', $event)" />
+        </div>
+      </div>
+      <div class="bounds-col">
+        <p class="bounds-heading">Less Than</p>
+        <div class="bounds-row">
+          <input class="form-input" type="number" min="0" placeholder="Days" [ngModel]="draft().lessThanDays" (ngModelChange)="updateField('lessThanDays', $event)" />
+          <input class="form-input" type="number" min="0" placeholder="Months" [ngModel]="draft().lessThanMonths" (ngModelChange)="updateField('lessThanMonths', $event)" />
+          <input class="form-input" type="number" min="0" placeholder="Years" [ngModel]="draft().lessThanYears" (ngModelChange)="updateField('lessThanYears', $event)" />
+        </div>
+      </div>
+    </div>
+
+    <div class="voltage-block">
+      <label class="form-label">Voltage (leave unchecked for All Voltages)</label>
+      <div class="voltage-grid">
+        @for (level of voltageLevels(); track level.voltageLevelId) {
+          <label class="checkbox-row">
+            <input type="checkbox" [checked]="isVoltageChecked(level.levelName)" (change)="toggleVoltage(level.levelName, $any($event.target).checked)" />
+            <span>{{ level.levelName }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    @if (formError()) {
+      <div class="form-alert">{{ formError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
+        {{ saving() ? 'Saving…' : (isEditMode() ? 'Save Changes' : 'Add Rule') }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else {
+  <div class="rule-tables">
+    <div class="card rule-table-card">
+      <h2 class="table-heading">Work Type: Dead Outage</h2>
+      @if (loading()) {
+        <p class="state-message">Loading…</p>
+      } @else if (deadRules().length === 0) {
+        <p class="state-message">No Dead-outage rules configured yet.</p>
+      } @else {
+        <table class="data-table">
+          <thead>
+            <tr><th>Outage Type</th><th>Range</th><th>Voltage</th><th></th></tr>
+          </thead>
+          <tbody>
+            @for (rule of deadRules(); track rule.outageTypeRuleId) {
+              <tr>
+                <td>{{ rule.outageTypeCode }}</td>
+                <td>{{ formatRange(rule) }}</td>
+                <td class="mono">{{ rule.appliesTo }}</td>
+                <td class="actions-cell">
+                  <button type="button" class="btn-outline row-action" (click)="startEdit(rule)">Edit</button>
+                  <button type="button" class="btn-outline row-action danger" [disabled]="rowBusyId() === rule.outageTypeRuleId" (click)="deactivate(rule)">✕</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+    <div class="card rule-table-card">
+      <h2 class="table-heading">Work Type: Live Outage</h2>
+      @if (loading()) {
+        <p class="state-message">Loading…</p>
+      } @else if (liveRules().length === 0) {
+        <p class="state-message">No Live-outage rules configured yet.</p>
+      } @else {
+        <table class="data-table">
+          <thead>
+            <tr><th>Outage Type</th><th>Range</th><th>Voltage</th><th></th></tr>
+          </thead>
+          <tbody>
+            @for (rule of liveRules(); track rule.outageTypeRuleId) {
+              <tr>
+                <td>{{ rule.outageTypeCode }}</td>
+                <td>{{ formatRange(rule) }}</td>
+                <td class="mono">{{ rule.appliesTo }}</td>
+                <td class="actions-cell">
+                  <button type="button" class="btn-outline row-action" (click)="startEdit(rule)">Edit</button>
+                  <button type="button" class="btn-outline row-action danger" [disabled]="rowBusyId() === rule.outageTypeRuleId" (click)="deactivate(rule)">✕</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </div>
+}

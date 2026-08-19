@@ -691,6 +691,38 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.ToTable("Organisations", "config");
                 });
 
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.OutageScheduleWindow", b =>
+                {
+                    b.Property<int>("OutageScheduleWindowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OutageScheduleWindowId"));
+
+                    b.Property<bool>("IsAllowed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OutageTypeCode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("WorkTypeCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("OutageScheduleWindowId");
+
+                    b.HasIndex("WorkTypeCode", "OutageTypeCode", "Month")
+                        .IsUnique();
+
+                    b.ToTable("OutageScheduleWindows", "config");
+                });
+
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.OutageTypeRule", b =>
                 {
                     b.Property<int>("OutageTypeRuleId")
@@ -699,22 +731,41 @@ namespace TnbIcoms.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OutageTypeRuleId"));
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("AppliesTo")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("MaxLeadDays")
+                    b.Property<int?>("LessThanDays")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MinLeadDays")
+                    b.Property<int?>("LessThanMonths")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LessThanYears")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MoreThanDays")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MoreThanMonths")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MoreThanYears")
                         .HasColumnType("int");
 
                     b.Property<string>("OutageTypeCode")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("WorkTypeCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("OutageTypeRuleId");
 

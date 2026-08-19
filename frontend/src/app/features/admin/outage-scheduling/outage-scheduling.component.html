@@ -1,0 +1,45 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Outage Scheduling</h1>
+    <p class="page-subtitle">Configure operational windows: the months each outage type may be created in, per work type.</p>
+  </div>
+  <button type="button" class="btn-primary" [disabled]="saving() || loading()" (click)="save()">
+    {{ saving() ? 'Saving…' : 'Save Changes' }}
+  </button>
+</div>
+
+@if (saveMessage()) {
+  <div class="card save-banner">{{ saveMessage() }}</div>
+}
+
+@if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else {
+  <div class="work-type-grid">
+    @for (workType of workTypes; track workType) {
+      <div class="card work-type-col">
+        <h2 class="work-type-heading">{{ workType }} Outages</h2>
+
+        @for (outageType of outageTypes; track outageType) {
+          <div class="outage-type-block">
+            <p class="outage-type-label">{{ outageType }} Outage</p>
+            <div class="month-grid">
+              @for (month of months; track month; let i = $index) {
+                <button
+                  type="button"
+                  class="month-btn"
+                  [class.active]="isAllowed(workType, outageType, i + 1)"
+                  (click)="toggle(workType, outageType, i + 1)"
+                >
+                  {{ month }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

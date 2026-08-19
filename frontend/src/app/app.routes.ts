@@ -9,6 +9,8 @@ import { EquipmentComponent } from './features/admin/equipment/equipment.compone
 import { OffPointsComponent } from './features/admin/off-points/off-points.component';
 import { DropdownValuesComponent } from './features/admin/dropdown-values/dropdown-values.component';
 import { ProjectsComponent } from './features/admin/projects/projects.component';
+import { OutageTypeRulesComponent } from './features/admin/outage-type-rules/outage-type-rules.component';
+import { OutageSchedulingComponent } from './features/admin/outage-scheduling/outage-scheduling.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -31,6 +33,8 @@ export const routes: Routes = [
       { path: 'admin/off-points', component: OffPointsComponent },
       { path: 'admin/dropdown-values', component: DropdownValuesComponent },
       { path: 'admin/projects', component: ProjectsComponent },
+      { path: 'admin/outage-type-rules', component: OutageTypeRulesComponent },
+      { path: 'admin/outage-scheduling', component: OutageSchedulingComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]
   },

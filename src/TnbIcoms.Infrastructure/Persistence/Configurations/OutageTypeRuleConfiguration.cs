@@ -11,5 +11,7 @@ public class OutageTypeRuleConfiguration : IEntityTypeConfiguration<OutageTypeRu
         builder.ToTable("OutageTypeRules", schema: "config");
         builder.HasKey(x => x.OutageTypeRuleId);
         builder.Property(x => x.OutageTypeCode).IsRequired().HasMaxLength(30);
+        builder.Property(x => x.WorkTypeCode).IsRequired().HasMaxLength(10);
+        builder.Property(x => x.AppliesTo).IsRequired().HasMaxLength(200);
     }
 }

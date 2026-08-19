@@ -13,6 +13,8 @@ using TnbIcoms.Application.Equipment;
 using TnbIcoms.Application.EquipmentTypes;
 using TnbIcoms.Application.Lookups;
 using TnbIcoms.Application.Organisations;
+using TnbIcoms.Application.OutageScheduleWindows;
+using TnbIcoms.Application.OutageTypeRules;
 using TnbIcoms.Application.Projects;
 using TnbIcoms.Application.Roles;
 using TnbIcoms.Application.Stations;
@@ -83,6 +85,8 @@ builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IDropdownValueService, DropdownValueService>();
 builder.Services.AddScoped<IDropdownValueAdminService, DropdownValueAdminService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IOutageTypeRuleService, OutageTypeRuleService>();
+builder.Services.AddScoped<IOutageScheduleWindowService, OutageScheduleWindowService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

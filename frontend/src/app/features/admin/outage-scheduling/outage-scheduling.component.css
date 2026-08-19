@@ -1,0 +1,97 @@
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.save-banner {
+  padding: 0.8rem 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #15803d;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  font-size: 0.88rem;
+}
+
+.work-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.work-type-col {
+  padding: 1.5rem;
+}
+
+.work-type-heading {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.outage-type-block {
+  margin-bottom: 1.4rem;
+}
+
+.outage-type-block:last-child {
+  margin-bottom: 0;
+}
+
+.outage-type-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.month-btn {
+  border: 1px solid #e5e7eb;
+  background-color: #fafafa;
+  color: #6b7280;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.month-btn:hover {
+  border-color: #c7d2fe;
+}
+
+.month-btn.active {
+  background-color: #4338ca;
+  border-color: #4338ca;
+  color: #fff;
+}
+
+.state-message {
+  padding: 2.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.state-message.error {
+  color: #e11d48;
+}
+
+@media (max-width: 720px) {
+  .work-type-grid {
+    grid-template-columns: 1fr;
+  }
+}
