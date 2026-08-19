@@ -19,27 +19,29 @@ The visual architecture follows a **modern, high-contrast, enterprise utility de
 
 ---
 
-## 2. Reference HTML Files Inventory
+## 2. Saved Design Assets Inventory (Screenshots & HTML)
 
-All 15 target web pages were accessed, fully rendered via browser engine, and saved locally inside the [`Design`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design) directory alongside the reference stylesheet [`style_reference.css`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/style_reference.css).
+All 15 target web pages were accessed via headless browser engine and saved as **Full-Page PNG Screenshots** (Retina High-DPI quality) and **Rendered HTML References** inside [`c:\Users\rszub\Documents\TNB Icoms\Design`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design).
 
-| # | Page Name | HTML Reference File | Live URL | Description / Functional Focus |
+| # | Page Name | PNG Screenshot Reference | HTML Reference File | Live URL |
 |---|---|---|---|---|
-| 1 | **Login** | [`login.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/login.html) | `https://tnb-icoms-design.vercel.app/login` | Dual-pane split authentication page with Corporate SSO & credentials |
-| 2 | **Dashboard** | [`index.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/index.html) | `https://tnb-icoms-design.vercel.app/` | Operations Overview with KPI stat cards, charts, and live activity feeds |
-| 3 | **Outage Status** | [`outage-status.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-status.html) | `https://tnb-icoms-design.vercel.app/outage-status` | Status pipeline view (Scheduled, Active, Extended, Completed) |
-| 4 | **Outage List** | [`outage-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-list.html) | `https://tnb-icoms-design.vercel.app/outage-list` | Master data table with search, filter tabs, sorting & row details |
-| 5 | **Outage Creation** | [`outage-creation.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-creation.html) | `https://tnb-icoms-design.vercel.app/outage-creation` | Multi-step wizard form for registering planned outages |
-| 6 | **Emergency Outage** | [`emergency-outage.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/emergency-outage.html) | `https://tnb-icoms-design.vercel.app/emergency-outage` | Urgent forced outage declaration & rapid dispatch list |
-| 7 | **Change Request** | [`change-request.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/change-request.html) | `https://tnb-icoms-design.vercel.app/change-request` | Workflow table for outage modification & schedule revision requests |
-| 8 | **Pending Review** | [`pending-review.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/pending-review.html) | `https://tnb-icoms-design.vercel.app/pending-review` | Approval queue with bulk review capabilities (Agree/Disagree) |
-| 9 | **Confirmation** | [`confirmation.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/confirmation.html) | `https://tnb-icoms-design.vercel.app/confirmation` | Multi-tier sign-off table & confirmation checklist verification |
-| 10 | **Authorization in Force** | [`authorization.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization.html) | `https://tnb-icoms-design.vercel.app/authorization` | Live execution monitor with timers, extension requests & restore controls |
-| 11 | **Authorization List** | [`authorization-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization-list.html) | `https://tnb-icoms-design.vercel.app/authorization-list` | Historical and active operational permits log with export capabilities |
-| 12 | **Data Repository** | [`data-repository.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/data-repository.html) | `https://tnb-icoms-design.vercel.app/data-repository` | Historical outage repository with multi-field search and document downloads |
-| 13 | **Reports** | [`reports.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/reports.html) | `https://tnb-icoms-design.vercel.app/reports` | Analytical reporting suite with export features (Excel, PDF, CSV) |
-| 14 | **Outage Calendar** | [`calendar.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/calendar.html) | `https://tnb-icoms-design.vercel.app/calendar` | Interactive grid scheduler (Month, Week, Day views) |
-| 15 | **Off-Point List** | [`off-point-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/off-point-list.html) | `https://tnb-icoms-design.vercel.app/off-point-list` | Grid network status & off-point configuration management |
+| 1 | **Login** | [`login.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/login.png) | [`login.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/login.html) | `https://tnb-icoms-design.vercel.app/login` |
+| 2 | **Dashboard** | [`index.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/index.png) | [`index.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/index.html) | `https://tnb-icoms-design.vercel.app/` |
+| 3 | **Outage Status** | [`outage-status.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-status.png) | [`outage-status.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-status.html) | `https://tnb-icoms-design.vercel.app/outage-status` |
+| 4 | **Outage List** | [`outage-list.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-list.png) | [`outage-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-list.html) | `https://tnb-icoms-design.vercel.app/outage-list` |
+| 5 | **Outage Creation** | [`outage-creation.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-creation.png) | [`outage-creation.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-creation.html) | `https://tnb-icoms-design.vercel.app/outage-creation` |
+| 6 | **Emergency Outage** | [`emergency-outage.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/emergency-outage.png) | [`emergency-outage.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/emergency-outage.html) | `https://tnb-icoms-design.vercel.app/emergency-outage` |
+| 7 | **Change Request** | [`change-request.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/change-request.png) | [`change-request.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/change-request.html) | `https://tnb-icoms-design.vercel.app/change-request` |
+| 8 | **Pending Review** | [`pending-review.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/pending-review.png) | [`pending-review.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/pending-review.html) | `https://tnb-icoms-design.vercel.app/pending-review` |
+| 9 | **Confirmation** | [`confirmation.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/confirmation.png) | [`confirmation.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/confirmation.html) | `https://tnb-icoms-design.vercel.app/confirmation` |
+| 10 | **Authorization in Force** | [`authorization.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization.png) | [`authorization.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization.html) | `https://tnb-icoms-design.vercel.app/authorization` |
+| 11 | **Authorization List** | [`authorization-list.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization-list.png) | [`authorization-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization-list.html) | `https://tnb-icoms-design.vercel.app/authorization-list` |
+| 12 | **Data Repository** | [`data-repository.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/data-repository.png) | [`data-repository.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/data-repository.html) | `https://tnb-icoms-design.vercel.app/data-repository` |
+| 13 | **Reports** | [`reports.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/reports.png) | [`reports.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/reports.html) | `https://tnb-icoms-design.vercel.app/reports` |
+| 14 | **Outage Calendar** | [`calendar.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/calendar.png) | [`calendar.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/calendar.html) | `https://tnb-icoms-design.vercel.app/calendar` |
+| 15 | **Off-Point List** | [`off-point-list.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/off-point-list.png) | [`off-point-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/off-point-list.html) | `https://tnb-icoms-design.vercel.app/off-point-list` |
+
+*The reference CSS stylesheet is saved as [`style_reference.css`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/style_reference.css).*
 
 ---
 
@@ -180,63 +182,63 @@ All status pills use a rounded badge format with subtle border and fill:
 
 ## 6. Page-by-Page Design & Component Breakdown
 
-### 1. Login Page ([`login.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/login.html))
+### 1. Login Page ([`login.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/login.png))
 - **Layout**: 55/45 split screen. Left side is dark navy (`bg-tnblue-dark`) with glowing green hero effect (`bg-gso-hero`), grid pattern background, and GSO branding. Right side is a clean login form container.
 - **Components**: Corporate SSO button ("Sign in with Corporate SSO"), username/password fields, "Keep me signed in" checkbox, and security compliance footer notice.
 
-### 2. Dashboard ([`index.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/index.html))
+### 2. Dashboard ([`index.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/index.png))
 - **Layout**: 4-column KPI metric summary row at top, followed by 2-column split (Left: Active Outages table & status map preview; Right: Activity feeds & Quick Creation shortcut buttons).
 - **Key Features**: Quick outage creation trigger, audit log modal trigger, real-time activity stream.
 
-### 3. Outage Status ([`outage-status.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-status.html))
+### 3. Outage Status ([`outage-status.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-status.png))
 - **Layout**: Filterable tab bar at top (Scheduled, Active, Extended, Complete) and grid of outage status cards.
 - **Key Features**: Live status countdown timers, progress bars indicating completion percentage, emergency extension request buttons.
 
-### 4. Outage List ([`outage-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-list.html))
+### 4. Outage List ([`outage-list.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-list.png))
 - **Layout**: Comprehensive data table view with filter tabs (All, Confirmed, In-Study, Pending, Completed).
 - **Key Features**: Export options (CSV, Excel), table search, pagination control, row checkbox selection for bulk operations.
 
-### 5. Outage Creation ([`outage-creation.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-creation.html))
+### 5. Outage Creation ([`outage-creation.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-creation.png))
 - **Layout**: Step wizard multi-page form layout.
 - **Key Features**: Equipment lookup selector, date/time range picker, risk level selector, safety boundary checklist.
 
-### 6. Emergency Outage ([`emergency-outage.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/emergency-outage.html))
+### 6. Emergency Outage ([`emergency-outage.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/emergency-outage.png))
 - **Layout**: Red accented alert top banner (`bg-rose-50 border-rose-200`), urgent forced outage creation trigger, priority list table.
 - **Key Features**: Rapid declaration form, emergency notification dispatcher toggle.
 
-### 7. Change Request ([`change-request.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/change-request.html))
+### 7. Change Request ([`change-request.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/change-request.png))
 - **Layout**: Outage alteration table displaying original vs requested schedule changes.
 - **Key Features**: Impact assessment score, change rationale input, revision history drawer.
 
-### 8. Pending Review ([`pending-review.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/pending-review.html))
+### 8. Pending Review ([`pending-review.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/pending-review.png))
 - **Layout**: Approval manager queue with bulk action control bar ("Bulk Agree", "Bulk Disagree").
 - **Key Features**: Side-by-side diff review modal, disagreement comment box.
 
-### 9. Confirmation ([`confirmation.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/confirmation.html))
+### 9. Confirmation ([`confirmation.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/confirmation.png))
 - **Layout**: Multi-tier sign-off table requiring dual-authorization signatures.
 - **Key Features**: Confirmation checklist modal, digital sign-off trigger button.
 
-### 10. Authorization in Force ([`authorization.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization.html))
+### 10. Authorization in Force ([`authorization.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization.png))
 - **Layout**: Live operational permit tracking view with real-time execution timeline cards.
 - **Key Features**: "Manual Extension", "Authorize Restore", live countdown progress rings.
 
-### 11. Authorization List ([`authorization-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization-list.html))
+### 11. Authorization List ([`authorization-list.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/authorization-list.png))
 - **Layout**: Table view of issued and expired authorizations.
 - **Key Features**: Export Excel / PDF triggers, long-term authorization filter toggle.
 
-### 12. Data Repository ([`data-repository.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/data-repository.html))
+### 12. Data Repository ([`data-repository.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/data-repository.png))
 - **Layout**: Historical archive table with advanced multi-field search dropdown filters.
 - **Key Features**: Single-click PDF/CSV document downloads, historical archive search.
 
-### 13. Reports ([`reports.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/reports.html))
+### 13. Reports ([`reports.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/reports.png))
 - **Layout**: Report builder parameter card (Date range picker, Region filter, Voltage class filter) above analytical output grid.
 - **Key Features**: Export summary charts, detailed transmission outage summary report tables.
 
-### 14. Outage Calendar ([`calendar.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/calendar.html))
+### 14. Outage Calendar ([`calendar.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/calendar.png))
 - **Layout**: Grid calendar view with Month, Week, and Day toggle buttons.
 - **Key Features**: Color-coded event blocks matching outage severity, interactive event click modal.
 
-### 15. Off-Point List ([`off-point-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/off-point-list.html))
+### 15. Off-Point List ([`off-point-list.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/off-point-list.png))
 - **Layout**: Network configuration table listing substation off-points and operational status switches.
 - **Key Features**: Off-point creation button, live operational state toggle switches.
 
@@ -272,9 +274,9 @@ When implementing new features or migrating this design system to React / Next.j
    ```
 
 2. **Component Mapping**:
-   - Use [`index.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/index.html) as the template for the main layout wrapper (`AppLayout`).
-   - Use [`outage-list.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-list.html) as the reference for building scalable `DataTable` components.
-   - Use [`outage-creation.html`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-creation.html) as the blueprint for `StepWizard` form flows.
+   - Use [`index.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/index.png) as visual reference for main app layout (`AppLayout`).
+   - Use [`outage-list.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-list.png) as reference for building scalable `DataTable` components.
+   - Use [`outage-creation.png`](file:///c:/Users/rszub/Documents/TNB%20Icoms/Design/outage-creation.png) as reference for `StepWizard` form flows.
 
 ---
-*End of Design Specification Document. Reference HTML files are located in `c:\Users\rszub\Documents\TNB Icoms\Design\`.*
+*End of Design Specification Document. Reference files are located in `c:\Users\rszub\Documents\TNB Icoms\Design\`.*
