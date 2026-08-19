@@ -659,6 +659,40 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.ToTable("EquipmentTypes", "config");
                 });
 
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.MnemonicDocument", b =>
+                {
+                    b.Property<int>("MnemonicDocumentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MnemonicDocumentId"));
+
+                    b.Property<long>("FileSizeBytes")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasMaxLength(260)
+                        .HasColumnType("nvarchar(260)");
+
+                    b.Property<string>("StoredFileName")
+                        .IsRequired()
+                        .HasMaxLength(260)
+                        .HasColumnType("nvarchar(260)");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UploadedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("MnemonicDocumentId");
+
+                    b.HasIndex("UploadedBy");
+
+                    b.ToTable("MnemonicDocuments", "config");
+                });
+
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.Organisation", b =>
                 {
                     b.Property<int>("OrganisationId")
@@ -1833,6 +1867,17 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("VoltageLevel");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.MnemonicDocument", b =>
+                {
+                    b.HasOne("TnbIcoms.Domain.Entities.Auth.User", "UploadedByUser")
+                        .WithMany()
+                        .HasForeignKey("UploadedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("UploadedByUser");
                 });
 
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.Organisation", b =>

@@ -13,6 +13,8 @@ using TnbIcoms.Application.DropdownValues;
 using TnbIcoms.Application.Email;
 using TnbIcoms.Application.Equipment;
 using TnbIcoms.Application.EquipmentTypes;
+using TnbIcoms.Application.Files;
+using TnbIcoms.Application.Mnemonics;
 using TnbIcoms.Application.Lookups;
 using TnbIcoms.Application.Organisations;
 using TnbIcoms.Application.OutageScheduleWindows;
@@ -95,6 +97,8 @@ builder.Services.AddScoped<IAuthorisationPersonnelService, AuthorisationPersonne
 builder.Services.AddScoped<ISystemSettingService, SystemSettingService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IRoleTransferRequestService, RoleTransferRequestService>();
+builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
+builder.Services.AddScoped<IMnemonicService, MnemonicService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

@@ -1,3 +1,6 @@
 node_modules/
 package.json
 package-lock.json
+
+# Local file storage uploads (Mnemonic PDFs, etc.)
+src/TnbIcoms.Api/App_Data/

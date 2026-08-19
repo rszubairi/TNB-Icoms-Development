@@ -1,0 +1,48 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Mnemonic List</h1>
+    <p class="page-subtitle">Keep the Mnemonic list PDF up to date. The GNM Engineer downloads this during SLD setup.</p>
+  </div>
+  <label class="btn-primary upload-btn">
+    {{ uploading() ? 'Uploading…' : '+ Upload New Revision' }}
+    <input type="file" accept="application/pdf" class="file-input" [disabled]="uploading()" (change)="onFileSelected($event)" />
+  </label>
+</div>
+
+@if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+}
+
+<div class="card">
+  @if (loading()) {
+    <p class="state-message">Loading…</p>
+  } @else if (documents().length === 0) {
+    <p class="state-message">No Mnemonic list has been uploaded yet.</p>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr><th>File</th><th>Uploaded By</th><th>Uploaded At</th><th>Size</th><th></th></tr>
+      </thead>
+      <tbody>
+        @for (doc of documents(); track doc.mnemonicDocumentId) {
+          <tr>
+            <td>
+              {{ doc.originalFileName }}
+              @if (doc.isCurrent) {
+                <span class="status-badge status-confirmed">Current</span>
+              }
+            </td>
+            <td>{{ doc.uploadedByName }}</td>
+            <td>{{ doc.uploadedAt | date: 'medium' }}</td>
+            <td>{{ formatSize(doc.fileSizeBytes) }}</td>
+            <td class="actions-cell">
+              <button type="button" class="btn-outline row-action" [disabled]="downloadingId() === doc.mnemonicDocumentId" (click)="download(doc)">
+                {{ downloadingId() === doc.mnemonicDocumentId ? 'Downloading…' : 'Download' }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
