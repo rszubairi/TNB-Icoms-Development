@@ -38,6 +38,10 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<AuthorisationPersonnel> AuthorisationPersonnel => Set<AuthorisationPersonnel>();
     public DbSet<SystemSetting> SystemSettings => Set<SystemSetting>();
     public DbSet<MnemonicDocument> MnemonicDocuments => Set<MnemonicDocument>();
+    public DbSet<TransmissionLine> TransmissionLines => Set<TransmissionLine>();
+    public DbSet<TransmissionLineStation> TransmissionLineStations => Set<TransmissionLineStation>();
+    public DbSet<TransmissionLineOwnerZone> TransmissionLineOwnerZones => Set<TransmissionLineOwnerZone>();
+    public DbSet<LinkingLine> LinkingLines => Set<LinkingLine>();
 
     // dbo (Outage) schema
     public DbSet<OutageEntities.Outage> Outages => Set<OutageEntities.Outage>();

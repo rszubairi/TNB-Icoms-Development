@@ -35,5 +35,10 @@ public class EquipmentConfiguration : IEntityTypeConfiguration<Equipment>
             .WithMany()
             .HasForeignKey(x => x.ZoneId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.TransmissionLine)
+            .WithMany()
+            .HasForeignKey(x => x.TransmissionLineId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

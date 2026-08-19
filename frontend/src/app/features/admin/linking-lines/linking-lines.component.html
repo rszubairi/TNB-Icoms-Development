@@ -1,0 +1,127 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Linking Lines</h1>
+    <p class="page-subtitle">Quad-tower line pairs that must be scheduled for outage together.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn-primary" (click)="startCreate()">+ Add Pair</button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <div class="ends-grid">
+      <div class="end-panel">
+        <h2 class="end-heading">Line 1</h2>
+        <label class="form-label">Region</label>
+        <select class="form-select" [ngModel]="line1().zoneId" (ngModelChange)="onZoneChange(1, $event)">
+          <option [value]="null">Select region…</option>
+          @for (zone of zones(); track zone.zoneId) { <option [value]="zone.zoneId">{{ zone.zoneName }}</option> }
+        </select>
+
+        <label class="form-label">Station</label>
+        <select class="form-select" [disabled]="!line1().zoneId" [ngModel]="line1().stationId" (ngModelChange)="onStationChange(1, $event)">
+          <option [value]="null">Select station…</option>
+          @for (station of line1().stations; track station.stationId) { <option [value]="station.stationId">{{ station.stationName }}</option> }
+        </select>
+
+        <label class="form-label">kV Level</label>
+        <select class="form-select" [disabled]="!line1().stationId" [ngModel]="line1().voltageLevelId" (ngModelChange)="onVoltageChange(1, $event)">
+          <option [value]="null">Select kV level…</option>
+          @for (level of voltageLevels(); track level.voltageLevelId) { <option [value]="level.voltageLevelId">{{ level.levelName }}</option> }
+        </select>
+
+        <label class="form-label">Equipment Type</label>
+        <select class="form-select" [disabled]="!line1().voltageLevelId" [ngModel]="line1().equipmentTypeId" (ngModelChange)="onEquipmentTypeChange(1, $event)">
+          <option [value]="null">Select type…</option>
+          @for (type of line1().equipmentTypes; track type.equipmentTypeId) { <option [value]="type.equipmentTypeId">{{ type.typeName }}</option> }
+        </select>
+
+        <label class="form-label">Specific Equipment</label>
+        <select class="form-select" [disabled]="!line1().equipmentTypeId" [ngModel]="line1().equipmentId" (ngModelChange)="onEquipmentChange(1, $event)">
+          <option [value]="null">Select equipment…</option>
+          @for (equipment of line1().equipment; track equipment.equipmentId) { <option [value]="equipment.equipmentId">{{ equipment.equipmentName }}</option> }
+        </select>
+      </div>
+
+      <div class="end-panel">
+        <h2 class="end-heading">Line 2</h2>
+        <label class="form-label">Region</label>
+        <select class="form-select" [ngModel]="line2().zoneId" (ngModelChange)="onZoneChange(2, $event)">
+          <option [value]="null">Select region…</option>
+          @for (zone of zones(); track zone.zoneId) { <option [value]="zone.zoneId">{{ zone.zoneName }}</option> }
+        </select>
+
+        <label class="form-label">Station</label>
+        <select class="form-select" [disabled]="!line2().zoneId" [ngModel]="line2().stationId" (ngModelChange)="onStationChange(2, $event)">
+          <option [value]="null">Select station…</option>
+          @for (station of line2().stations; track station.stationId) { <option [value]="station.stationId">{{ station.stationName }}</option> }
+        </select>
+
+        <label class="form-label">kV Level</label>
+        <select class="form-select" [disabled]="!line2().stationId" [ngModel]="line2().voltageLevelId" (ngModelChange)="onVoltageChange(2, $event)">
+          <option [value]="null">Select kV level…</option>
+          @for (level of voltageLevels(); track level.voltageLevelId) { <option [value]="level.voltageLevelId">{{ level.levelName }}</option> }
+        </select>
+
+        <label class="form-label">Equipment Type</label>
+        <select class="form-select" [disabled]="!line2().voltageLevelId" [ngModel]="line2().equipmentTypeId" (ngModelChange)="onEquipmentTypeChange(2, $event)">
+          <option [value]="null">Select type…</option>
+          @for (type of line2().equipmentTypes; track type.equipmentTypeId) { <option [value]="type.equipmentTypeId">{{ type.typeName }}</option> }
+        </select>
+
+        <label class="form-label">Linked Equipment</label>
+        <select class="form-select" [disabled]="!line2().equipmentTypeId" [ngModel]="line2().equipmentId" (ngModelChange)="onEquipmentChange(2, $event)">
+          <option [value]="null">Select equipment…</option>
+          @for (equipment of line2().equipment; track equipment.equipmentId) { <option [value]="equipment.equipmentId">{{ equipment.equipmentName }}</option> }
+        </select>
+      </div>
+    </div>
+
+    <label class="form-label" for="remark">Remark (optional)</label>
+    <input id="remark" class="form-input" type="text" [ngModel]="remark()" (ngModelChange)="remark.set($event)" />
+
+    @if (formError()) {
+      <div class="form-alert">{{ formError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
+        {{ saving() ? 'Saving…' : 'Save Pair' }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else {
+  <div class="card table-card">
+    @if (loading()) {
+      <p class="state-message">Loading…</p>
+    } @else if (pairs().length === 0) {
+      <p class="state-message">No linking line pairs configured yet.</p>
+    } @else {
+      <table class="data-table">
+        <thead>
+          <tr><th>Line 1</th><th>Line 2</th><th>Remark</th><th></th></tr>
+        </thead>
+        <tbody>
+          @for (pair of pairs(); track pair.linkingLineId) {
+            <tr>
+              <td class="mono">{{ pair.equipmentName }}</td>
+              <td class="mono">{{ pair.linkedEquipmentName }}</td>
+              <td>{{ pair.remark }}</td>
+              <td class="actions-cell">
+                <button type="button" class="btn-outline row-action danger" [disabled]="rowBusyId() === pair.linkingLineId" (click)="deactivate(pair)">
+                  {{ rowBusyId() === pair.linkingLineId ? 'Working…' : 'Remove' }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+}

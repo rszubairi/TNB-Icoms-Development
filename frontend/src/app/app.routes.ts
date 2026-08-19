@@ -15,6 +15,9 @@ import { AuthorisationPersonnelComponent } from './features/admin/authorisation-
 import { ChangeRequestSettingsComponent } from './features/admin/change-request-settings/change-request-settings.component';
 import { AccountComponent } from './features/account/account.component';
 import { MnemonicComponent } from './features/admin/mnemonic/mnemonic.component';
+import { TransmissionLinesComponent } from './features/admin/transmission-lines/transmission-lines.component';
+import { ConflictingLinesComponent } from './features/admin/conflicting-lines/conflicting-lines.component';
+import { LinkingLinesComponent } from './features/admin/linking-lines/linking-lines.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -43,6 +46,9 @@ export const routes: Routes = [
       { path: 'admin/change-request-settings', component: ChangeRequestSettingsComponent },
       { path: 'account', component: AccountComponent },
       { path: 'admin/mnemonic', component: MnemonicComponent },
+      { path: 'admin/transmission-lines', component: TransmissionLinesComponent },
+      { path: 'admin/conflicting-lines', component: ConflictingLinesComponent },
+      { path: 'admin/linking-lines', component: LinkingLinesComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]
   },

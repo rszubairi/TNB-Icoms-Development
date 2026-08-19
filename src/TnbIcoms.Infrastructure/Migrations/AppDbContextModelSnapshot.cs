@@ -606,6 +606,9 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.Property<int>("StationId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TransmissionLineId")
+                        .HasColumnType("int");
+
                     b.Property<int>("VoltageLevelId")
                         .HasColumnType("int");
 
@@ -620,6 +623,8 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.HasIndex("EquipmentTypeId");
 
                     b.HasIndex("StationId");
+
+                    b.HasIndex("TransmissionLineId");
 
                     b.HasIndex("VoltageLevelId");
 
@@ -657,6 +662,35 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("EquipmentTypes", "config");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.LinkingLine", b =>
+                {
+                    b.Property<int>("LinkingLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LinkingLineId"));
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LinkedEquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LinkingLineId");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("LinkedEquipmentId");
+
+                    b.ToTable("LinkingLines", "config");
                 });
 
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.MnemonicDocument", b =>
@@ -934,6 +968,96 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("SystemSettings", "config");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.TransmissionLine", b =>
+                {
+                    b.Property<int>("TransmissionLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransmissionLineId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EquipmentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NamingInteger")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VoltageLevelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransmissionLineId");
+
+                    b.HasIndex("EquipmentTypeId");
+
+                    b.HasIndex("VoltageLevelId");
+
+                    b.ToTable("TransmissionLines", "config");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.TransmissionLineOwnerZone", b =>
+                {
+                    b.Property<int>("TransmissionLineOwnerZoneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransmissionLineOwnerZoneId"));
+
+                    b.Property<int>("TransmissionLineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ZoneId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransmissionLineOwnerZoneId");
+
+                    b.HasIndex("ZoneId");
+
+                    b.HasIndex("TransmissionLineId", "ZoneId")
+                        .IsUnique();
+
+                    b.ToTable("TransmissionLineOwnerZones", "config");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.TransmissionLineStation", b =>
+                {
+                    b.Property<int>("TransmissionLineStationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransmissionLineStationId"));
+
+                    b.Property<int?>("GeneratedEquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SequenceOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransmissionLineId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransmissionLineStationId");
+
+                    b.HasIndex("GeneratedEquipmentId");
+
+                    b.HasIndex("StationId");
+
+                    b.HasIndex("TransmissionLineId");
+
+                    b.ToTable("TransmissionLineStations", "config");
                 });
 
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.VoltageLevel", b =>
@@ -1837,6 +1961,11 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.TransmissionLine", "TransmissionLine")
+                        .WithMany()
+                        .HasForeignKey("TransmissionLineId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("TnbIcoms.Domain.Entities.Config.VoltageLevel", "VoltageLevel")
                         .WithMany()
                         .HasForeignKey("VoltageLevelId")
@@ -1853,6 +1982,8 @@ namespace TnbIcoms.Infrastructure.Migrations
 
                     b.Navigation("Station");
 
+                    b.Navigation("TransmissionLine");
+
                     b.Navigation("VoltageLevel");
 
                     b.Navigation("Zone");
@@ -1867,6 +1998,25 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("VoltageLevel");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.LinkingLine", b =>
+                {
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.Equipment", "LinkedEquipment")
+                        .WithMany()
+                        .HasForeignKey("LinkedEquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("LinkedEquipment");
                 });
 
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.MnemonicDocument", b =>
@@ -1918,6 +2068,70 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.Navigation("Organisation");
 
                     b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.TransmissionLine", b =>
+                {
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.EquipmentType", "EquipmentType")
+                        .WithMany()
+                        .HasForeignKey("EquipmentTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.VoltageLevel", "VoltageLevel")
+                        .WithMany()
+                        .HasForeignKey("VoltageLevelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("EquipmentType");
+
+                    b.Navigation("VoltageLevel");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.TransmissionLineOwnerZone", b =>
+                {
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.TransmissionLine", "TransmissionLine")
+                        .WithMany("OwnerZones")
+                        .HasForeignKey("TransmissionLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.Zone", "Zone")
+                        .WithMany()
+                        .HasForeignKey("ZoneId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("TransmissionLine");
+
+                    b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.TransmissionLineStation", b =>
+                {
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.Equipment", "GeneratedEquipment")
+                        .WithMany()
+                        .HasForeignKey("GeneratedEquipmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.Station", "Station")
+                        .WithMany()
+                        .HasForeignKey("StationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.TransmissionLine", "TransmissionLine")
+                        .WithMany("Stations")
+                        .HasForeignKey("TransmissionLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GeneratedEquipment");
+
+                    b.Navigation("Station");
+
+                    b.Navigation("TransmissionLine");
                 });
 
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.ZoneLocation", b =>
@@ -2118,6 +2332,13 @@ namespace TnbIcoms.Infrastructure.Migrations
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Auth.User", b =>
                 {
                     b.Navigation("GcuStations");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.TransmissionLine", b =>
+                {
+                    b.Navigation("OwnerZones");
+
+                    b.Navigation("Stations");
                 });
 
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.Zone", b =>

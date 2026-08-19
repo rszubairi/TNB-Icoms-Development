@@ -31,6 +31,9 @@ export class SidebarComponent {
     { label: 'Authorisation Personnel', path: '/admin/authorisation-personnel' },
     { label: 'Change Request Settings', path: '/admin/change-request-settings' },
     { label: 'Mnemonic List', path: '/admin/mnemonic' },
+    { label: 'Transmission Lines', path: '/admin/transmission-lines' },
+    { label: 'Conflicting Lines', path: '/admin/conflicting-lines' },
+    { label: 'Linking Lines', path: '/admin/linking-lines' },
     { label: 'Outage Intake', disabled: true },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }

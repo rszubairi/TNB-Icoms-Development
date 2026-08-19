@@ -1,0 +1,166 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Transmission Line Setup</h1>
+    <p class="page-subtitle">Create lines spanning 2-4 stations. Naming is generated automatically and saved as one Equipment record per station's perspective.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn-primary" (click)="startCreate()">+ New Line</button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <h2 class="form-heading">Configuration</h2>
+
+    <label class="form-label">Number of Stations</label>
+    <div class="count-toggle">
+      <button type="button" class="count-btn" [class.active]="stationCount() === 2" (click)="setStationCount(2)">2 Stations</button>
+      <button type="button" class="count-btn" [class.active]="stationCount() === 3" (click)="setStationCount(3)">3 Stations</button>
+      <button type="button" class="count-btn" [class.active]="stationCount() === 4" (click)="setStationCount(4)">4 Stations</button>
+    </div>
+    <p class="type-hint">Line type: <strong>{{ lineTypeLabel() }}</strong></p>
+
+    <div class="form-grid">
+      @for (id of stationIds(); track $index; let i = $index) {
+        <div>
+          <label class="form-label">
+            Station {{ i + 1 }}
+            @if (i === 0) { <span class="pos-tag">start</span> }
+            @if (i === stationIds().length - 1) { <span class="pos-tag">end</span> }
+            @if (i > 0 && i < stationIds().length - 1) { <span class="pos-tag">tee</span> }
+          </label>
+          <select class="form-select" [ngModel]="id" (ngModelChange)="updateStationAt(i, $event)">
+            <option [value]="null">Select station…</option>
+            @for (station of allStations(); track station.stationId) {
+              <option [value]="station.stationId">{{ station.stationName }} ({{ station.stationAbbr }})</option>
+            }
+          </select>
+        </div>
+      }
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label" for="voltage">Voltage Level</label>
+        <select id="voltage" class="form-select" [ngModel]="voltageLevelId()" (ngModelChange)="onVoltageChange($event)">
+          <option [value]="null">Select voltage…</option>
+          @for (level of voltageLevels(); track level.voltageLevelId) {
+            <option [value]="level.voltageLevelId">{{ level.levelName }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="equipmentType">Equipment Type</label>
+        <select id="equipmentType" class="form-select" [disabled]="!voltageLevelId()" [ngModel]="equipmentTypeId()" (ngModelChange)="onEquipmentTypeChange($event)">
+          <option [value]="null">Select type…</option>
+          @for (type of equipmentTypesForVoltage(); track type.equipmentTypeId) {
+            <option [value]="type.equipmentTypeId">{{ type.typeName }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="namingInteger">Naming Integer</label>
+        <input id="namingInteger" class="form-input" type="number" min="1" [ngModel]="namingInteger()" (ngModelChange)="updateNamingInteger(+$event)" />
+      </div>
+      <div>
+        <label class="form-label" for="lineNumber">Line Number</label>
+        <input id="lineNumber" class="form-input" type="number" min="1" [ngModel]="lineNumber()" (ngModelChange)="updateLineNumber(+$event)" />
+      </div>
+    </div>
+
+    <div class="preview-actions">
+      <button type="button" class="btn-secondary" [disabled]="previewing()" (click)="generatePreview()">
+        {{ previewing() ? 'Generating…' : 'Generate Line Names' }}
+      </button>
+    </div>
+
+    @if (preview().length > 0) {
+      <div class="preview-block">
+        <p class="preview-heading">Generated Line Names ({{ preview().length }} entries)</p>
+        @for (name of preview(); track name.stationId) {
+          <div class="preview-row">
+            <span class="preview-station">Viewed from {{ stationName(name.stationId) }}</span>
+            <span class="preview-name mono">{{ name.generatedName }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    @if (formError()) {
+      <div class="form-alert">{{ formError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
+        {{ saving() ? 'Saving…' : 'Save Line' }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else {
+  <div class="card">
+    @if (loading()) {
+      <p class="state-message">Loading…</p>
+    } @else if (lines().length === 0) {
+      <p class="state-message">No transmission lines created yet.</p>
+    } @else {
+      <div class="lines-list">
+        @for (line of lines(); track line.transmissionLineId) {
+          <div class="line-card" [class.inactive]="!line.isActive">
+            <div class="line-card-header">
+              <div>
+                <span class="status-badge status-confirmed">{{ line.lineFilterType }}</span>
+                <span class="line-meta">{{ line.voltageLevelName }} · {{ line.equipmentTypeName }} · Naming {{ line.namingInteger }} · Line #{{ line.lineNumber }}</span>
+              </div>
+              @if (line.isActive) {
+                <button type="button" class="btn-outline row-action danger" [disabled]="lineBusyId() === line.transmissionLineId" (click)="deactivateLine(line)">
+                  {{ lineBusyId() === line.transmissionLineId ? 'Working…' : 'Deactivate' }}
+                </button>
+              }
+            </div>
+
+            <div class="generated-names">
+              @for (name of line.generatedNames; track name.stationId) {
+                <span class="mono name-chip">{{ name.generatedName }}</span>
+              }
+            </div>
+
+            <div class="owner-zones">
+              <span class="owner-zones-label">Owner Zones:</span>
+              @for (zoneName of line.ownerZoneNames; track $index) {
+                <span class="status-badge status-pending zone-chip">
+                  {{ zoneName }}
+                  @if (line.ownerZoneIds.length > 1) {
+                    <button type="button" class="zone-remove" (click)="removeOwnerZone(line, line.ownerZoneIds[$index])">✕</button>
+                  }
+                </span>
+              }
+              <select
+                class="form-select zone-add-select"
+                [ngModel]="addZoneTarget()[line.transmissionLineId] ?? null"
+                (ngModelChange)="onAddZoneTargetChange(line.transmissionLineId, $event)"
+              >
+                <option [value]="null">+ Add zone…</option>
+                @for (zone of zones(); track zone.zoneId) {
+                  <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
+                }
+              </select>
+              <button
+                type="button"
+                class="btn-outline row-action"
+                [disabled]="zoneBusyLineId() === line.transmissionLineId || !addZoneTarget()[line.transmissionLineId]"
+                (click)="addOwnerZone(line)"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}
