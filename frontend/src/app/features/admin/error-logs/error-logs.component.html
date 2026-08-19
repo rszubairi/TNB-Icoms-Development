@@ -1,0 +1,71 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Error Logs</h1>
+    <p class="subtitle">Unhandled backend and frontend errors, captured automatically. Click a row for the stack trace.</p>
+  </div>
+</div>
+
+<div class="card filter-bar">
+  <label class="form-label">Source</label>
+  <select class="form-select" [ngModel]="sourceFilter()" (ngModelChange)="onSourceChange($event)">
+    <option value="">All</option>
+    <option value="Backend">Backend</option>
+    <option value="Frontend">Frontend</option>
+  </select>
+
+  <label class="form-label">Severity</label>
+  <select class="form-select" [ngModel]="severityFilter()" (ngModelChange)="onSeverityChange($event)">
+    <option value="">All</option>
+    <option value="Error">Error</option>
+    <option value="Warning">Warning</option>
+  </select>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else if (logs().length === 0) {
+  <div class="card"><p class="state-message">No errors recorded. Good sign.</p></div>
+} @else {
+  <div class="card table-card">
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Occurred</th>
+            <th>Source</th>
+            <th>Severity</th>
+            <th>Message</th>
+            <th>URL</th>
+            <th>User</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (log of logs(); track log.errorLogId) {
+            <tr class="clickable-row" (click)="toggle(log)">
+              <td class="mono">{{ log.occurredAt | date: 'short' }}</td>
+              <td>{{ log.source }}</td>
+              <td><span class="severity-badge" [class.warning]="log.severity === 'Warning'">{{ log.severity }}</span></td>
+              <td class="message-cell">{{ log.message }}</td>
+              <td class="url-cell">{{ log.url }}</td>
+              <td>{{ log.userName ?? '—' }}</td>
+            </tr>
+            @if (expandedId() === log.errorLogId) {
+              <tr class="detail-row">
+                <td colspan="6">
+                  @if (log.stackTrace) {
+                    <pre class="stack-trace">{{ log.stackTrace }}</pre>
+                  } @else {
+                    <p class="cell-subtext">No stack trace captured.</p>
+                  }
+                  @if (log.userAgent) { <p class="cell-subtext">User Agent: {{ log.userAgent }}</p> }
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

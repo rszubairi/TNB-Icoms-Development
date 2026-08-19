@@ -1,0 +1,61 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Email Logs</h1>
+    <p class="subtitle">Every email the system has attempted to send, regardless of which feature triggered it. Click a row to preview the body.</p>
+  </div>
+</div>
+
+<div class="card filter-bar">
+  <label class="form-label">Status</label>
+  <select class="form-select" [ngModel]="statusFilter()" (ngModelChange)="onStatusChange($event)">
+    <option value="">All</option>
+    <option value="Sent">Sent</option>
+    <option value="Failed">Failed</option>
+  </select>
+
+  <label class="form-label">To Address contains</label>
+  <input class="form-input" type="text" [ngModel]="toAddressFilter()" (ngModelChange)="onToAddressChange($event)" />
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else if (logs().length === 0) {
+  <div class="card"><p class="state-message">No emails sent yet.</p></div>
+} @else {
+  <div class="card table-card">
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Sent</th>
+            <th>Template</th>
+            <th>To</th>
+            <th>Subject</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (log of logs(); track log.emailLogId) {
+            <tr class="clickable-row" (click)="toggle(log)">
+              <td class="mono">{{ log.sentAt | date: 'short' }}</td>
+              <td>{{ log.templateCode ?? '—' }}</td>
+              <td>{{ log.toAddress }}</td>
+              <td class="subject-cell">{{ log.subject }}</td>
+              <td><span class="status-badge" [class.failed]="log.status === 'Failed'">{{ log.status }}</span></td>
+            </tr>
+            @if (expandedId() === log.emailLogId) {
+              <tr class="detail-row">
+                <td colspan="5">
+                  @if (log.errorMessage) { <p class="error-text">{{ log.errorMessage }}</p> }
+                  <div class="body-preview" [innerHTML]="log.bodyHtml"></div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

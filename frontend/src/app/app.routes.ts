@@ -33,6 +33,9 @@ import { SldListComponent } from './features/sld/sld-list/sld-list.component';
 import { SldDetailComponent } from './features/sld/sld-detail/sld-detail.component';
 import { MemoListComponent } from './features/commissioning-memos/memo-list/memo-list.component';
 import { MemoDetailComponent } from './features/commissioning-memos/memo-detail/memo-detail.component';
+import { ErrorLogsComponent } from './features/admin/error-logs/error-logs.component';
+import { EmailLogsComponent } from './features/admin/email-logs/email-logs.component';
+import { EmailTemplatesComponent } from './features/admin/email-templates/email-templates.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -82,6 +85,9 @@ export const routes: Routes = [
       { path: 'sld/:id', component: SldDetailComponent },
       { path: 'commissioning-memos', component: MemoListComponent },
       { path: 'commissioning-memos/:id', component: MemoDetailComponent },
+      { path: 'admin/error-logs', component: ErrorLogsComponent },
+      { path: 'admin/email-logs', component: EmailLogsComponent },
+      { path: 'admin/email-templates', component: EmailTemplatesComponent },
       { path: 'outages/:id', component: OutageDetailComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]

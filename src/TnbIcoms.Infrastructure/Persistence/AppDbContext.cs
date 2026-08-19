@@ -43,6 +43,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<TransmissionLineOwnerZone> TransmissionLineOwnerZones => Set<TransmissionLineOwnerZone>();
     public DbSet<LinkingLine> LinkingLines => Set<LinkingLine>();
     public DbSet<SingleLineDiagram> SingleLineDiagrams => Set<SingleLineDiagram>();
+    public DbSet<EmailTemplate> EmailTemplates => Set<EmailTemplate>();
 
     // dbo (Outage) schema
     public DbSet<OutageEntities.Outage> Outages => Set<OutageEntities.Outage>();
@@ -62,6 +63,8 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     // Audit schema
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<SavedReportFilter> SavedReportFilters => Set<SavedReportFilter>();
+    public DbSet<ErrorLog> ErrorLogs => Set<ErrorLog>();
+    public DbSet<EmailLog> EmailLogs => Set<EmailLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.Email;
+using TnbIcoms.Application.EmailTemplates;
 using TnbIcoms.Application.RoleTransferRequests.Dtos;
 using TnbIcoms.Domain.Entities.Auth;
 using TnbIcoms.Infrastructure.Persistence;
@@ -11,11 +12,13 @@ public class RoleTransferRequestService : IRoleTransferRequestService
 {
     private readonly AppDbContext _dbContext;
     private readonly IEmailSender _emailSender;
+    private readonly IEmailTemplateService _emailTemplateService;
 
-    public RoleTransferRequestService(AppDbContext dbContext, IEmailSender emailSender)
+    public RoleTransferRequestService(AppDbContext dbContext, IEmailSender emailSender, IEmailTemplateService emailTemplateService)
     {
         _dbContext = dbContext;
         _emailSender = emailSender;
+        _emailTemplateService = emailTemplateService;
     }
 
     public async Task<ApiResponse<List<RoleTransferRequestDto>>> ListAsync()
@@ -179,15 +182,19 @@ public class RoleTransferRequestService : IRoleTransferRequestService
             ? (await _dbContext.Zones.FindAsync(request.RequestedZoneId.Value))?.ZoneName
             : null;
 
-        var subject = $"{requestingUser.FullName} requests change in User Role/Zone";
-        var body = $"<p>{requestingUser.FullName} has requested a change in their User Role/Zone to " +
-                   $"{newRole ?? "(unchanged)"} + {newZone ?? "(unchanged)"} with the following justification.</p>" +
-                   $"<p>{System.Net.WebUtility.HtmlEncode(request.Reason)}</p>" +
-                   "<p>This is an automated email by ICOMS 2.0.</p>";
+        const string templateCode = "RoleTransferRequestSubmitted";
+        var rendered = await _emailTemplateService.RenderAsync(templateCode, new Dictionary<string, string>
+        {
+            ["RequestingUserFullName"] = requestingUser.FullName,
+            ["NewRole"] = newRole ?? "(unchanged)",
+            ["NewZone"] = newZone ?? "(unchanged)",
+            ["Reason"] = System.Net.WebUtility.HtmlEncode(request.Reason)
+        });
+        if (rendered is null) return;
 
         foreach (var email in sysAdminEmails)
         {
-            await _emailSender.SendAsync(email, subject, body);
+            await _emailSender.SendAsync(email, rendered.Value.Subject, rendered.Value.Body, templateCode);
         }
     }
 

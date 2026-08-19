@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.Email;
+using TnbIcoms.Application.EmailTemplates;
 using TnbIcoms.Application.Outages.Dtos;
 using TnbIcoms.Infrastructure.Persistence;
 using OutageEntity = TnbIcoms.Domain.Entities.Outage.Outage;
@@ -13,11 +14,13 @@ public class OutageService : IOutageService
 {
     private readonly AppDbContext _dbContext;
     private readonly IEmailSender _emailSender;
+    private readonly IEmailTemplateService _emailTemplateService;
 
-    public OutageService(AppDbContext dbContext, IEmailSender emailSender)
+    public OutageService(AppDbContext dbContext, IEmailSender emailSender, IEmailTemplateService emailTemplateService)
     {
         _dbContext = dbContext;
         _emailSender = emailSender;
+        _emailTemplateService = emailTemplateService;
     }
 
     public async Task<ApiResponse<List<OutageListItemDto>>> ListAsync(OutageListFilter filter)
@@ -559,8 +562,13 @@ public class OutageService : IOutageService
 
     private async Task NotifyPicsAsync(OutageEntity outage, string action)
     {
-        var subject = $"Outage {outage.OutageNumber} {action}";
-        var body = $"<p>Outage {outage.OutageNumber} has been {action}.</p><p>Log in to ICOMS 2.0 for details.</p>";
+        const string templateCode = "OutageStatusNotification";
+        var rendered = await _emailTemplateService.RenderAsync(templateCode, new Dictionary<string, string>
+        {
+            ["OutageNumber"] = outage.OutageNumber,
+            ["Action"] = action
+        });
+        if (rendered is null) return; // template inactive/missing — admin has suppressed this notification
 
         var pics = outage.Pics.Count > 0
             ? outage.Pics
@@ -570,7 +578,7 @@ public class OutageService : IOutageService
         {
             if (!string.IsNullOrWhiteSpace(pic.PicEmail))
             {
-                await _emailSender.SendAsync(pic.PicEmail, subject, body);
+                await _emailSender.SendAsync(pic.PicEmail, rendered.Value.Subject, rendered.Value.Body, templateCode);
             }
         }
     }

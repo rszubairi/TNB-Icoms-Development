@@ -15,7 +15,7 @@ public class ResendEmailSender : IEmailSender
         _configuration = configuration;
     }
 
-    public async Task SendAsync(string to, string subject, string htmlBody)
+    public async Task SendAsync(string to, string subject, string htmlBody, string? templateCode = null)
     {
         var apiKey = _configuration["Email:ResendApiKey"];
         var fromAddress = _configuration["Email:FromAddress"] ?? "TNB ICOMS <noreply@tnb-icoms.dev>";

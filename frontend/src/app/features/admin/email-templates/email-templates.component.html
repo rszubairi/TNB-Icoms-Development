@@ -1,0 +1,67 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Email Templates</h1>
+    <p class="subtitle">Self-manage the subject and body of every system email. Use the tag buttons to insert dynamic values — they're replaced automatically when the email is sent.</p>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else {
+  <div class="layout-grid">
+    <div class="card list-card">
+      <h2 class="sidebar-heading">Templates</h2>
+      <ul class="template-list">
+        @for (t of templates(); track t.templateCode) {
+          <li [class.active]="selected()?.templateCode === t.templateCode" (click)="select(t)">
+            <span>{{ t.name }}</span>
+            @if (!t.isActive) { <span class="inactive-badge">Inactive</span> }
+          </li>
+        }
+      </ul>
+    </div>
+
+    @if (selected(); as t) {
+      <div class="card editor-card">
+        <div class="editor-header">
+          <h2 class="sidebar-heading">{{ t.name }}</h2>
+          <code class="template-code">{{ t.templateCode }}</code>
+        </div>
+        <p class="cell-subtext">Last updated {{ t.updatedAt | date: 'medium' }} @if (t.updatedByName) { by {{ t.updatedByName }} }</p>
+
+        @if (saveError()) { <div class="form-alert">{{ saveError() }}</div> }
+
+        <label class="checkbox-row">
+          <input type="checkbox" [ngModel]="editIsActive()" (ngModelChange)="editIsActive.set($event)" />
+          <span>Active (unchecking suppresses this notification entirely)</span>
+        </label>
+
+        <label class="form-label">Available Tags</label>
+        <div class="tag-row">
+          @for (tag of tagList(t); track tag) {
+            <button type="button" class="tag-btn" (click)="insertTag(tag)">{{ '{{' + tag + '}}' }}</button>
+          }
+        </div>
+
+        <label class="form-label">Subject</label>
+        <input class="form-input" type="text" [ngModel]="editSubject()" (ngModelChange)="editSubject.set($event)" />
+
+        <label class="form-label">Body (HTML)</label>
+        <textarea class="form-input body-input" rows="10" [ngModel]="editBody()" (ngModelChange)="editBody.set($event)"></textarea>
+
+        <div class="preview-block">
+          <label class="form-label">Preview</label>
+          <div class="preview-box" [innerHTML]="editBody()"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
+            {{ saving() ? 'Saving…' : 'Save Template' }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}

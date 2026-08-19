@@ -49,6 +49,9 @@ export class SidebarComponent {
     { label: 'GNC: Forced Outage', path: '/gnc/forced-outage' },
     { label: 'Shift Handover', path: '/handover' },
     { label: 'Single Line Diagrams', path: '/sld' },
-    { label: 'Commissioning Memos', path: '/commissioning-memos' }
+    { label: 'Commissioning Memos', path: '/commissioning-memos' },
+    { label: 'Error Logs', path: '/admin/error-logs' },
+    { label: 'Email Logs', path: '/admin/email-logs' },
+    { label: 'Email Templates', path: '/admin/email-templates' }
   ];
 }

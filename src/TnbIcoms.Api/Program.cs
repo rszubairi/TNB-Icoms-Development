@@ -24,6 +24,9 @@ using TnbIcoms.Application.Outages;
 using TnbIcoms.Application.Gnc;
 using TnbIcoms.Application.Handover;
 using TnbIcoms.Application.CommissioningMemos;
+using TnbIcoms.Application.EmailLogs;
+using TnbIcoms.Application.EmailTemplates;
+using TnbIcoms.Application.ErrorLogs;
 using TnbIcoms.Application.SingleLineDiagrams;
 using TnbIcoms.Application.Reports;
 using TnbIcoms.Application.Statistics;
@@ -120,21 +123,33 @@ builder.Services.AddScoped<IGncService, GncService>();
 builder.Services.AddScoped<IHandoverService, HandoverService>();
 builder.Services.AddScoped<ISldService, SldService>();
 builder.Services.AddScoped<ICommissioningMemoService, CommissioningMemoService>();
+builder.Services.AddScoped<IErrorLogService, ErrorLogService>();
+builder.Services.AddScoped<IEmailLogService, EmailLogService>();
+builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 builder.Services.AddScoped<IChangeRequestService, ChangeRequestService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);
 
+// Every email is logged to EmailLogs regardless of provider — LoggingEmailSender wraps the
+// real transport (Stub or Resend) rather than each call site logging for itself.
 var emailProvider = builder.Configuration["Email:Provider"];
 if (string.Equals(emailProvider, "Resend", StringComparison.OrdinalIgnoreCase))
 {
-    builder.Services.AddHttpClient<IEmailSender, ResendEmailSender>();
+    builder.Services.AddHttpClient<ResendEmailSender>();
 }
 else
 {
-    builder.Services.AddScoped<IEmailSender, StubEmailSender>();
+    builder.Services.AddScoped<StubEmailSender>();
 }
+builder.Services.AddScoped<IEmailSender>(sp =>
+{
+    IEmailSender inner = string.Equals(emailProvider, "Resend", StringComparison.OrdinalIgnoreCase)
+        ? sp.GetRequiredService<ResendEmailSender>()
+        : sp.GetRequiredService<StubEmailSender>();
+    return new LoggingEmailSender(inner, sp.GetRequiredService<TnbIcoms.Infrastructure.Persistence.AppDbContext>());
+});
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

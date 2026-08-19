@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.Email;
+using TnbIcoms.Application.EmailTemplates;
 using TnbIcoms.Application.Gnc.Dtos;
 using TnbIcoms.Application.Outages;
 using TnbIcoms.Application.Outages.Dtos;
@@ -16,11 +17,13 @@ public class GncService : IGncService
 {
     private readonly AppDbContext _dbContext;
     private readonly IEmailSender _emailSender;
+    private readonly IEmailTemplateService _emailTemplateService;
 
-    public GncService(AppDbContext dbContext, IEmailSender emailSender)
+    public GncService(AppDbContext dbContext, IEmailSender emailSender, IEmailTemplateService emailTemplateService)
     {
         _dbContext = dbContext;
         _emailSender = emailSender;
+        _emailTemplateService = emailTemplateService;
     }
 
     private IQueryable<OutageEntity> BaseQuery(int? zoneId)
@@ -330,9 +333,16 @@ public class GncService : IGncService
     private async Task NotifyAuthoriserAsync(string email, string outageNumber, string status)
     {
         if (string.IsNullOrWhiteSpace(email)) return;
-        var subject = $"Outage {outageNumber} — {status}";
-        var body = $"<p>Outage {outageNumber} has been marked {status}.</p><p>Log in to ICOMS 2.0 for details.</p>";
-        await _emailSender.SendAsync(email, subject, body);
+
+        const string templateCode = "GncAuthorisationStatus";
+        var rendered = await _emailTemplateService.RenderAsync(templateCode, new Dictionary<string, string>
+        {
+            ["OutageNumber"] = outageNumber,
+            ["Status"] = status
+        });
+        if (rendered is null) return;
+
+        await _emailSender.SendAsync(email, rendered.Value.Subject, rendered.Value.Body, templateCode);
     }
 
     private static GncOutageListItemDto Map(OutageEntity outage, Dictionary<int, string> dropdownLabels, Dictionary<int, string> personnelNames)

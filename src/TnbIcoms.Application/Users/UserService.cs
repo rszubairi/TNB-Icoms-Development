@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.Email;
+using TnbIcoms.Application.EmailTemplates;
 using TnbIcoms.Application.Users.Dtos;
 using TnbIcoms.Domain.Entities.Auth;
 using TnbIcoms.Infrastructure.Identity;
@@ -14,12 +15,14 @@ public class UserService : IUserService
     private readonly AppDbContext _dbContext;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEmailSender _emailSender;
+    private readonly IEmailTemplateService _emailTemplateService;
 
-    public UserService(AppDbContext dbContext, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+    public UserService(AppDbContext dbContext, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IEmailTemplateService emailTemplateService)
     {
         _dbContext = dbContext;
         _userManager = userManager;
         _emailSender = emailSender;
+        _emailTemplateService = emailTemplateService;
     }
 
     public async Task<ApiResponse<PagedResult<UserListItemDto>>> ListAsync(UserListQuery query)
@@ -142,10 +145,16 @@ public class UserService : IUserService
         _dbContext.AppUsers.Add(domainUser);
         await _dbContext.SaveChangesAsync();
 
-        await _emailSender.SendAsync(
-            request.Email,
-            "Welcome to TNB ICOMS 2.0",
-            $"<p>Hi {request.FullName},</p><p>Your account has been created. Temporary password: <b>{temporaryPassword}</b></p>");
+        const string templateCode = "UserWelcome";
+        var rendered = await _emailTemplateService.RenderAsync(templateCode, new Dictionary<string, string>
+        {
+            ["FullName"] = request.FullName,
+            ["TemporaryPassword"] = temporaryPassword
+        });
+        if (rendered is not null)
+        {
+            await _emailSender.SendAsync(request.Email, rendered.Value.Subject, rendered.Value.Body, templateCode);
+        }
 
         return await GetByIdAsync(domainUser.UserId);
     }
