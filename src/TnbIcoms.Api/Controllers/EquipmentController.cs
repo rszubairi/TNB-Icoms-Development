@@ -22,9 +22,10 @@ public class EquipmentController : ControllerBase
         [FromQuery] int? zoneId,
         [FromQuery] int? stationId,
         [FromQuery] int? voltageLevelId,
-        [FromQuery] int? equipmentTypeId)
+        [FromQuery] int? equipmentTypeId,
+        [FromQuery] bool? isOffPoint)
     {
-        var result = await _equipmentService.ListAsync(zoneId, stationId, voltageLevelId, equipmentTypeId);
+        var result = await _equipmentService.ListAsync(zoneId, stationId, voltageLevelId, equipmentTypeId, isOffPoint);
         return Ok(result);
     }
 

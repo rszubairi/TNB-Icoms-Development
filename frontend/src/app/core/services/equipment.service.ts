@@ -8,6 +8,7 @@ export interface EquipmentListFilter {
   stationId?: number;
   voltageLevelId?: number;
   equipmentTypeId?: number;
+  isOffPoint?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -15,7 +16,7 @@ export class EquipmentService {
   private api = inject(ApiService);
 
   list(filter?: EquipmentListFilter): Observable<Equipment[]> {
-    return this.api.get<Equipment[]>('/equipment', filter as Record<string, number | undefined>);
+    return this.api.get<Equipment[]>('/equipment', filter as Record<string, string | number | boolean | undefined>);
   }
 
   create(request: CreateEquipmentRequest): Observable<Equipment> {

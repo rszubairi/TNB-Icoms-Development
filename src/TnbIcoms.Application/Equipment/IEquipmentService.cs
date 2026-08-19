@@ -5,7 +5,7 @@ namespace TnbIcoms.Application.Equipment;
 
 public interface IEquipmentService
 {
-    Task<ApiResponse<List<EquipmentListItemDto>>> ListAsync(int? zoneId, int? stationId, int? voltageLevelId, int? equipmentTypeId);
+    Task<ApiResponse<List<EquipmentListItemDto>>> ListAsync(int? zoneId, int? stationId, int? voltageLevelId, int? equipmentTypeId, bool? isOffPoint = null);
     Task<ApiResponse<EquipmentListItemDto>> CreateAsync(CreateEquipmentRequestDto request);
     Task<ApiResponse<EquipmentListItemDto>> UpdateAsync(int equipmentId, UpdateEquipmentRequestDto request);
     Task<ApiResponse<object>> DeactivateAsync(int equipmentId);

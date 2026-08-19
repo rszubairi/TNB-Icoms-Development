@@ -1,0 +1,162 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Off-Point Management</h1>
+    <p class="page-subtitle">Monitor and manage network off-points and equipment positions.</p>
+  </div>
+  @if (!showCreateForm()) {
+    <button type="button" class="btn-primary" (click)="openCreateForm()">+ Create New Off-Point</button>
+  }
+</div>
+
+@if (showCreateForm()) {
+  <div class="card form-card">
+    <h2 class="form-heading">Mark Equipment as Off-Point</h2>
+    <p class="form-hint">Select an existing equipment record to convert it into a Permanent Off-Point. This will automatically update its status to OPEN.</p>
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label" for="draftZone">Zone</label>
+        <select id="draftZone" class="form-select" [ngModel]="createDraft().zoneId" (ngModelChange)="onDraftZoneChange($event)">
+          <option [value]="null">All Zones</option>
+          @for (zone of zones(); track zone.zoneId) {
+            <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="draftStation">Station</label>
+        <select
+          id="draftStation"
+          class="form-select"
+          [disabled]="!createDraft().zoneId"
+          [ngModel]="createDraft().stationId"
+          (ngModelChange)="onDraftStationChange($event)"
+        >
+          <option [value]="null">All Stations</option>
+          @for (station of stationsForDraftZone(); track station.stationId) {
+            <option [value]="station.stationId">{{ station.stationName }}</option>
+          }
+        </select>
+      </div>
+      <div class="span-2">
+        <label class="form-label" for="draftEquipment">Equipment Name</label>
+        <select
+          id="draftEquipment"
+          class="form-select"
+          [disabled]="!createDraft().stationId"
+          [ngModel]="createDraft().equipmentId"
+          (ngModelChange)="onDraftEquipmentChange($event)"
+        >
+          <option [value]="null">Select equipment…</option>
+          @for (equipment of eligibleEquipment(); track equipment.equipmentId) {
+            <option [value]="equipment.equipmentId">{{ equipment.equipmentName }}</option>
+          }
+        </select>
+      </div>
+      <div class="span-2">
+        <label class="form-label" for="draftRemark">Remark</label>
+        <input
+          id="draftRemark"
+          class="form-input"
+          type="text"
+          placeholder="Reason for this off-point"
+          [ngModel]="createDraft().remark"
+          (ngModelChange)="updateDraftRemark($event)"
+        />
+      </div>
+    </div>
+
+    @if (createFormError()) {
+      <div class="form-alert">{{ createFormError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="closeCreateForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="creating()" (click)="submitCreate()">
+        {{ creating() ? 'Saving…' : 'Mark as Permanent Off-Point' }}
+      </button>
+    </div>
+  </div>
+}
+
+<div class="card">
+  <div class="tab-bar">
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'permanent'" (click)="setTab('permanent')">
+      Permanent Off-Points ({{ permanentOffPoints().length }})
+    </button>
+    <button type="button" class="tab-btn" [class.active]="activeTab() === 'temporary'" (click)="setTab('temporary')">
+      Temporary Off-Points
+    </button>
+
+    <select class="form-select region-filter" [ngModel]="regionFilter()" (ngModelChange)="onRegionFilterChange($event)">
+      <option [value]="null">All Regions</option>
+      @for (zone of zones(); track zone.zoneId) {
+        <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
+      }
+    </select>
+  </div>
+
+  @if (activeTab() === 'permanent') {
+    @if (loading()) {
+      <p class="state-message">Loading…</p>
+    } @else if (errorMessage()) {
+      <p class="state-message error">{{ errorMessage() }}</p>
+    } @else if (filteredOffPoints().length === 0) {
+      <p class="state-message">No permanent off-points found.</p>
+    } @else {
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Equipment Name</th>
+            <th>Location Details</th>
+            <th>Current Position</th>
+            <th>Remark</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of filteredOffPoints(); track item.equipmentId) {
+            <tr>
+              <td class="mono">{{ item.equipmentName }}</td>
+              <td>
+                {{ item.stationName }}
+                <div class="cell-subtext">{{ item.zoneName }}</div>
+              </td>
+              <td>
+                @if (item.position === 1) {
+                  <span class="status-badge status-pending">Open</span>
+                } @else {
+                  <span class="status-badge status-confirmed">Closed</span>
+                }
+              </td>
+              <td class="cell-subtext">{{ item.offPointRemark }}</td>
+              <td class="actions-cell">
+                <button
+                  type="button"
+                  class="btn-outline row-action"
+                  [disabled]="rowBusyId() === item.equipmentId"
+                  (click)="toggleNormalize(item)"
+                >
+                  {{ rowBusyId() === item.equipmentId ? 'Working…' : (item.position === 1 ? 'Normalize to Closed' : 'Set Open') }}
+                </button>
+                <button
+                  type="button"
+                  class="btn-outline row-action danger"
+                  [disabled]="rowBusyId() === item.equipmentId"
+                  (click)="removeOffPoint(item)"
+                >
+                  Remove
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  } @else {
+    <p class="state-message">
+      Temporary off-points are equipment set to Open for the duration of an active outage.
+      This list will populate automatically once the Outage workflow (Module 2) is live.
+    </p>
+  }
+</div>

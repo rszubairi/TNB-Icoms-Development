@@ -6,6 +6,7 @@ import { RoleTransferRequestsComponent } from './features/admin/users/role-trans
 import { OrganisationsComponent } from './features/admin/organisations/organisations.component';
 import { VoltageEquipmentComponent } from './features/admin/voltage-equipment/voltage-equipment.component';
 import { EquipmentComponent } from './features/admin/equipment/equipment.component';
+import { OffPointsComponent } from './features/admin/off-points/off-points.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -25,6 +26,7 @@ export const routes: Routes = [
       { path: 'admin/organisations', component: OrganisationsComponent },
       { path: 'admin/voltage-equipment', component: VoltageEquipmentComponent },
       { path: 'admin/equipment', component: EquipmentComponent },
+      { path: 'admin/off-points', component: OffPointsComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]
   },

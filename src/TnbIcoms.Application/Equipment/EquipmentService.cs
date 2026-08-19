@@ -15,7 +15,7 @@ public class EquipmentService : IEquipmentService
         _dbContext = dbContext;
     }
 
-    public async Task<ApiResponse<List<EquipmentListItemDto>>> ListAsync(int? zoneId, int? stationId, int? voltageLevelId, int? equipmentTypeId)
+    public async Task<ApiResponse<List<EquipmentListItemDto>>> ListAsync(int? zoneId, int? stationId, int? voltageLevelId, int? equipmentTypeId, bool? isOffPoint = null)
     {
         var query = _dbContext.Equipment
             .Include(e => e.Zone)
@@ -28,6 +28,7 @@ public class EquipmentService : IEquipmentService
         if (stationId.HasValue) query = query.Where(e => e.StationId == stationId.Value);
         if (voltageLevelId.HasValue) query = query.Where(e => e.VoltageLevelId == voltageLevelId.Value);
         if (equipmentTypeId.HasValue) query = query.Where(e => e.EquipmentTypeId == equipmentTypeId.Value);
+        if (isOffPoint.HasValue) query = query.Where(e => e.IsOffPoint == isOffPoint.Value);
 
         var equipmentList = await query
             .OrderBy(e => e.EquipmentName)
