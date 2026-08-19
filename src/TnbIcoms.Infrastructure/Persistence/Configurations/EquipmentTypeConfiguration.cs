@@ -12,5 +12,11 @@ public class EquipmentTypeConfiguration : IEntityTypeConfiguration<EquipmentType
         builder.HasKey(x => x.EquipmentTypeId);
         builder.Property(x => x.TypeName).IsRequired().HasMaxLength(100);
         builder.Property(x => x.TypeCode).HasMaxLength(30);
+        builder.HasIndex(x => new { x.VoltageLevelId, x.TypeName }).IsUnique();
+
+        builder.HasOne(x => x.VoltageLevel)
+            .WithMany()
+            .HasForeignKey(x => x.VoltageLevelId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -11,5 +11,6 @@ public class VoltageLevelConfiguration : IEntityTypeConfiguration<VoltageLevel>
         builder.ToTable("VoltageLevels", schema: "config");
         builder.HasKey(x => x.VoltageLevelId);
         builder.Property(x => x.LevelName).IsRequired().HasMaxLength(30);
+        builder.HasIndex(x => x.LevelName).IsUnique();
     }
 }

@@ -21,6 +21,8 @@ export class SidebarComponent {
     { label: 'Roles & Permissions', path: '/admin/roles' },
     { label: 'Role Transfer Requests', path: '/admin/role-transfer-requests' },
     { label: 'Organisations & Stations', path: '/admin/organisations' },
+    { label: 'Voltage & Equipment Types', path: '/admin/voltage-equipment' },
+    { label: 'Equipment Directory', path: '/admin/equipment' },
     { label: 'Outage Intake', disabled: true },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }

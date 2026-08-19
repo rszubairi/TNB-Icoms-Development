@@ -5,6 +5,7 @@ public class Equipment
     public int EquipmentId { get; set; }
     public string EquipmentName { get; set; } = string.Empty; // Format: VoltageLevel - MVA - Name
     public string EquipmentCode { get; set; } = string.Empty;
+    public string ShortName { get; set; } = string.Empty; // The user-entered "Name" component before auto-formatting
     public int EquipmentTypeId { get; set; }
     public int VoltageLevelId { get; set; }
     public int StationId { get; set; }

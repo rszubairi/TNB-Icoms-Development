@@ -580,6 +580,11 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.Property<byte>("Position")
                         .HasColumnType("tinyint");
 
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("StationId")
                         .HasColumnType("int");
 
@@ -590,6 +595,9 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("EquipmentId");
+
+                    b.HasIndex("EquipmentCode")
+                        .IsUnique();
 
                     b.HasIndex("EquipmentTypeId");
 
@@ -622,7 +630,13 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("VoltageLevelId")
+                        .HasColumnType("int");
+
                     b.HasKey("EquipmentTypeId");
+
+                    b.HasIndex("VoltageLevelId", "TypeName")
+                        .IsUnique();
 
                     b.ToTable("EquipmentTypes", "config");
                 });
@@ -801,6 +815,9 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("VoltageLevelId");
+
+                    b.HasIndex("LevelName")
+                        .IsUnique();
 
                     b.ToTable("VoltageLevels", "config");
                 });
@@ -1700,6 +1717,17 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.Navigation("VoltageLevel");
 
                     b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.EquipmentType", b =>
+                {
+                    b.HasOne("TnbIcoms.Domain.Entities.Config.VoltageLevel", "VoltageLevel")
+                        .WithMany()
+                        .HasForeignKey("VoltageLevelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("VoltageLevel");
                 });
 
             modelBuilder.Entity("TnbIcoms.Domain.Entities.Config.Organisation", b =>

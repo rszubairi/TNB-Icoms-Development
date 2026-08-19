@@ -8,11 +8,14 @@ using Microsoft.OpenApi.Models;
 using TnbIcoms.Application.Auth;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.Email;
+using TnbIcoms.Application.Equipment;
+using TnbIcoms.Application.EquipmentTypes;
 using TnbIcoms.Application.Lookups;
 using TnbIcoms.Application.Organisations;
 using TnbIcoms.Application.Roles;
 using TnbIcoms.Application.Stations;
 using TnbIcoms.Application.Users;
+using TnbIcoms.Application.VoltageLevels;
 using TnbIcoms.Infrastructure.Identity;
 using TnbIcoms.Infrastructure.Persistence;
 
@@ -72,6 +75,10 @@ builder.Services.AddScoped<IRoleAdminService, RoleAdminService>();
 builder.Services.AddScoped<IZoneService, ZoneService>();
 builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddScoped<IStationService, StationService>();
+builder.Services.AddScoped<IVoltageLevelService, VoltageLevelService>();
+builder.Services.AddScoped<IEquipmentTypeService, EquipmentTypeService>();
+builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+builder.Services.AddScoped<IDropdownValueService, DropdownValueService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

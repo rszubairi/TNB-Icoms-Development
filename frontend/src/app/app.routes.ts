@@ -4,6 +4,8 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { RolesComponent } from './features/admin/users/roles/roles.component';
 import { RoleTransferRequestsComponent } from './features/admin/users/role-transfer-requests/role-transfer-requests.component';
 import { OrganisationsComponent } from './features/admin/organisations/organisations.component';
+import { VoltageEquipmentComponent } from './features/admin/voltage-equipment/voltage-equipment.component';
+import { EquipmentComponent } from './features/admin/equipment/equipment.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -21,6 +23,8 @@ export const routes: Routes = [
       { path: 'admin/roles', component: RolesComponent },
       { path: 'admin/role-transfer-requests', component: RoleTransferRequestsComponent },
       { path: 'admin/organisations', component: OrganisationsComponent },
+      { path: 'admin/voltage-equipment', component: VoltageEquipmentComponent },
+      { path: 'admin/equipment', component: EquipmentComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]
   },
