@@ -14,6 +14,8 @@ public class OutageListFilter
     public bool PendingPlannerReviewOnly { get; set; } // RequestorStatus=Pending && PlannerStatus is null
     public bool PendingConfirmationOnly { get; set; } // PlannerStatus=Agreed && RequestorStatus=Pending
     public bool PendingGnmApprovalOnly { get; set; } // RequestorStatus=Confirmed && PlannerStatus=Agreed && GnmStatus=Pending/Under-Study
+    public DateTime? RangeStart { get; set; } // Calendar view: outages overlapping [RangeStart, RangeEnd]
+    public DateTime? RangeEnd { get; set; }
 }
 
 public interface IOutageService

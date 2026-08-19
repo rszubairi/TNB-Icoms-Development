@@ -22,6 +22,7 @@ import { OutageCreateComponent } from './features/outages/outage-create/outage-c
 import { OutageListComponent } from './features/outages/outage-list/outage-list.component';
 import { OutageDetailComponent } from './features/outages/outage-detail/outage-detail.component';
 import { ChangeRequestReviewComponent } from './features/outages/change-request-review/change-request-review.component';
+import { OutageCalendarComponent } from './features/outages/outage-calendar/outage-calendar.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -59,6 +60,7 @@ export const routes: Routes = [
       { path: 'outages/pending-approval', component: OutageListComponent, data: { mode: 'pendingApproval' } },
       { path: 'outages/repository', component: OutageListComponent, data: { mode: 'repository' } },
       { path: 'outages/change-requests', component: ChangeRequestReviewComponent },
+      { path: 'outages/calendar', component: OutageCalendarComponent },
       { path: 'outages/:id', component: OutageDetailComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]

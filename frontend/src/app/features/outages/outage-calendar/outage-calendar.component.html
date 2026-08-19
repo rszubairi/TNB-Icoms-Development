@@ -1,0 +1,82 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Outage Calendar</h1>
+    <p class="subtitle">Rolling 5-week view of planned outages. Click a day with outages to see details.</p>
+  </div>
+</div>
+
+<div class="card calendar-toolbar">
+  <div class="nav-group">
+    <button type="button" class="btn-secondary" (click)="prevMonth()">← Prev</button>
+    <button type="button" class="btn-secondary" (click)="today()">Today</button>
+    <button type="button" class="btn-secondary" (click)="nextMonth()">Next →</button>
+  </div>
+  <h2 class="month-label">{{ monthLabel() }}</h2>
+  <div class="legend">
+    <span class="legend-item"><span class="chip-dot chip-pending"></span>Pending</span>
+    <span class="legend-item"><span class="chip-dot chip-agreed"></span>Agreed</span>
+    <span class="legend-item"><span class="chip-dot chip-confirmed"></span>Confirmed</span>
+    <span class="legend-item"><span class="chip-dot chip-approved"></span>Approved</span>
+    <span class="legend-item"><span class="chip-dot chip-rejected"></span>Rejected</span>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else {
+  <div class="card calendar-card">
+    <div class="calendar-grid weekday-row">
+      <div class="weekday">Mon</div>
+      <div class="weekday">Tue</div>
+      <div class="weekday">Wed</div>
+      <div class="weekday">Thu</div>
+      <div class="weekday">Fri</div>
+      <div class="weekday">Sat</div>
+      <div class="weekday">Sun</div>
+    </div>
+
+    @for (week of weeks(); track $index) {
+      <div class="calendar-grid">
+        @for (day of week; track day.date.getTime()) {
+          <div
+            class="day-cell"
+            [class.out-of-month]="!day.inCurrentMonth"
+            [class.is-today]="day.isToday"
+            [class.has-outages]="day.outages.length > 0"
+            (click)="selectDay(day)"
+          >
+            <span class="day-number">{{ day.date.getDate() }}</span>
+            @if (day.outages.length > 0) {
+              <div class="day-chips">
+                @for (o of day.outages.slice(0, 3); track o.outageId) {
+                  <span class="mini-chip" [class]="statusClass(o.requestorStatus)">{{ o.outageNumber }}</span>
+                }
+                @if (day.outages.length > 3) {
+                  <span class="mini-chip-more">+{{ day.outages.length - 3 }} more</span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (selectedDay(); as day) {
+    <div class="card day-detail-card">
+      <h3 class="sidebar-heading">{{ day.date | date: 'fullDate' }}</h3>
+      <ul class="day-detail-list">
+        @for (o of day.outages; track o.outageId) {
+          <li>
+            <a [routerLink]="['/outages', o.outageId]" class="detail-link">{{ o.outageNumber }}</a>
+            <span class="status-badge" [class]="statusClass(o.requestorStatus)">{{ o.requestorStatus }}</span>
+            <span class="cell-subtext">{{ o.stationName }} · {{ o.equipmentName }}</span>
+            <span class="cell-subtext">{{ o.plannedStartAt | date: 'short' }} → {{ o.plannedEndAt | date: 'short' }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+}

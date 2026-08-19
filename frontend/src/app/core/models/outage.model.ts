@@ -88,6 +88,8 @@ export interface OutageListFilter {
   pendingConfirmationOnly?: boolean;
   agreedAndConfirmedOnly?: boolean;
   pendingGnmApprovalOnly?: boolean;
+  rangeStart?: string;
+  rangeEnd?: string;
 }
 
 export interface BulkActionResult {

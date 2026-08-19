@@ -27,7 +27,9 @@ public class OutagesController : ControllerBase
         [FromQuery] bool pendingPlannerReviewOnly = false,
         [FromQuery] bool pendingConfirmationOnly = false,
         [FromQuery] bool agreedAndConfirmedOnly = false,
-        [FromQuery] bool pendingGnmApprovalOnly = false)
+        [FromQuery] bool pendingGnmApprovalOnly = false,
+        [FromQuery] DateTime? rangeStart = null,
+        [FromQuery] DateTime? rangeEnd = null)
     {
         var result = await _outageService.ListAsync(new OutageListFilter
         {
@@ -38,7 +40,9 @@ public class OutagesController : ControllerBase
             PendingPlannerReviewOnly = pendingPlannerReviewOnly,
             PendingConfirmationOnly = pendingConfirmationOnly,
             AgreedAndConfirmedOnly = agreedAndConfirmedOnly,
-            PendingGnmApprovalOnly = pendingGnmApprovalOnly
+            PendingGnmApprovalOnly = pendingGnmApprovalOnly,
+            RangeStart = rangeStart,
+            RangeEnd = rangeEnd
         });
         return Ok(result);
     }

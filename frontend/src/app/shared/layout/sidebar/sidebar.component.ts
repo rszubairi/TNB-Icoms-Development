@@ -40,6 +40,7 @@ export class SidebarComponent {
     { label: 'Outage Pending Approval', path: '/outages/pending-approval' },
     { label: 'Data Repository', path: '/outages/repository' },
     { label: 'Change Requests', path: '/outages/change-requests' },
+    { label: 'Outage Calendar', path: '/outages/calendar' },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }
   ];

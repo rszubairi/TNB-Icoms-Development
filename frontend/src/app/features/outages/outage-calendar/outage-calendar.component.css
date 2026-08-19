@@ -1,0 +1,213 @@
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-top: 0.25rem;
+  max-width: 60ch;
+}
+
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.nav-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.month-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.legend {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.76rem;
+  color: #6b7280;
+}
+
+.chip-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.calendar-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekday-row {
+  border-bottom: 1px solid #f3f4f6;
+  background-color: #f9fafb;
+}
+
+.weekday {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  text-align: left;
+}
+
+.day-cell {
+  min-height: 96px;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid #f3f4f6;
+  border-right: 1px solid #f3f4f6;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.day-cell.out-of-month {
+  background-color: #fafafa;
+}
+
+.day-cell.out-of-month .day-number {
+  color: #d1d5db;
+}
+
+.day-cell.is-today .day-number {
+  background-color: #1f2937;
+  color: #fff;
+}
+
+.day-cell.has-outages {
+  cursor: pointer;
+}
+
+.day-cell.has-outages:hover {
+  background-color: #f9fafb;
+}
+
+.day-number {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  width: 1.6rem;
+  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.day-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.mini-chip {
+  font-size: 0.68rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.3rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-chip-more {
+  font-size: 0.68rem;
+  color: #9ca3af;
+}
+
+.chip-pending { background-color: #f59e0b; }
+.chip-agreed { background-color: #3b82f6; }
+.chip-confirmed { background-color: #8b5cf6; }
+.chip-approved { background-color: #10b981; }
+.chip-rejected { background-color: #ef4444; }
+.chip-closed { background-color: #6b7280; }
+
+.day-detail-card {
+  margin-top: 1.25rem;
+}
+
+.sidebar-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.75rem;
+}
+
+.day-detail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.day-detail-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.day-detail-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.detail-link {
+  font-weight: 600;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.detail-link:hover {
+  text-decoration: underline;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.3rem;
+  color: #fff;
+}
+
+.cell-subtext {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.state-message {
+  padding: 2.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.state-message.error {
+  color: #e11d48;
+}

@@ -55,6 +55,10 @@ public class OutageService : IOutageService
             query = query.Where(o => o.RequestorStatus == "Confirmed" && o.PlannerStatus == "Agreed"
                                       && (o.GnmStatus == "Pending" || o.GnmStatus == "Under-Study"));
         }
+        if (filter.RangeStart.HasValue && filter.RangeEnd.HasValue)
+        {
+            query = query.Where(o => o.PlannedStartAt < filter.RangeEnd.Value && filter.RangeStart.Value < o.PlannedEndAt);
+        }
 
         var jobTypeLabels = await GetDropdownLabelsAsync();
 
