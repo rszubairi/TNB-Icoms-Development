@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TnbIcoms.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d4976ac8dab5287d8e19bec780eb0bda097b9d5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c043392a7de4e65c4fee6e4ee9239367696d989")]
 [assembly: System.Reflection.AssemblyProductAttribute("TnbIcoms.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TnbIcoms.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

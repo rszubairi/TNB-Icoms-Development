@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TnbIcoms.Application.Auth;
+using TnbIcoms.Application.AuthorisationPersonnel;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.DropdownValues;
 using TnbIcoms.Application.Email;
@@ -87,6 +88,7 @@ builder.Services.AddScoped<IDropdownValueAdminService, DropdownValueAdminService
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IOutageTypeRuleService, OutageTypeRuleService>();
 builder.Services.AddScoped<IOutageScheduleWindowService, OutageScheduleWindowService>();
+builder.Services.AddScoped<IAuthorisationPersonnelService, AuthorisationPersonnelService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

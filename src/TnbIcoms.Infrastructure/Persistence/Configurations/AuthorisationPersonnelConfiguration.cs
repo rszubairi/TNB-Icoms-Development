@@ -11,6 +11,7 @@ public class AuthorisationPersonnelConfiguration : IEntityTypeConfiguration<Auth
         builder.ToTable("AuthorisationPersonnel", schema: "config");
         builder.HasKey(x => x.AuthorisationPersonnelId);
         builder.Property(x => x.FullName).IsRequired().HasMaxLength(200);
+        builder.Property(x => x.Email).IsRequired().HasMaxLength(256);
         builder.Property(x => x.StaffId).HasMaxLength(50);
 
         builder.HasOne(x => x.Zone)

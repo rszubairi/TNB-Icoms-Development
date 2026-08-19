@@ -1,0 +1,103 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Authorisation Personnel</h1>
+    <p class="page-subtitle">Senior GNC personnel who authorise outages. They receive an email on every Authorise / Un-authorise action.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn-primary" (click)="startCreate()">+ Add Personnel</button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <h2 class="form-heading">{{ isEditMode() ? 'Edit Personnel' : 'New Personnel' }}</h2>
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label" for="fullName">Full Name</label>
+        <input id="fullName" class="form-input" type="text" [ngModel]="draft().fullName" (ngModelChange)="updateField('fullName', $event)" />
+      </div>
+      <div>
+        <label class="form-label" for="email">Email</label>
+        <input id="email" class="form-input" type="email" [ngModel]="draft().email" (ngModelChange)="updateField('email', $event)" />
+      </div>
+      <div>
+        <label class="form-label" for="zone">Zone</label>
+        <select id="zone" class="form-select" [ngModel]="draft().zoneId" (ngModelChange)="updateField('zoneId', $event ? +$event : null)">
+          <option [value]="null">Select zone…</option>
+          @for (zone of zones(); track zone.zoneId) {
+            <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="designation">Position / Designation</label>
+        <input id="designation" class="form-input" type="text" placeholder="e.g. Senior Grid Engineer" [ngModel]="draft().designation" (ngModelChange)="updateField('designation', $event)" />
+      </div>
+      <div>
+        <label class="form-label" for="staffId">Staff ID (optional)</label>
+        <input id="staffId" class="form-input" type="text" [ngModel]="draft().staffId" (ngModelChange)="updateField('staffId', $event)" />
+      </div>
+      @if (isEditMode()) {
+        <div class="active-field">
+          <label class="checkbox-row">
+            <input type="checkbox" [ngModel]="draft().isActive" (ngModelChange)="updateField('isActive', $event)" />
+            <span>Active</span>
+          </label>
+        </div>
+      }
+    </div>
+
+    @if (formError()) {
+      <div class="form-alert">{{ formError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
+        {{ saving() ? 'Saving…' : (isEditMode() ? 'Save Changes' : 'Add Personnel') }}
+      </button>
+    </div>
+  </div>
+}
+
+<div class="card table-card">
+  @if (loading()) {
+    <p class="state-message">Loading…</p>
+  } @else if (errorMessage()) {
+    <p class="state-message error">{{ errorMessage() }}</p>
+  } @else if (personnel().length === 0) {
+    <p class="state-message">No authorisation personnel configured yet.</p>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Zone</th><th>Position</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        @for (person of personnel(); track person.authorisationPersonnelId) {
+          <tr>
+            <td>{{ person.fullName }}</td>
+            <td>{{ person.email }}</td>
+            <td><span class="status-badge status-confirmed">{{ person.zoneName }}</span></td>
+            <td>{{ person.designation }}</td>
+            <td>
+              @if (person.isActive) {
+                <span class="status-badge status-confirmed">Active</span>
+              } @else {
+                <span class="status-badge status-inactive">Inactive</span>
+              }
+            </td>
+            <td class="actions-cell">
+              <button type="button" class="btn-outline row-action" (click)="startEdit(person)">Edit</button>
+              @if (person.isActive) {
+                <button type="button" class="btn-outline row-action danger" [disabled]="rowBusyId() === person.authorisationPersonnelId" (click)="deactivate(person)">
+                  {{ rowBusyId() === person.authorisationPersonnelId ? 'Working…' : 'Remove' }}
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

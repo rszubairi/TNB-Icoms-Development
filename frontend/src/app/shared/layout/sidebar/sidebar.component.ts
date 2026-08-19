@@ -28,6 +28,7 @@ export class SidebarComponent {
     { label: 'Project Management', path: '/admin/projects' },
     { label: 'Outage Type Configuration', path: '/admin/outage-type-rules' },
     { label: 'Outage Scheduling', path: '/admin/outage-scheduling' },
+    { label: 'Authorisation Personnel', path: '/admin/authorisation-personnel' },
     { label: 'Outage Intake', disabled: true },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }
