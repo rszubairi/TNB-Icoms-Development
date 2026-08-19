@@ -9,6 +9,7 @@ public class Authorisation
     public DateTime TakenActiveAt { get; set; }
     public DateTime? TakenCompletedAt { get; set; }
     public string? Remark { get; set; }
+    public DateTime? ExtendedTo { get; set; } // set by GNC when an active outage overruns its planned end and is kept open deliberately
     public int CreatedBy { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

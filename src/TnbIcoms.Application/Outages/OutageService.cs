@@ -594,7 +594,7 @@ public class OutageService : IOutageService
         return await _dbContext.DropdownValues.ToDictionaryAsync(d => d.DropdownValueId, d => d.ValueLabel);
     }
 
-    private static OutageListItemDto MapListItem(OutageEntity outage, Dictionary<int, string> dropdownLabels)
+    internal static OutageListItemDto MapListItem(OutageEntity outage, Dictionary<int, string> dropdownLabels)
     {
         return new OutageListItemDto
         {

@@ -25,6 +25,9 @@ import { ChangeRequestReviewComponent } from './features/outages/change-request-
 import { OutageCalendarComponent } from './features/outages/outage-calendar/outage-calendar.component';
 import { StatisticsComponent } from './features/statistics/statistics.component';
 import { ReportsComponent } from './features/reports/reports.component';
+import { GncScheduledComponent } from './features/gnc/gnc-scheduled/gnc-scheduled.component';
+import { GncActiveComponent } from './features/gnc/gnc-active/gnc-active.component';
+import { ForcedOutageCreateComponent } from './features/gnc/forced-outage-create/forced-outage-create.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -65,6 +68,10 @@ export const routes: Routes = [
       { path: 'outages/calendar', component: OutageCalendarComponent },
       { path: 'statistics', component: StatisticsComponent },
       { path: 'reports', component: ReportsComponent },
+      { path: 'gnc/scheduled', component: GncScheduledComponent },
+      { path: 'gnc/active', component: GncActiveComponent, data: { mode: 'active' } },
+      { path: 'gnc/authorisation-in-force', component: GncActiveComponent, data: { mode: 'authorisationInForce' } },
+      { path: 'gnc/forced-outage', component: ForcedOutageCreateComponent },
       { path: 'outages/:id', component: OutageDetailComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]

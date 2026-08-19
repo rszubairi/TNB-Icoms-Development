@@ -1,0 +1,122 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Scheduled Outage</h1>
+    <p class="subtitle">GNM-approved outages awaiting site authorisation. Take active, mark Not Taken, or cancel.</p>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else if (outages().length === 0) {
+  <div class="card"><p class="state-message">No outages awaiting authorisation.</p></div>
+} @else {
+  <div class="card table-card">
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Outage No.</th>
+            <th>Type</th>
+            <th>Station</th>
+            <th>Equipment</th>
+            <th>Planned Start</th>
+            <th>Planned End</th>
+            <th>Description</th>
+            <th class="actions-cell">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (o of outages(); track o.outageId) {
+            <tr>
+              <td class="mono">{{ o.outageNumber }}</td>
+              <td>{{ o.outageTypeCode }}</td>
+              <td>{{ o.stationName }}</td>
+              <td>{{ o.equipmentName }}</td>
+              <td>{{ o.plannedStartAt | date: 'short' }}</td>
+              <td>{{ o.plannedEndAt | date: 'short' }}</td>
+              <td class="description-cell">{{ o.description }}</td>
+              <td class="actions-cell">
+                <button type="button" class="btn-primary row-action" (click)="openAction(o, 'take-active')">Take Active</button>
+                <button type="button" class="btn-secondary row-action" (click)="openAction(o, 'not-taken')">Not Taken</button>
+                <button type="button" class="btn-outline danger row-action" (click)="openAction(o, 'cancel')">Cancel</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
+@if (activeOutage(); as o) {
+  <div class="modal-backdrop" (click)="closeAction()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      @if (actionMode() === 'take-active') {
+        <h2 class="sidebar-heading">Take Active — {{ o.outageNumber }}</h2>
+        @if (actionError()) { <div class="form-alert">{{ actionError() }}</div> }
+
+        <label class="form-label">Authorisation No.</label>
+        <input class="form-input" type="text" [ngModel]="authorisationNo()" (ngModelChange)="authorisationNo.set($event)" />
+
+        <label class="form-label">Authoriser</label>
+        <select class="form-select" [ngModel]="personnelId()" (ngModelChange)="personnelId.set($event ? +$event : null)">
+          <option [ngValue]="null">Select…</option>
+          @for (p of personnel(); track p.authorisationPersonnelId) {
+            <option [value]="p.authorisationPersonnelId">{{ p.fullName }} ({{ p.designation }})</option>
+          }
+        </select>
+
+        <label class="form-label">Taken Active At</label>
+        <input class="form-input" type="datetime-local" [ngModel]="takenActiveAt()" (ngModelChange)="takenActiveAt.set($event)" />
+
+        <label class="form-label">Remark</label>
+        <textarea class="form-input" rows="2" [ngModel]="remark()" (ngModelChange)="remark.set($event)"></textarea>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeAction()">Cancel</button>
+          <button type="button" class="btn-primary" [disabled]="actionBusy()" (click)="submitTakeActive()">
+            {{ actionBusy() ? 'Saving…' : 'Take Active' }}
+          </button>
+        </div>
+      }
+
+      @if (actionMode() === 'not-taken') {
+        <h2 class="sidebar-heading">Mark Not Taken — {{ o.outageNumber }}</h2>
+        @if (actionError()) { <div class="form-alert">{{ actionError() }}</div> }
+
+        <label class="form-label">Reason</label>
+        <select class="form-select" [ngModel]="notTakenReasonId()" (ngModelChange)="notTakenReasonId.set($event ? +$event : null)">
+          <option [ngValue]="null">Select…</option>
+          @for (r of notTakenReasons(); track r.dropdownValueId) { <option [value]="r.dropdownValueId">{{ r.valueLabel }}</option> }
+        </select>
+
+        <label class="form-label">Remark</label>
+        <textarea class="form-input" rows="2" [ngModel]="remark()" (ngModelChange)="remark.set($event)"></textarea>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeAction()">Cancel</button>
+          <button type="button" class="btn-primary" [disabled]="actionBusy()" (click)="submitNotTaken()">
+            {{ actionBusy() ? 'Saving…' : 'Confirm Not Taken' }}
+          </button>
+        </div>
+      }
+
+      @if (actionMode() === 'cancel') {
+        <h2 class="sidebar-heading">Cancel Outage — {{ o.outageNumber }}</h2>
+        @if (actionError()) { <div class="form-alert">{{ actionError() }}</div> }
+
+        <label class="form-label">Remark</label>
+        <textarea class="form-input" rows="2" [ngModel]="remark()" (ngModelChange)="remark.set($event)"></textarea>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeAction()">Back</button>
+          <button type="button" class="btn-outline danger" [disabled]="actionBusy()" (click)="submitCancel()">
+            {{ actionBusy() ? 'Saving…' : 'Confirm Cancel' }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}

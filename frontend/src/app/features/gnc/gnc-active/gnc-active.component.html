@@ -1,0 +1,111 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">{{ title() }}</h1>
+    <p class="subtitle">{{ subtitle() }}</p>
+  </div>
+</div>
+
+@if (mode() === 'authorisationInForce') {
+  <div class="card legend-card">
+    <span class="legend-item"><span class="dot status-ontime"></span>On time</span>
+    <span class="legend-item"><span class="dot status-extended"></span>Extended by GNC</span>
+    <span class="legend-item"><span class="dot status-overdue"></span>Overdue</span>
+  </div>
+}
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else if (outages().length === 0) {
+  <div class="card"><p class="state-message">No outages to show.</p></div>
+} @else {
+  <div class="card table-card">
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Outage No.</th>
+            <th>Station</th>
+            <th>Equipment</th>
+            <th>Auth No.</th>
+            <th>Authoriser</th>
+            <th>Taken Active</th>
+            <th>Planned End</th>
+            <th>GNC Status</th>
+            <th class="actions-cell">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (o of outages(); track o.outageId) {
+            <tr [class]="timelineClass(o)">
+              <td class="mono">{{ o.outageNumber }}</td>
+              <td>{{ o.stationName }}</td>
+              <td>{{ o.equipmentName }}</td>
+              <td>{{ o.authorisationNo }}</td>
+              <td>{{ o.authoriserName }}</td>
+              <td>{{ o.takenActiveAt | date: 'short' }}</td>
+              <td>{{ (o.extendedTo ?? o.plannedEndAt) | date: 'short' }}</td>
+              <td>{{ o.gncStatus }}</td>
+              <td class="actions-cell">
+                @if (mode() === 'active') {
+                  @if (o.gncStatus === 'Taken-Active') {
+                    <button type="button" class="btn-primary row-action" (click)="openAction(o, 'complete')">Complete</button>
+                    <button type="button" class="btn-secondary row-action" (click)="openAction(o, 'extend')">Extend</button>
+                  }
+                  @if (o.gncStatus === 'Taken-Completed') {
+                    <button type="button" class="btn-primary row-action" (click)="close(o)">Close</button>
+                  }
+                } @else {
+                  <button type="button" class="btn-secondary row-action" (click)="openAction(o, 'extend')">Extend</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
+@if (activeOutage(); as o) {
+  <div class="modal-backdrop" (click)="closeAction()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      @if (actionMode() === 'complete') {
+        <h2 class="sidebar-heading">Complete — {{ o.outageNumber }}</h2>
+        @if (actionError()) { <div class="form-alert">{{ actionError() }}</div> }
+
+        <label class="form-label">Taken Completed At</label>
+        <input class="form-input" type="datetime-local" [ngModel]="takenCompletedAt()" (ngModelChange)="takenCompletedAt.set($event)" />
+
+        <label class="form-label">Remark</label>
+        <textarea class="form-input" rows="2" [ngModel]="remark()" (ngModelChange)="remark.set($event)"></textarea>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeAction()">Cancel</button>
+          <button type="button" class="btn-primary" [disabled]="actionBusy()" (click)="submitComplete()">
+            {{ actionBusy() ? 'Saving…' : 'Complete' }}
+          </button>
+        </div>
+      }
+
+      @if (actionMode() === 'extend') {
+        <h2 class="sidebar-heading">Extend — {{ o.outageNumber }}</h2>
+        @if (actionError()) { <div class="form-alert">{{ actionError() }}</div> }
+
+        <label class="form-label">Extended To</label>
+        <input class="form-input" type="datetime-local" [ngModel]="extendedTo()" (ngModelChange)="extendedTo.set($event)" />
+
+        <label class="form-label">Remark</label>
+        <textarea class="form-input" rows="2" [ngModel]="remark()" (ngModelChange)="remark.set($event)"></textarea>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeAction()">Cancel</button>
+          <button type="button" class="btn-primary" [disabled]="actionBusy()" (click)="submitExtend()">
+            {{ actionBusy() ? 'Saving…' : 'Extend' }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}

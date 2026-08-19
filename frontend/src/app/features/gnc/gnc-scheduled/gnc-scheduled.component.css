@@ -1,0 +1,138 @@
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-top: 0.25rem;
+  max-width: 65ch;
+}
+
+.table-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  padding: 0.8rem 1.2rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #f3f4f6;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 0.8rem 1.2rem;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.86rem;
+  color: #1f2937;
+  vertical-align: top;
+}
+
+.mono {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+}
+
+.description-cell {
+  max-width: 220px;
+  white-space: normal;
+}
+
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.row-action {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.74rem;
+  margin-left: 0.35rem;
+}
+
+.row-action.danger,
+.btn-outline.danger {
+  border-color: #fecdd3;
+  color: #be123c;
+}
+
+.row-action.danger:hover,
+.btn-outline.danger:hover {
+  background-color: #fff1f2;
+}
+
+.state-message {
+  padding: 2.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.state-message.error {
+  color: #e11d48;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(17, 24, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-card {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  padding: 1.5rem;
+  width: 420px;
+  max-width: 92vw;
+  max-height: 88vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem;
+}
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.form-alert {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
