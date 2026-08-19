@@ -32,8 +32,8 @@
           <label class="form-label" for="roleId">Role</label>
           <select id="roleId" class="form-select" formControlName="roleId">
             <option value="">Select role…</option>
-            @for (role of roles(); track role.id) {
-              <option [value]="role.id">{{ role.name }}</option>
+            @for (role of roles(); track role.roleId) {
+              <option [value]="role.roleId">{{ role.roleName }}</option>
             }
           </select>
         </div>
@@ -41,8 +41,8 @@
           <label class="form-label" for="zoneId">Zone</label>
           <select id="zoneId" class="form-select" formControlName="zoneId">
             <option value="">Select zone…</option>
-            @for (zone of zones(); track zone.id) {
-              <option [value]="zone.id">{{ zone.name }}</option>
+            @for (zone of zones(); track zone.zoneId) {
+              <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
             }
           </select>
         </div>

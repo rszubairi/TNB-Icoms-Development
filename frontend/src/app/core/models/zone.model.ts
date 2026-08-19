@@ -1,5 +1,5 @@
 export interface Zone {
-  id: string;
-  name: string;
-  code: string;
+  zoneId: number;
+  zoneName: string;
+  zoneAbbr: string;
 }

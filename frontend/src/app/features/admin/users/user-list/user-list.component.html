@@ -16,14 +16,14 @@
   />
   <select class="form-select" [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
     <option value="">All Roles</option>
-    @for (role of roles(); track role.id) {
-      <option [value]="role.id">{{ role.name }}</option>
+    @for (role of roles(); track role.roleId) {
+      <option [value]="role.roleId">{{ role.roleName }}</option>
     }
   </select>
   <select class="form-select" [ngModel]="zoneFilter()" (ngModelChange)="zoneFilter.set($event)">
     <option value="">All Zones</option>
-    @for (zone of zones(); track zone.id) {
-      <option [value]="zone.id">{{ zone.name }}</option>
+    @for (zone of zones(); track zone.zoneId) {
+      <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
     }
   </select>
 </div>

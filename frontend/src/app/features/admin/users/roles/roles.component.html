@@ -1,13 +1,108 @@
 <div class="page-header">
   <div>
     <h1 class="font-display">Roles &amp; Permissions</h1>
-    <p class="page-subtitle">Read-only role directory. Permission editing is planned for a later phase.</p>
+    <p class="page-subtitle">Create roles and control which modules and actions each role can access.</p>
   </div>
+  @if (!editing()) {
+    <button type="button" class="btn-primary" (click)="startCreate()">+ Create Role</button>
+  }
 </div>
 
-<div class="card notice">
-  Permission matrix editing is not part of Phase 1. This screen currently lists configured roles only.
-</div>
+@if (editing(); as draft) {
+  <div class="card form-card">
+    <h2 class="form-heading">{{ isEditMode() ? 'Edit Role' : 'Create Role' }}</h2>
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label" for="roleName">Role Name</label>
+        <input
+          id="roleName"
+          class="form-input"
+          type="text"
+          placeholder="e.g. Planner"
+          [ngModel]="draft.roleName"
+          (ngModelChange)="updateRoleName($event)"
+        />
+      </div>
+      <div>
+        <label class="form-label" for="roleCode">Role Code</label>
+        <input
+          id="roleCode"
+          class="form-input"
+          type="text"
+          placeholder="e.g. PLANNER"
+          [disabled]="isEditMode()"
+          [ngModel]="draft.roleCode"
+          (ngModelChange)="updateRoleCode($event)"
+        />
+      </div>
+    </div>
+
+    <div class="toggle-row">
+      <label class="checkbox-row">
+        <input
+          type="checkbox"
+          [ngModel]="draft.isExternal"
+          (ngModelChange)="updateIsExternal($event)"
+        />
+        <span>External / GCU role</span>
+      </label>
+      @if (isEditMode()) {
+        <label class="checkbox-row">
+          <input
+            type="checkbox"
+            [ngModel]="draft.isActive"
+            (ngModelChange)="updateIsActive($event)"
+          />
+          <span>Active</span>
+        </label>
+      }
+    </div>
+
+    <div class="permission-block">
+      <label class="form-label">Permissions</label>
+      <div class="table-scroll">
+        <table class="data-table permission-table">
+          <thead>
+            <tr>
+              <th>Module</th>
+              @for (action of actions(); track action) {
+                <th class="perm-col">{{ action }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (module of modules(); track module.code) {
+              <tr>
+                <td>{{ module.label }}</td>
+                @for (action of actions(); track action) {
+                  <td class="perm-col">
+                    <input
+                      type="checkbox"
+                      [checked]="isGranted(module.code, action)"
+                      (change)="toggleGrant(module.code, action, $any($event.target).checked)"
+                    />
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (formError()) {
+      <div class="form-alert">{{ formError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelEdit()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
+        {{ saving() ? 'Saving…' : (isEditMode() ? 'Save Changes' : 'Create Role') }}
+      </button>
+    </div>
+  </div>
+}
 
 <div class="card table-card">
   @if (loading()) {
@@ -21,20 +116,44 @@
       <thead>
         <tr>
           <th>Role Name</th>
-          <th>Description</th>
+          <th>Code</th>
           <th>Type</th>
+          <th>Permissions</th>
+          <th>Status</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        @for (role of roles(); track role.id) {
+        @for (role of roles(); track role.roleId) {
           <tr>
-            <td>{{ role.name }}</td>
-            <td>{{ role.description }}</td>
+            <td>{{ role.roleName }}</td>
+            <td class="mono">{{ role.roleCode }}</td>
             <td>
               @if (role.isExternal) {
                 <span class="status-badge status-pending">External / GCU</span>
               } @else {
                 <span class="status-badge status-confirmed">Internal / TNB</span>
+              }
+            </td>
+            <td>{{ role.permissionCount }} granted</td>
+            <td>
+              @if (role.isActive) {
+                <span class="status-badge status-confirmed">Active</span>
+              } @else {
+                <span class="status-badge status-inactive">Inactive</span>
+              }
+            </td>
+            <td class="actions-cell">
+              <button type="button" class="btn-outline row-action" (click)="startEdit(role)">Edit</button>
+              @if (role.isActive) {
+                <button
+                  type="button"
+                  class="btn-outline row-action danger"
+                  [disabled]="rowBusyId() === role.roleId"
+                  (click)="deactivate(role)"
+                >
+                  {{ rowBusyId() === role.roleId ? 'Working…' : 'Deactivate' }}
+                </button>
               }
             </td>
           </tr>

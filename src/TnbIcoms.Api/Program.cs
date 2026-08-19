@@ -9,6 +9,7 @@ using TnbIcoms.Application.Auth;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.Email;
 using TnbIcoms.Application.Lookups;
+using TnbIcoms.Application.Roles;
 using TnbIcoms.Application.Users;
 using TnbIcoms.Infrastructure.Identity;
 using TnbIcoms.Infrastructure.Persistence;
@@ -65,7 +66,7 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IRoleAdminService, RoleAdminService>();
 builder.Services.AddScoped<IZoneService, ZoneService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
@@ -81,7 +82,13 @@ else
     builder.Services.AddScoped<IEmailSender, StubEmailSender>();
 }
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Angular form controls emit numeric ids as strings (e.g. select values);
+        // accept "3" for an int property instead of requiring a JSON number.
+        options.JsonSerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
