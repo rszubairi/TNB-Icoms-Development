@@ -1,0 +1,144 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Shift Handover</h1>
+    <p class="subtitle">Morning / Evening / Night control-room logbook. Pass Handover copies open items to the next shift and locks this one.</p>
+  </div>
+  <button type="button" class="btn-secondary" (click)="toggleHistory()">{{ showHistory() ? 'Close History' : 'Search History' }}</button>
+</div>
+
+@if (showHistory()) {
+  <div class="card history-card">
+    <h2 class="sidebar-heading">Shift History</h2>
+    @if (history().length === 0) {
+      <p class="state-message small">No shifts recorded yet.</p>
+    } @else {
+      <table class="stats-table">
+        <thead><tr><th>Date</th><th>Shift</th><th>Entries</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          @for (h of history(); track h.shiftId) {
+            <tr>
+              <td>{{ h.shiftDate | date: 'mediumDate' }}</td>
+              <td>{{ h.shiftType }}</td>
+              <td>{{ h.entryCount }}</td>
+              <td>{{ h.isPassed ? 'Passed' : 'Open' }}</td>
+              <td><button type="button" class="btn-outline row-action" (click)="openHistoryShift(h)">Open</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+}
+
+<div class="card filter-bar">
+  <label class="form-label">Date</label>
+  <input class="form-input" type="date" [ngModel]="shiftDate()" (ngModelChange)="onShiftDateChange($event)" />
+
+  <label class="form-label">Shift</label>
+  <select class="form-select" [ngModel]="shiftType()" (ngModelChange)="onShiftTypeChange($event)">
+    <option value="Morning">Morning</option>
+    <option value="Evening">Evening</option>
+    <option value="Night">Night</option>
+  </select>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+}
+
+@if (!loading() && !errorMessage() && shift(); as s) {
+  <div class="card control-card">
+    <div class="control-header">
+      <h2 class="sidebar-heading">Handover Control — {{ s.zoneName }}</h2>
+      @if (s.isPassed) { <span class="status-badge status-passed">Passed {{ s.passedAt | date: 'short' }} by {{ s.passedByName }}</span> }
+    </div>
+
+    <div class="control-grid">
+      <div>
+        <label class="form-label">Control Manager</label>
+        <select class="form-select" [disabled]="s.isPassed" [ngModel]="controlManagerId()" (ngModelChange)="controlManagerId.set($event ? +$event : null)">
+          <option [ngValue]="null">Select…</option>
+          @for (p of personnel(); track p.authorisationPersonnelId) { <option [value]="p.authorisationPersonnelId">{{ p.fullName }}</option> }
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Switch Engineer 1</label>
+        <select class="form-select" [disabled]="s.isPassed" [ngModel]="switchEngineer1Id()" (ngModelChange)="switchEngineer1Id.set($event ? +$event : null)">
+          <option [ngValue]="null">Select…</option>
+          @for (p of personnel(); track p.authorisationPersonnelId) { <option [value]="p.authorisationPersonnelId">{{ p.fullName }}</option> }
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Switch Engineer 2</label>
+        <select class="form-select" [disabled]="s.isPassed" [ngModel]="switchEngineer2Id()" (ngModelChange)="switchEngineer2Id.set($event ? +$event : null)">
+          <option [ngValue]="null">Select…</option>
+          @for (p of personnel(); track p.authorisationPersonnelId) { <option [value]="p.authorisationPersonnelId">{{ p.fullName }}</option> }
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Despatcher</label>
+        <select class="form-select" [disabled]="s.isPassed" [ngModel]="despatcherId()" (ngModelChange)="despatcherId.set($event ? +$event : null)">
+          <option [ngValue]="null">Select…</option>
+          @for (p of personnel(); track p.authorisationPersonnelId) { <option [value]="p.authorisationPersonnelId">{{ p.fullName }}</option> }
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Control Assistant</label>
+        <select class="form-select" [disabled]="s.isPassed" [ngModel]="controlAssistantId()" (ngModelChange)="controlAssistantId.set($event ? +$event : null)">
+          <option [ngValue]="null">Select…</option>
+          @for (p of personnel(); track p.authorisationPersonnelId) { <option [value]="p.authorisationPersonnelId">{{ p.fullName }}</option> }
+        </select>
+      </div>
+    </div>
+
+    @if (!s.isPassed) {
+      <div class="control-actions">
+        <button type="button" class="btn-secondary" [disabled]="savingControl()" (click)="saveControl()">
+          {{ savingControl() ? 'Saving…' : 'Save Control Team' }}
+        </button>
+        <button type="button" class="btn-primary" [disabled]="passing()" (click)="passHandover()">
+          {{ passing() ? 'Passing…' : 'Pass Handover →' }}
+        </button>
+      </div>
+    }
+  </div>
+
+  <div class="card entries-card">
+    <div class="category-tabs">
+      @for (c of categories(); track c) {
+        <button type="button" class="tab-btn" [class.active]="activeCategory() === c" (click)="activeCategory.set(c)">{{ c }}</button>
+      }
+    </div>
+
+    <div class="entries-list">
+      @if (entriesForActiveCategory().length === 0) {
+        <p class="state-message small">No entries in this category yet.</p>
+      } @else {
+        @for (e of entriesForActiveCategory(); track e.handoverEntryId) {
+          <div class="entry-row">
+            <div class="entry-body">
+              <p class="entry-description">{{ e.description }}</p>
+              @if (e.relatedOutageNumber) { <span class="cell-subtext">Related: {{ e.relatedOutageNumber }}</span> }
+              <span class="cell-subtext">{{ e.createdByName }} · {{ e.createdAt | date: 'short' }}</span>
+            </div>
+            @if (!e.isLocked) {
+              <button type="button" class="icon-btn" (click)="removeEntry(e)" title="Remove">✕</button>
+            }
+          </div>
+        }
+      }
+    </div>
+
+    @if (!s.isPassed) {
+      <div class="add-entry-form">
+        <textarea class="form-input" rows="2" placeholder="Add entry…" [ngModel]="newDescription()" (ngModelChange)="newDescription.set($event)"></textarea>
+        <input class="form-input outage-id-input" type="number" placeholder="Related Outage ID (optional)" [ngModel]="newRelatedOutageId()" (ngModelChange)="newRelatedOutageId.set($event ? +$event : null)" />
+        <button type="button" class="btn-primary" [disabled]="addingEntry()" (click)="addEntry()">
+          {{ addingEntry() ? 'Adding…' : 'Add' }}
+        </button>
+      </div>
+    }
+  </div>
+}
