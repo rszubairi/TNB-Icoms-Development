@@ -1,0 +1,98 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Single Line Diagrams</h1>
+    <p class="subtitle">New, Existing, and Post-Commission update submissions, routed through GNM Engineer, S/E, and DCE review before publication.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn-primary" (click)="openForm()">+ Submit SLD</button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <h2 class="sidebar-heading">Submit Single Line Diagram</h2>
+    @if (formError()) { <div class="form-alert">{{ formError() }}</div> }
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label">Zone</label>
+        <select class="form-select" [ngModel]="formZoneId()" (ngModelChange)="onFormZoneChange($event)">
+          <option [ngValue]="null">Select zone…</option>
+          @for (z of zones(); track z.zoneId) { <option [value]="z.zoneId">{{ z.zoneName }}</option> }
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Station</label>
+        <select class="form-select" [disabled]="!formZoneId()" [ngModel]="formStationId()" (ngModelChange)="formStationId.set($event ? +$event : null)">
+          <option [ngValue]="null">Select station…</option>
+          @for (s of stationsForZone(); track s.stationId) { <option [value]="s.stationId">{{ s.stationName }}</option> }
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Voltage</label>
+        <select class="form-select" [ngModel]="formVoltageLevelId()" (ngModelChange)="formVoltageLevelId.set($event ? +$event : null)">
+          <option [ngValue]="null">Select voltage…</option>
+          @for (v of voltageLevels(); track v.voltageLevelId) { <option [value]="v.voltageLevelId">{{ v.levelName }}</option> }
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Flow Type</label>
+        <select class="form-select" [ngModel]="formFlowType()" (ngModelChange)="formFlowType.set($event)">
+          <option value="New">New</option>
+          <option value="Existing">Existing</option>
+          <option value="Update">Update (Post-Commission)</option>
+        </select>
+      </div>
+      <div class="span-2">
+        <label class="form-label">Remark</label>
+        <textarea class="form-input" rows="2" [ngModel]="formRemark()" (ngModelChange)="formRemark.set($event)"></textarea>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="saving()" (click)="submit()">
+        {{ saving() ? 'Submitting…' : 'Submit' }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else if (diagrams().length === 0) {
+  <div class="card"><p class="state-message">No Single Line Diagrams submitted yet.</p></div>
+} @else {
+  <div class="card table-card">
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Diagram No.</th>
+            <th>Station</th>
+            <th>Voltage</th>
+            <th>Flow Type</th>
+            <th>Status</th>
+            <th>Submitted By</th>
+            <th>Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (d of diagrams(); track d.singleLineDiagramId) {
+            <tr [routerLink]="['/sld', d.singleLineDiagramId]" class="clickable-row">
+              <td class="mono">{{ d.diagramNumber ?? '—' }}</td>
+              <td>{{ d.stationName }}</td>
+              <td>{{ d.voltageLevelName }}</td>
+              <td>{{ d.flowType }}</td>
+              <td><span class="status-badge">{{ statusLabel(d.status) }}</span></td>
+              <td>{{ d.submittedByName }}</td>
+              <td>{{ d.submittedAt | date: 'short' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

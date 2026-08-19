@@ -29,6 +29,8 @@ import { GncScheduledComponent } from './features/gnc/gnc-scheduled/gnc-schedule
 import { GncActiveComponent } from './features/gnc/gnc-active/gnc-active.component';
 import { ForcedOutageCreateComponent } from './features/gnc/forced-outage-create/forced-outage-create.component';
 import { HandoverComponent } from './features/handover/handover.component';
+import { SldListComponent } from './features/sld/sld-list/sld-list.component';
+import { SldDetailComponent } from './features/sld/sld-detail/sld-detail.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -74,6 +76,8 @@ export const routes: Routes = [
       { path: 'gnc/authorisation-in-force', component: GncActiveComponent, data: { mode: 'authorisationInForce' } },
       { path: 'gnc/forced-outage', component: ForcedOutageCreateComponent },
       { path: 'handover', component: HandoverComponent },
+      { path: 'sld', component: SldListComponent },
+      { path: 'sld/:id', component: SldDetailComponent },
       { path: 'outages/:id', component: OutageDetailComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]

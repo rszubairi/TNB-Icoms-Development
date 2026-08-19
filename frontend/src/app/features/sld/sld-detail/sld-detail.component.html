@@ -1,0 +1,101 @@
+<div class="page-header">
+  <a class="back-link" routerLink="/sld">← Back to Single Line Diagrams</a>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+}
+
+@if (!loading() && !errorMessage() && sld(); as s) {
+  <div class="layout-grid">
+    <div class="card detail-card">
+      <h1 class="font-display">{{ s.diagramNumber ?? 'Draft SLD' }}</h1>
+      <div class="detail-meta">
+        <span class="status-badge">{{ s.status }}</span>
+        <span class="cell-subtext">{{ s.flowType }} · {{ s.stationName }} · {{ s.voltageLevelName }}</span>
+      </div>
+
+      @if (s.remark) { <p class="field-block"><strong>Remark:</strong> {{ s.remark }}</p> }
+      @if (s.rejectionReason) { <p class="field-block warning"><strong>Adjustment/Rejection reason:</strong> {{ s.rejectionReason }}</p> }
+
+      <div class="timeline">
+        <div class="timeline-row"><span>Submitted</span><span>{{ s.submittedByName }} · {{ s.submittedAt | date: 'short' }}</span></div>
+        @if (s.engineerReviewedByName) { <div class="timeline-row"><span>Engineer Reviewed</span><span>{{ s.engineerReviewedByName }} · {{ s.engineerReviewedAt | date: 'short' }}</span></div> }
+        @if (s.seApprovedByName) { <div class="timeline-row"><span>S/E Approved</span><span>{{ s.seApprovedByName }} · {{ s.seApprovedAt | date: 'short' }}</span></div> }
+        @if (s.dceApprovedByName) { <div class="timeline-row"><span>DCE Approved</span><span>{{ s.dceApprovedByName }} · {{ s.dceApprovedAt | date: 'short' }}</span></div> }
+        @if (s.requestorApprovedByName) { <div class="timeline-row"><span>Requestor Approved</span><span>{{ s.requestorApprovedByName }} · {{ s.requestorApprovedAt | date: 'short' }}</span></div> }
+        @if (s.publishedAt) { <div class="timeline-row"><span>Published</span><span>{{ s.publishedAt | date: 'short' }}</span></div> }
+      </div>
+
+      <div class="drawing-block">
+        <h2 class="sidebar-heading">Drawing</h2>
+        @if (s.hasDrawing) {
+          <button type="button" class="btn-secondary" (click)="downloadDrawing()">Download Drawing</button>
+        } @else {
+          <p class="cell-subtext">No drawing uploaded yet.</p>
+        }
+        @if (s.status === 'PendingEngineerReview') {
+          <div class="upload-row">
+            <input type="file" (change)="onFileSelected($event)" [disabled]="uploading()" />
+            @if (uploading()) { <span class="cell-subtext">Uploading…</span> }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <h2 class="sidebar-heading">Actions</h2>
+      @if (actionError()) { <div class="form-alert">{{ actionError() }}</div> }
+
+      @if (s.status === 'PendingEngineerReview') {
+        <p class="stage-hint">GNM Engineer: assign Mnemonic and Substation Type, upload the drawing, then approve to send to S/E.</p>
+        <label class="form-label">Mnemonic</label>
+        <input class="form-input" type="text" [ngModel]="reviewMnemonic()" (ngModelChange)="reviewMnemonic.set($event)" />
+        <label class="form-label">Substation Type</label>
+        <select class="form-select" [ngModel]="reviewSubstationType()" (ngModelChange)="reviewSubstationType.set($event)">
+          <option value="AIS">AIS</option>
+          <option value="GIS">GIS</option>
+          <option value="Hybrid">Hybrid</option>
+        </select>
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="submitEngineerApprove()">Approve → Send to S/E</button>
+
+        <label class="form-label">Rejection Reason</label>
+        <textarea class="form-input" rows="2" [ngModel]="rejectionReason()" (ngModelChange)="rejectionReason.set($event)"></textarea>
+        <button type="button" class="btn-outline danger full-width" [disabled]="busy()" (click)="submitEngineerReject()">Reject</button>
+      }
+
+      @if (s.status === 'PendingSE') {
+        <p class="stage-hint">S/E review.</p>
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="seApprove()">Approve → Send to DCE</button>
+        <label class="form-label">Adjustment Reason</label>
+        <textarea class="form-input" rows="2" [ngModel]="rejectionReason()" (ngModelChange)="rejectionReason.set($event)"></textarea>
+        <button type="button" class="btn-outline full-width" [disabled]="busy()" (click)="seAdjust()">Request Adjustment (→ Engineer)</button>
+      }
+
+      @if (s.status === 'PendingDCE') {
+        <p class="stage-hint">DCE review.</p>
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="dceApprove()">Approve → Send to Requestor</button>
+        <label class="form-label">Adjustment Reason</label>
+        <textarea class="form-input" rows="2" [ngModel]="rejectionReason()" (ngModelChange)="rejectionReason.set($event)"></textarea>
+        <button type="button" class="btn-outline full-width" [disabled]="busy()" (click)="dceAdjust()">Request Adjustment (→ Engineer)</button>
+      }
+
+      @if (s.status === 'PendingRequestorApproval') {
+        <p class="stage-hint">Requestor final approval — publishing makes this diagram visible station-wide.</p>
+        <button type="button" class="btn-primary full-width" [disabled]="busy()" (click)="requestorApprove()">Approve & Publish</button>
+        <label class="form-label">Adjustment Reason</label>
+        <textarea class="form-input" rows="2" [ngModel]="rejectionReason()" (ngModelChange)="rejectionReason.set($event)"></textarea>
+        <button type="button" class="btn-outline full-width" [disabled]="busy()" (click)="requestorAdjust()">Request Adjustment (→ Engineer)</button>
+      }
+
+      @if (s.status === 'Published') {
+        <p class="stage-hint success">Published and visible from this station's outages.</p>
+      }
+      @if (s.status === 'Rejected') {
+        <p class="stage-hint warning">Rejected by the GNM Engineer.</p>
+      }
+    </div>
+  </div>
+}

@@ -68,6 +68,5 @@ public class Outage
     public ICollection<OutageOffPoint> OffPoints { get; set; } = new List<OutageOffPoint>();
     public ICollection<GcuAcknowledgement> GcuAcknowledgements { get; set; } = new List<GcuAcknowledgement>();
     public ICollection<Authorisation> Authorisations { get; set; } = new List<Authorisation>();
-    public ICollection<SingleLineDiagram> SingleLineDiagrams { get; set; } = new List<SingleLineDiagram>();
     public ICollection<CommissioningMemo> CommissioningMemos { get; set; } = new List<CommissioningMemo>();
 }

@@ -47,6 +47,7 @@ export class SidebarComponent {
     { label: 'GNC: Active Outages', path: '/gnc/active' },
     { label: 'GNC: Authorisation in Force', path: '/gnc/authorisation-in-force' },
     { label: 'GNC: Forced Outage', path: '/gnc/forced-outage' },
-    { label: 'Shift Handover', path: '/handover' }
+    { label: 'Shift Handover', path: '/handover' },
+    { label: 'Single Line Diagrams', path: '/sld' }
   ];
 }

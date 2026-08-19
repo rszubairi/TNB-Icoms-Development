@@ -1,0 +1,142 @@
+.page-header {
+  margin-bottom: 1rem;
+}
+
+.back-link {
+  font-size: 0.82rem;
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.detail-card {
+  padding: 2rem;
+}
+
+.detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.5rem 0 1.25rem;
+}
+
+.status-badge {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.4rem;
+  background-color: #eef2ff;
+  color: #4338ca;
+}
+
+.cell-subtext {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.field-block {
+  font-size: 0.86rem;
+  color: #374151;
+  margin: 0.5rem 0;
+}
+
+.field-block.warning {
+  color: #b45309;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  background-color: #fafafa;
+  border-radius: 0.5rem;
+}
+
+.timeline-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+.drawing-block {
+  border-top: 1px solid #f3f4f6;
+  padding-top: 1.25rem;
+}
+
+.sidebar-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.75rem;
+}
+
+.upload-row {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.action-card {
+  position: sticky;
+  top: 1rem;
+}
+
+.stage-hint {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.stage-hint.success {
+  color: #15803d;
+}
+
+.stage-hint.warning {
+  color: #b45309;
+}
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.form-alert {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.state-message {
+  padding: 2.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.state-message.error {
+  color: #e11d48;
+}

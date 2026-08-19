@@ -42,6 +42,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<TransmissionLineStation> TransmissionLineStations => Set<TransmissionLineStation>();
     public DbSet<TransmissionLineOwnerZone> TransmissionLineOwnerZones => Set<TransmissionLineOwnerZone>();
     public DbSet<LinkingLine> LinkingLines => Set<LinkingLine>();
+    public DbSet<SingleLineDiagram> SingleLineDiagrams => Set<SingleLineDiagram>();
 
     // dbo (Outage) schema
     public DbSet<OutageEntities.Outage> Outages => Set<OutageEntities.Outage>();
@@ -52,7 +53,6 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<OutageEntities.OutageOffPoint> OutageOffPoints => Set<OutageEntities.OutageOffPoint>();
     public DbSet<OutageEntities.GcuAcknowledgement> GcuAcknowledgements => Set<OutageEntities.GcuAcknowledgement>();
     public DbSet<OutageEntities.Authorisation> Authorisations => Set<OutageEntities.Authorisation>();
-    public DbSet<OutageEntities.SingleLineDiagram> SingleLineDiagrams => Set<OutageEntities.SingleLineDiagram>();
     public DbSet<OutageEntities.CommissioningMemo> CommissioningMemos => Set<OutageEntities.CommissioningMemo>();
 
     // Handover schema
