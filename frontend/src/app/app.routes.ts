@@ -24,6 +24,7 @@ import { OutageDetailComponent } from './features/outages/outage-detail/outage-d
 import { ChangeRequestReviewComponent } from './features/outages/change-request-review/change-request-review.component';
 import { OutageCalendarComponent } from './features/outages/outage-calendar/outage-calendar.component';
 import { StatisticsComponent } from './features/statistics/statistics.component';
+import { ReportsComponent } from './features/reports/reports.component';
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
@@ -63,6 +64,7 @@ export const routes: Routes = [
       { path: 'outages/change-requests', component: ChangeRequestReviewComponent },
       { path: 'outages/calendar', component: OutageCalendarComponent },
       { path: 'statistics', component: StatisticsComponent },
+      { path: 'reports', component: ReportsComponent },
       { path: 'outages/:id', component: OutageDetailComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]

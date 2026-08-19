@@ -42,6 +42,7 @@ export class SidebarComponent {
     { label: 'Change Requests', path: '/outages/change-requests' },
     { label: 'Outage Calendar', path: '/outages/calendar' },
     { label: 'Statistics', path: '/statistics' },
+    { label: 'Customised Reporting', path: '/reports' },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }
   ];

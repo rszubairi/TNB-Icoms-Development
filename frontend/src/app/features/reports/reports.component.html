@@ -1,0 +1,152 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Customised Reporting</h1>
+    <p class="subtitle">Build a listing from any combination of filters, export it, or save it as a Favourite for one-click reuse.</p>
+  </div>
+</div>
+
+<div class="layout-grid">
+  <div class="card filter-card">
+    <h2 class="sidebar-heading">Filters</h2>
+
+    <label class="form-label">Keyword</label>
+    <input class="form-input" type="text" placeholder="Outage number or description" [ngModel]="filter().keyword" (ngModelChange)="onKeywordChange($event)" />
+
+    <label class="form-label">Date Start</label>
+    <input class="form-input" type="date" [ngModel]="filter().dateStart" (ngModelChange)="onDateStartChange($event)" />
+
+    <label class="form-label">Date End</label>
+    <input class="form-input" type="date" [ngModel]="filter().dateEnd" (ngModelChange)="onDateEndChange($event)" />
+
+    <label class="form-label">Outage Code</label>
+    <select class="form-select" [ngModel]="filter().outageCode" (ngModelChange)="onOutageCodeChange($event)">
+      <option [ngValue]="null">Any</option>
+      <option value="P">Planned</option>
+      <option value="U">Unplanned</option>
+      <option value="E">Emergency</option>
+      <option value="F">Forced</option>
+    </select>
+
+    <label class="form-label">Requestor Status</label>
+    <select class="form-select" [ngModel]="filter().requestorStatus" (ngModelChange)="onRequestorStatusChange($event)">
+      <option [ngValue]="null">Any</option>
+      <option value="Draft">Draft</option>
+      <option value="Pending">Pending</option>
+      <option value="Confirmed">Confirmed</option>
+      <option value="Outage Closed - Unconfirmed">Outage Closed - Unconfirmed</option>
+    </select>
+
+    <label class="form-label">GNM Status</label>
+    <select class="form-select" [ngModel]="filter().gnmStatus" (ngModelChange)="onGnmStatusChange($event)">
+      <option [ngValue]="null">Any</option>
+      <option value="Pending">Pending</option>
+      <option value="Under-Study">Under-Study</option>
+      <option value="KIV">KIV</option>
+      <option value="Approved">Approved</option>
+      <option value="Disapproved">Disapproved</option>
+    </select>
+
+    <label class="form-label">Sort By</label>
+    <select class="form-select" [ngModel]="filter().sortBy" (ngModelChange)="onSortByChange($event)">
+      <option value="date">Planned Date</option>
+      <option value="code">Outage Number</option>
+    </select>
+
+    <label class="checkbox-label">
+      <input type="checkbox" [ngModel]="filter().showDraft" (ngModelChange)="onShowDraftChange($event)" />
+      Include Draft outages
+    </label>
+
+    <div class="filter-actions">
+      <button type="button" class="btn-primary full-width" [disabled]="loading()" (click)="generate()">
+        {{ loading() ? 'Generating…' : 'Generate Report' }}
+      </button>
+      <button type="button" class="btn-secondary full-width" (click)="resetFilters()">Reset</button>
+      <button type="button" class="btn-secondary full-width" (click)="openSaveForm()">☆ Save as Favourite</button>
+    </div>
+
+    @if (showSaveForm()) {
+      <div class="save-form">
+        <label class="form-label">Favourite Name</label>
+        <input class="form-input" type="text" [ngModel]="favouriteName()" (ngModelChange)="favouriteName.set($event)" />
+        <div class="save-form-actions">
+          <button type="button" class="btn-secondary" (click)="cancelSaveForm()">Cancel</button>
+          <button type="button" class="btn-primary" [disabled]="savingFavourite()" (click)="saveFavourite()">
+            {{ savingFavourite() ? 'Saving…' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (favourites().length > 0) {
+      <h2 class="sidebar-heading favourites-heading">Favourites</h2>
+      <ul class="favourites-list">
+        @for (fav of favourites(); track fav.savedReportFilterId) {
+          <li (click)="applyFavourite(fav)">
+            <span>{{ fav.filterName }}</span>
+            <button type="button" class="icon-btn" (click)="deleteFavourite(fav, $event)" title="Delete favourite">✕</button>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+
+  <div class="card results-card">
+    @if (errorMessage()) {
+      <p class="state-message error">{{ errorMessage() }}</p>
+    }
+
+    @if (!hasGenerated() && !loading()) {
+      <p class="state-message">Set your filters and click "Generate Report" to build a listing.</p>
+    } @else if (loading()) {
+      <p class="state-message">Loading…</p>
+    } @else if (results().length === 0) {
+      <p class="state-message">No outages match this filter combination.</p>
+    } @else {
+      <div class="results-toolbar">
+        <span class="result-count">{{ results().length }} outage(s)</span>
+        <div class="export-actions">
+          <button type="button" class="btn-secondary" [disabled]="exporting() === 'excel'" (click)="exportExcel()">
+            {{ exporting() === 'excel' ? 'Exporting…' : 'Export Excel' }}
+          </button>
+          <button type="button" class="btn-secondary" [disabled]="exporting() === 'pdf'" (click)="exportPdf()">
+            {{ exporting() === 'pdf' ? 'Exporting…' : 'Export PDF' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Outage No.</th>
+              <th>Type</th>
+              <th>Zone</th>
+              <th>Station</th>
+              <th>Equipment</th>
+              <th>Planned Start</th>
+              <th>Planned End</th>
+              <th>Requestor</th>
+              <th>GNM</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (o of results(); track o.outageId) {
+              <tr>
+                <td class="mono">{{ o.outageNumber }}</td>
+                <td>{{ o.outageTypeCode }}</td>
+                <td>{{ o.zoneName }}</td>
+                <td>{{ o.stationName }}</td>
+                <td>{{ o.equipmentName }}</td>
+                <td>{{ o.plannedStartAt | date: 'short' }}</td>
+                <td>{{ o.plannedEndAt | date: 'short' }}</td>
+                <td>{{ o.requestorStatus }}</td>
+                <td>{{ o.gnmStatus }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

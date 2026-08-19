@@ -59,12 +59,24 @@ public class OutageService : IOutageService
         {
             query = query.Where(o => o.PlannedStartAt < filter.RangeEnd.Value && filter.RangeStart.Value < o.PlannedEndAt);
         }
+        if (filter.StationId.HasValue) query = query.Where(o => o.StationId == filter.StationId.Value);
+        if (filter.JobTypeId.HasValue) query = query.Where(o => o.JobTypeId == filter.JobTypeId.Value);
+        if (filter.DateStart.HasValue) query = query.Where(o => o.PlannedStartAt >= filter.DateStart.Value);
+        if (filter.DateEnd.HasValue) query = query.Where(o => o.PlannedStartAt <= filter.DateEnd.Value);
+        if (!string.IsNullOrWhiteSpace(filter.Keyword))
+        {
+            var keyword = filter.Keyword.Trim();
+            query = query.Where(o => o.OutageNumber.Contains(keyword) || o.Description.Contains(keyword));
+        }
+        if (!filter.ShowDraft) query = query.Where(o => o.RequestorStatus != "Draft");
 
         var jobTypeLabels = await GetDropdownLabelsAsync();
 
-        var outages = await query
-            .OrderByDescending(o => o.PlannedStartAt)
-            .ToListAsync();
+        var orderedQuery = filter.SortBy == "code"
+            ? query.OrderBy(o => o.OutageNumber)
+            : query.OrderByDescending(o => o.PlannedStartAt);
+
+        var outages = await orderedQuery.ToListAsync();
 
         return ApiResponse<List<OutageListItemDto>>.Ok(outages.Select(o => MapListItem(o, jobTypeLabels)).ToList());
     }

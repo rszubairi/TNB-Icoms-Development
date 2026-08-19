@@ -16,6 +16,15 @@ public class OutageListFilter
     public bool PendingGnmApprovalOnly { get; set; } // RequestorStatus=Confirmed && PlannerStatus=Agreed && GnmStatus=Pending/Under-Study
     public DateTime? RangeStart { get; set; } // Calendar view: outages overlapping [RangeStart, RangeEnd]
     public DateTime? RangeEnd { get; set; }
+
+    // Customised Reporting (URS §5.9)
+    public int? StationId { get; set; }
+    public int? JobTypeId { get; set; }
+    public string? Keyword { get; set; } // matches OutageNumber or Description
+    public DateTime? DateStart { get; set; } // filters on PlannedStartAt >=
+    public DateTime? DateEnd { get; set; } // filters on PlannedStartAt <=
+    public bool ShowDraft { get; set; } // when false (default), Draft outages are excluded from reports
+    public string? SortBy { get; set; } // "date" (default) or "code"
 }
 
 public interface IOutageService
