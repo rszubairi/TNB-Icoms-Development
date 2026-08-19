@@ -1,0 +1,665 @@
+<title>ICOMS 2.0 Build Plan</title>
+<style>
+:root{
+  --bg:#f5f4f0;
+  --surface:#ffffff;
+  --surface-2:#eceae3;
+  --border:#dcd8cd;
+  --text:#221f1a;
+  --text-dim:#5c584f;
+  --text-faint:#8b8678;
+  --accent:#c65a1f;
+  --accent-2:#1f5c6b;
+  --done:#2f6b3f;
+  --done-bg:#e6efe4;
+  --partial:#b8860b;
+  --partial-bg:#f6efdc;
+  --todo:#a13a3a;
+  --todo-bg:#f5e5e2;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171511;
+    --surface:#1f1c17;
+    --surface-2:#262219;
+    --border:#3a352a;
+    --text:#efece3;
+    --text-dim:#b8b2a2;
+    --text-faint:#8b8678;
+    --accent:#e37a3d;
+    --accent-2:#5fa8b8;
+    --done:#7fbf8f;
+    --done-bg:#1e2c1f;
+    --partial:#e0b84c;
+    --partial-bg:#2e2711;
+    --todo:#e08080;
+    --todo-bg:#2e1e1c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171511;
+  --surface:#1f1c17;
+  --surface-2:#262219;
+  --border:#3a352a;
+  --text:#efece3;
+  --text-dim:#b8b2a2;
+  --text-faint:#8b8678;
+  --accent:#e37a3d;
+  --accent-2:#5fa8b8;
+  --done:#7fbf8f;
+  --done-bg:#1e2c1f;
+  --partial:#e0b84c;
+  --partial-bg:#2e2711;
+  --todo:#e08080;
+  --todo-bg:#2e1e1c;
+}
+
+*{box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
+  margin:0;
+  padding:0 1.5rem 6rem;
+  line-height:1.55;
+}
+.wrap{max-width:920px;margin:0 auto;}
+
+header.doc-head{
+  padding:3.5rem 0 2rem;
+  border-bottom:2px solid var(--border);
+  margin-bottom:2.5rem;
+}
+.eyebrow{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--accent-2);
+  margin-bottom:0.9rem;
+}
+h1{
+  font-family:'Fraunces', Georgia, serif;
+  font-weight:600;
+  font-size:2.5rem;
+  line-height:1.08;
+  margin:0 0 0.7rem;
+  text-wrap:balance;
+  letter-spacing:-0.01em;
+}
+.doc-sub{
+  color:var(--text-dim);
+  font-size:1.05rem;
+  max-width:62ch;
+  margin:0 0 1.6rem;
+}
+.meta-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:1.6rem;
+  font-family:var(--mono);
+  font-size:0.78rem;
+  color:var(--text-faint);
+}
+.meta-row strong{color:var(--text-dim);font-weight:600;}
+
+/* verdict box */
+.verdict{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:4px solid var(--accent);
+  border-radius:6px;
+  padding:1.4rem 1.6rem;
+  margin:0 0 2.6rem;
+}
+.verdict h2{
+  font-family:'Fraunces', serif;
+  font-size:1.15rem;
+  margin:0 0 0.6rem;
+}
+.verdict p{margin:0 0 0.6rem;color:var(--text-dim);font-size:0.96rem;}
+.verdict p:last-child{margin-bottom:0;}
+.verdict code, p code, li code, td code{
+  font-family:var(--mono);
+  font-size:0.86em;
+  background:var(--surface-2);
+  padding:0.08em 0.4em;
+  border-radius:4px;
+  color:var(--accent-2);
+}
+
+/* status legend */
+.legend{
+  display:flex;
+  gap:1.4rem;
+  flex-wrap:wrap;
+  margin:0 0 2.8rem;
+  font-size:0.82rem;
+  color:var(--text-dim);
+}
+.legend span{display:inline-flex;align-items:center;gap:0.4rem;}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.dot.done{background:var(--done);}
+.dot.partial{background:var(--partial);}
+.dot.todo{background:var(--todo);}
+
+/* module sections */
+.module{
+  margin-bottom:3.2rem;
+}
+.module-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+  border-bottom:1px solid var(--border);
+  padding-bottom:0.7rem;
+  margin-bottom:1.2rem;
+}
+.module-head h2{
+  font-family:'Fraunces', serif;
+  font-size:1.5rem;
+  margin:0;
+  font-weight:600;
+}
+.module-num{
+  font-family:var(--mono);
+  color:var(--accent);
+  font-size:0.9rem;
+  margin-right:0.5rem;
+}
+.module-status{
+  font-family:var(--mono);
+  font-size:0.72rem;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  padding:0.28rem 0.7rem;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.module-status.done{background:var(--done-bg);color:var(--done);}
+.module-status.partial{background:var(--partial-bg);color:var(--partial);}
+.module-status.todo{background:var(--todo-bg);color:var(--todo);}
+
+.module-desc{color:var(--text-dim);font-size:0.94rem;margin:0 0 1.4rem;max-width:70ch;}
+
+.task-group{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:1.2rem 1.4rem 1.3rem;
+  margin-bottom:1rem;
+}
+.task-group h3{
+  font-size:0.98rem;
+  margin:0 0 0.8rem;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+}
+.task-group h3 .tag{
+  font-family:var(--mono);
+  font-size:0.68rem;
+  color:var(--text-faint);
+  background:var(--surface-2);
+  padding:0.15rem 0.5rem;
+  border-radius:4px;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+}
+ul.tasks{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+}
+ul.tasks li{
+  font-size:0.9rem;
+  color:var(--text-dim);
+  padding-left:1.3rem;
+  position:relative;
+}
+ul.tasks li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0.5em;
+  width:6px;
+  height:6px;
+  border-radius:1px;
+  background:var(--text-faint);
+  transform:rotate(45deg);
+}
+ul.tasks li strong{color:var(--text);font-weight:600;}
+
+.gap-note{
+  margin-top:0.9rem;
+  padding-top:0.9rem;
+  border-top:1px dashed var(--border);
+  font-size:0.86rem;
+  color:var(--todo);
+  display:flex;
+  gap:0.5rem;
+}
+.gap-note::before{content:"⚠";flex-shrink:0;}
+
+/* table */
+.tblwrap{overflow-x:auto;margin:1.5rem 0;}
+table{border-collapse:collapse;width:100%;font-size:0.86rem;}
+th{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  color:var(--text-faint);
+  text-align:left;
+  padding:0.5rem 0.8rem;
+  border-bottom:2px solid var(--border);
+}
+td{
+  padding:0.55rem 0.8rem;
+  border-bottom:1px solid var(--border);
+  color:var(--text-dim);
+  vertical-align:top;
+}
+tr:last-child td{border-bottom:none;}
+
+.phase-order{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:0.9rem;
+  margin:1.5rem 0 0;
+}
+.phase-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:0.9rem 1rem;
+}
+.phase-card .n{
+  font-family:var(--mono);
+  color:var(--accent);
+  font-size:0.75rem;
+}
+.phase-card .t{font-weight:600;font-size:0.9rem;margin:0.25rem 0;}
+.phase-card .d{font-size:0.8rem;color:var(--text-faint);}
+
+footer{
+  margin-top:3rem;
+  padding-top:1.5rem;
+  border-top:1px solid var(--border);
+  font-size:0.8rem;
+  color:var(--text-faint);
+  font-family:var(--mono);
+}
+
+@media (max-width:600px){
+  h1{font-size:1.9rem;}
+  .module-head{flex-direction:column;align-items:flex-start;}
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<div class="wrap">
+
+<header class="doc-head">
+  <div class="eyebrow">Build Plan Review — ICOMS 2.0</div>
+  <h1>Four modules, one grid.</h1>
+  <p class="doc-sub">Validation of <code>IMPLEMENTATION_PLAN.md</code> against the four URS documents and the database design doc, plus a task-level breakdown for everything still ahead.</p>
+  <div class="meta-row">
+    <span><strong>Repo state checked:</strong> src/ + frontend/src/app</span>
+    <span><strong>Schema:</strong> 31 tables, fully scaffolded</span>
+    <span><strong>Built:</strong> Auth + Users/Roles/Zones only</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <h2>Is the plan sound?</h2>
+  <p><strong>Yes, directionally</strong> — the phase order (Setup → Requestor/Planner → TOMS → GNC → Reporting) matches the dependency chain in the URS: nothing in Module 2 works without zones/stations/equipment from Module 1, and nothing in Module 3/4 works without an outage record from Module 2.</p>
+  <p><strong>But it's too coarse to build from.</strong> Each "Phase" in the current plan is a paragraph covering an entire URS module — dozens of screens, workflow states, and background jobs collapsed into 3–4 bullets. It also has two gaps worth fixing before work continues: it never explicitly schedules <strong>Organisation / Station / Equipment / Voltage / Off-Point / Dropdown / Outage-Type-Rule</strong> admin CRUD (Module 1 §5.2.1–5.2.15), which Module 2's outage form depends on entirely — and it doesn't mention the code already scaffolded for the full DB schema being 4 modules ahead of the controllers/UI.</p>
+  <p>The breakdown below re-derives each phase into concrete backend + frontend task lists, checked line-by-line against the URS status matrices, field tables, and workflow steps — so gaps like "DSO auto-agree after 7 days" or "KIV auto-timeout at 31 days" don't get silently dropped between the plan and the sprint board.</p>
+</div>
+
+<div class="legend">
+  <span><i class="dot done"></i> Scaffolded / built</span>
+  <span><i class="dot partial"></i> Entity exists, no API/UI</span>
+  <span><i class="dot todo"></i> Not started</span>
+</div>
+
+<!-- MODULE 0 -->
+<section class="module">
+  <div class="module-head">
+    <h2><span class="module-num">00</span>Cross-Cutting Foundations</h2>
+    <span class="module-status todo">Mostly todo</span>
+  </div>
+  <p class="module-desc">Infrastructure every module depends on, but that the phased plan never calls out as its own workstream. Build these alongside Phase 1, not after it.</p>
+
+  <div class="task-group">
+    <h3>Background job runner <span class="tag">Hangfire / IHostedService</span></h3>
+    <ul class="tasks">
+      <li>Stand up the scheduler now — 7 of the automated workflow rules in the DB design doc (§11) fire on Module 2/3 outages, so the runner needs to exist before those modules land, not be retrofitted.</li>
+      <li><strong>Unconfirmed auto-close</strong>: RequestorStatus → Outage Closed – Unconfirmed, 2 weeks before start</li>
+      <li><strong>DSO auto-agree</strong>: PlannerStatus → Agreed after 7 days pushed, flag <code>DsoAgreedBySystem</code></li>
+      <li><strong>KIV auto-timeout</strong>: GnmStatus → Outage Closed – KIV Timeout after 31 days</li>
+      <li><strong>Pending auto-KIV</strong>: GnmStatus → KIV, 24h after start with no GNM action</li>
+      <li><strong>Not Taken auto-close</strong>: GncStatus → Outage Closed – Not Taken, 5 days after end with no Taken-Active</li>
+      <li><strong>GCU reminder</strong>: email 2 days before outage start to all GcuAcknowledgement rows</li>
+      <li>Every job writes to <code>audit.AuditLog</code> — build the writer once, reuse everywhere</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Email + notification layer</h3>
+    <ul class="tasks">
+      <li><code>IEmailSender</code> abstraction with Resend implementation (per plan) — confirm templates for: user onboarding, role-transfer request, PIC creation/update, GNM→GCU notify, GNC authorisation/un-authorisation (exact subject/body given in Module 1 §5.2.10), change-request approve/reject, SLD/CommMemo stage transitions</li>
+      <li>SignalR hub for docket/handover live sync (per plan stack) — needed by TOMS docket (Module 3) and GNC Handover (Module 4) real-time views</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>File storage</h3>
+    <ul class="tasks">
+      <li><code>FileStorageService</code> abstraction over Azure Blob / network share for SLD PDFs, Contingency Plans, Comm Memo attachments, Handover exports</li>
+      <li>Enforce PDF/Word-only uploads with size caps where URS specifies (Switching Program: pdf+word, multi-file)</li>
+    </ul>
+  </div>
+
+  <div class="gap-note">Row-level zone security (DB doc §10.3) — every list/query needs a mandatory <code>WHERE ZoneId = @UserZoneId</code> except for GNM ADMIN/SysAdmin. This is a cross-cutting concern best built as a global EF Core query filter or API-layer policy now, not bolted onto each controller later.</div>
+</section>
+
+<!-- MODULE 1 -->
+<section class="module">
+  <div class="module-head">
+    <h2><span class="module-num">01</span>System Setup &amp; Admin</h2>
+    <span class="module-status partial">Partial</span>
+  </div>
+  <p class="module-desc">User/Role/Zone are built. Everything else admins need to configure before Module 2 can function is still open — this is the actual current MVP-blocking gap.</p>
+
+  <div class="task-group">
+    <h3>Built <span class="tag">done</span></h3>
+    <ul class="tasks">
+      <li>User CRUD with TNB ID / role / zone / organisation / GCU type / GCU stations fields (URS Table 5.1a)</li>
+      <li>Role &amp; permission editor</li>
+      <li>Role transfer request + approval flow</li>
+      <li>Zone create/edit with location mapping</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Organisation &amp; Station management <span class="tag">§5.2.2</span></h3>
+    <ul class="tasks">
+      <li>API + UI to create Organisation/Station scoped to a selected Zone</li>
+      <li>Uniqueness validation across Station name, Organisation name, and Abbreviation (global, not per-zone)</li>
+      <li>Internal/External checkbox on Organisation creation, drives the user-creation org dropdown</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Voltage, Equipment Type &amp; Equipment <span class="tag">§5.2.3–5.2.4</span></h3>
+    <ul class="tasks">
+      <li>System-wide Voltage Level CRUD (not per-station)</li>
+      <li>Equipment Type CRUD scoped to a Voltage Level</li>
+      <li>Equipment creation form: Zone → Station → Voltage → Type cascade, Position toggle (Open/Closed, default Closed), Off-Point checkbox (auto-forces Open + routes to Off-Points module)</li>
+      <li>Auto-generated <code>EquipmentName</code> = Voltage–MVA–Name; enforce via backend, not client</li>
+      <li>Equipment History panel: outage number, job type, date/time, Under-Study/Remarks/Highlights</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Off-Point management <span class="tag">§5.2.5</span></h3>
+    <ul class="tasks">
+      <li>Permanent vs Temporary tabs — Permanent from <code>Equipment.IsOffPoint</code>, Temporary from open <code>OutageOffPoints</code> rows</li>
+      <li>Manual "Create New Off-Point" flow (Zone/Station/Type/Equipment picker) + remarks field</li>
+      <li>Region filter on the listing</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Dropdown / config data management <span class="tag">§5.2.6</span></h3>
+    <ul class="tasks">
+      <li>Generic admin UI over <code>config.DropdownValues</code>: category tabs (Job Type, Work Type, Sequence, Restoration, Not-Taken Reason, GCU Type, MVA Rating)</li>
+      <li>Drag-reorderable <code>DisplayOrder</code> within each category</li>
+      <li>Job Type entries carry <code>ParentCode</code> = outage type, so Tripping-style entries only surface for the right outage type</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Project management <span class="tag">§5.2.7</span></h3>
+    <ul class="tasks">
+      <li>Project Engineer role + creation screen (TP Code unique / Name reusable → computed ProjectName)</li>
+      <li>GNM ADMIN "mark Complete" with confirmation dialog if open outages exist; re-open flow mirrors it</li>
+      <li>Start/End date auto-fill from linked outages (first-created / TOMS-closed)</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Outage type rules &amp; scheduling windows <span class="tag">§5.2.8–5.2.9</span></h3>
+    <ul class="tasks">
+      <li>Rule builder: Work Type (Dead/Live) × Voltage multi-select × More-than/Less-than day-month-year bounds → Outage Type</li>
+      <li>Overlap/conflict detector across rules of the same Work Type — block save with a warning, per URS</li>
+      <li>Outage-type-by-month scheduling grid (Live/Dead × Planned/Emergency/Forced × 12 months) — feeds validation on outage creation</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Authorisation personnel, lines, conflicts <span class="tag">§5.2.10–5.2.14</span></h3>
+    <ul class="tasks">
+      <li>Authorisation Personnel CRUD (name/email/zone/position) — feeds GNC's authoriser dropdown + email template</li>
+      <li>Line setup wizard: station count → Single/Tee-Off auto line-type, naming-convention auto-generation (incl. inversion + alphabetical tee-off ordering), up to 5 lines, multi-zone "Owner" assignment</li>
+      <li>Conflicting Lines pair builder (Near End / Far End equipment pickers)</li>
+      <li>Linking Lines (quad-tower) pair builder, surfaces as forced-additional-equipment in outage creation</li>
+      <li>Change Request timeline (days-before-outage setting) — single numeric admin setting, drives Module 2's KIV push logic</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Mnemonic list &amp; user account self-service <span class="tag">§5.2.15, §5.3</span></h3>
+    <ul class="tasks">
+      <li>Mnemonic PDF upload/versioning (used later by SLD numbering in Module 3)</li>
+      <li>User self-service account page: editable name/email/phone; Role &amp; Zone show "Request Change" only (routes to RoleTransferRequests, already built)</li>
+      <li>Password change (old + 2×new) for external users; forgot-password email flow</li>
+    </ul>
+  </div>
+</section>
+
+<!-- MODULE 2 -->
+<section class="module">
+  <div class="module-head">
+    <h2><span class="module-num">02</span>Requestor / Planner</h2>
+    <span class="module-status todo">Not started</span>
+  </div>
+  <p class="module-desc">The outage lifecycle's entry point. Biggest single module — the create form alone has 20+ fields plus five sidebar integrations.</p>
+
+  <div class="task-group">
+    <h3>Outage creation form <span class="tag">§5.6</span></h3>
+    <ul class="tasks">
+      <li>Cascading selects: Zone → Station → Voltage → Equipment Type → Line Filter → Equipment, plus Additional Equipment (type + multi-select)</li>
+      <li>Zone constrained to user's own zone for Planned; open for Unplanned/Emergency</li>
+      <li>Auto Outage Code (P/U/E) from <code>OutageTypeRules</code> match on Date/Time + Voltage + Work Type — surface the resolved type live as dates change</li>
+      <li>Outage Class auto-set (Maintenance vs Project) from Job Type; Project dropdown conditional on non-Maintenance</li>
+      <li>PIC popup form (multi-entry name/email/phone) + Contingency Plan PDF upload</li>
+      <li>Sidebar integrations: SLD download link, Conflicting Lines warning + confirm-to-proceed, Outage History popup, Maintenance History (10yr), Project outage list</li>
+      <li>Redundancy checker: same equipment+job type+date blocks creation; same equipment+different job type allowed; KIV-list match suggests Change Request instead</li>
+      <li>Not-Taken lock: block new outage creation until Not-Taken reason submitted for prior Not-Taken outage in the same zone</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Workflow dockets <span class="tag">§5.3–5.5</span></h3>
+    <ul class="tasks">
+      <li>Outage Pending Review (Planner): bulk Agree/Disagree via checkbox + Select All, Agree / Agree–Push to DSO</li>
+      <li>DSO listing (outages pushed to them) with same agree affordance</li>
+      <li>Confirmation Page (Requestor): bulk Confirm All / Reject All (delete)</li>
+      <li>Outage Pending Approval: read-only view of Agreed+Confirmed outages awaiting GNM</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Data Repository, Change Request, Reports <span class="tag">§5.7–5.9</span></h3>
+    <ul class="tasks">
+      <li>Data Repository listing with GNM comments/status, restoration time, PIC list, keyword + code/station/type/job-type filters, sortable by start/end date</li>
+      <li>Change Request form: Date/Time/Voltage/Equipment/Additional-Equipment only, locked once Approved; one open CR per outage at a time; approve applies + snapshots history, reject bounces to Requestor with comment</li>
+      <li>Customised Reporting: filter builder → PDF/Excel export, saved "Favourite" filter presets per user (<code>audit.SavedReportFilters</code>)</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Statistics &amp; Calendar <span class="tag">§5.10–5.11</span></h3>
+    <ul class="tasks">
+      <li>4 chart types (bar/table/pie/bar) per the by-year/by-month spec</li>
+      <li>5-week rolling calendar, row + cell view, custom week-range picker, PDF export, colour-coded by authorisation state (grey/green/yellow/red)</li>
+      <li>Click-through outage popup → detail view in new tab</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Authorisation visibility <span class="tag">§5.12–5.14</span></h3>
+    <ul class="tasks">
+      <li>Authorisation in Force / Long Authorisation (&gt;7 days) / Authorisation Repository — all read-only for this role, shared component with Module 4's writable version</li>
+      <li>View Authorisation Workplan modal (status history table)</li>
+    </ul>
+  </div>
+
+  <div class="gap-note">GCU Outage Acknowledgement screen (Agree/Disagree + comment, §5.2.1 step 12) belongs to the GCU role but is functionally part of this module's data flow — schedule it here, not forgotten as a Module-3 side effect.</div>
+</section>
+
+<!-- MODULE 3 -->
+<section class="module">
+  <div class="module-head">
+    <h2><span class="module-num">03</span>TOMS / GNM</h2>
+    <span class="module-status todo">Not started</span>
+  </div>
+  <p class="module-desc">Study, approval, SLD and Commissioning Memo workflows. The plan's Phase 3 bullet list covers roughly a third of what §5 actually specifies.</p>
+
+  <div class="task-group">
+    <h3>Outage Repository &amp; study workflow <span class="tag">§5.3</span></h3>
+    <ul class="tasks">
+      <li>Full-filter repository with saved presets (job type, voltage, agreed/confirmed, outage type, status)</li>
+      <li>Detail view/edit: Justification, Highlights, Remark, Under-Study text fields; Off-Point Suggestion popup (Zone→Station→Equipment picker + remark); Status dropdown Pending/Under-Study/Approved</li>
+      <li>Conflicting-lines list scoped to approved/active outages before the studied date, incl. extended-outage re-check logic</li>
+      <li>Update vs "Update &amp; Notify" (with editable, persisted extra-recipient list)</li>
+      <li>Taken-Active restriction: only Description + study fields editable, nothing else</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Approval docket <span class="tag">§5.4</span></h3>
+    <ul class="tasks">
+      <li>5 tabs: Next Day / Sat-Sun-Mon / Next Week / Next Week Fri-Sat-Sun / Next Month(500kV)+MonthAfter(275/500kV)</li>
+      <li>Bulk Select All / Approve All / Reject All per tab</li>
+      <li>Backtrack Approved → Under-Study/Pending (blocked once Taken-Active)</li>
+      <li>"Push to GCU" action from detail view</li>
+      <li>Docket PDF export</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Reporting &amp; statistics <span class="tag">§5.5–5.6</span></h3>
+    <ul class="tasks">
+      <li>Customised report builder (shared component with Module 2, wider filter set)</li>
+      <li>Customised chart builder (x/y axis picker)</li>
+      <li>TYTOP tab: ~20 predefined bar/pie/table charts across y/y-1/y-2/y-3 and y+1/y+2/y+3, incl. Total Outage Hours + Planned Availability formula calculator</li>
+      <li>Analysis tab: repetitive-outage horizontal bar (click-through to job-type breakdown), equipment last/next-outage lookup</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>SLD workflow <span class="tag">§5.10</span></h3>
+    <ul class="tasks">
+      <li>New SLD request form (Requestor) → GNM Engineer review/reject → running-number generation (Voltage-Type-Mnemonic-###) → GNM Engineer draws/uploads → S/E → DCE sequential approval (approve / request-adjustment loop) → Requestor final acknowledge → publish, tied to station</li>
+      <li>Existing SLD update variant (multi-PMU remark-per-PMU flow)</li>
+      <li>Post-commission Update Module (GNM Engineer direct → S/E → DCE → publish, no Requestor step)</li>
+      <li>Requestor "My Approved SLDs" acknowledgement queue</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Commissioning Memo <span class="tag">§5.11</span></h3>
+    <ul class="tasks">
+      <li>Commissioning workflow: 3 concurrent tracks (Switching Program, Data Form, Requirement Docs) → Engineer PIC → SE → DCE → CE GNM sequential approval with single-stage-return-on-reject → CE GNC/DCE final edit → auto-numbered front-page generation → Generation Tray → Data Form (2-week-prior deadline) → Requirement Docs checklist (7 fixed document types) → full memo assembly → Approved Tray, multi-role notify</li>
+      <li>Emergency Commissioning workflow (Switching Program only, GNC Engineer + CE GNC approval chain)</li>
+      <li>Decommissioning workflow (adds SE/DCE/CE GNM/CE GNC chain + SLD/Equipment change checkboxes)</li>
+      <li>Interactive/Smart Document viewer component (shared across all 3 memo types + SLD)</li>
+      <li>GNC status updates: In Progress / On-Soak / Comm Successful / Comm Not Successful</li>
+    </ul>
+  </div>
+
+  <div class="gap-note">This module needs 5 new approval-chain roles (Engineer PIC, SE, DCE, CE GNM, CE GNC) that don't exist yet — extend <code>auth.Roles</code> and the permission matrix before SLD/CommMemo work starts, not mid-build.</div>
+</section>
+
+<!-- MODULE 4 -->
+<section class="module">
+  <div class="module-head">
+    <h2><span class="module-num">04</span>GNC</h2>
+    <span class="module-status todo">Not started</span>
+  </div>
+  <p class="module-desc">Execution, authorisation, forced outages, and the new shift Handover module.</p>
+
+  <div class="task-group">
+    <h3>Execution dockets <span class="tag">§5.2–5.4</span></h3>
+    <ul class="tasks">
+      <li>Data Repository (Approved outages, zone-scoped)</li>
+      <li>Scheduled Outage: today's un-authorised outages, one-click Authorise/Cancel</li>
+      <li>Authorise modal: Authorisation No, date/time, Authoriser dropdown (<code>AuthorisationPersonnel</code>), remark → Taken-Active + email to authoriser</li>
+      <li>Active Outages: currently Taken-Active/Completed, one-click Outage Closed with off-point normalisation prompt (incl. multi-outage-shared-off-point re-confirm-one-by-one)</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Forced Outage &amp; emergency approval <span class="tag">§5.5, §5.7</span></h3>
+    <ul class="tasks">
+      <li>Forced Outage creation form (GNC-only) — auto-Approved, parks in Scheduled Outage</li>
+      <li>PIC (Requestor) post-creation annotation access</li>
+      <li>Weekend/holiday Emergency Outage approval docket for a GNC sub-role, mirrors Module 3's docket scoped to Emergency type only, with hardcoded Approved-By dropdown</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Authorisation in Force <span class="tag">§5.8</span></h3>
+    <ul class="tasks">
+      <li>Colour-coded (green/yellow/red) listing shared with Modules 2/3, writable here</li>
+      <li>Region/Month/Year/Start-Date/On-time-Extended-Overdue filters + ascending/descending sort</li>
+    </ul>
+  </div>
+
+  <div class="task-group">
+    <h3>Handover module <span class="tag">§5.10 — new</span></h3>
+    <ul class="tasks">
+      <li>3 parent shift tabs (Morning/Evening/Night) × ~10 sub-tabs (Control, Outages, Alarms, Emergency, System Monitoring, Commissioning, Outage Complete, SPS, Special Ops, Other Instructions)</li>
+      <li>Editable table per tab with user-addable rows; role dropdowns (Control Manager/Switch Engineer ×2/Despatcher/Control Assistant)</li>
+      <li>Auto-populated Outages/Tripping/Off-Point sections pulling live from <code>dbo.Outages</code> + <code>OutageOffPoints</code></li>
+      <li>"Pass Handover" — locks current shift, copies to next shift, timestamps</li>
+      <li>Historical search by Date + Shift</li>
+      <li>Custom export: strip rows before PDF/Excel print, matching the NLDC Control Manager template layout in §5.10.2</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section class="module">
+  <div class="module-head">
+    <h2><span class="module-num">05</span>Recommended Build Order</h2>
+  </div>
+  <p class="module-desc">Same phase order as the existing plan, but each phase now gated on the specific Module 1 admin screens it actually reads from — this is the fix for the biggest gap found above.</p>
+
+  <div class="phase-order">
+    <div class="phase-card"><div class="n">Phase 1</div><div class="t">Foundations</div><div class="d">Job runner, email, file storage, zone security filter — build alongside Module 1, not after</div></div>
+    <div class="phase-card"><div class="n">Phase 1</div><div class="t">Module 1 complete</div><div class="d">Org/Station, Voltage/Equipment, Off-Points, Dropdowns, Projects, Outage-Type Rules, Lines, Conflicts</div></div>
+    <div class="phase-card"><div class="n">Phase 2</div><div class="t">Module 2 core</div><div class="d">Outage create form + status dockets — cannot start until Module 1's cascades exist</div></div>
+    <div class="phase-card"><div class="n">Phase 2</div><div class="t">Module 2 reporting</div><div class="d">Data repo, change requests, stats, 5-week calendar</div></div>
+    <div class="phase-card"><div class="n">Phase 3</div><div class="t">TOMS study + docket</div><div class="d">Repository, approval tabs, off-point suggestion</div></div>
+    <div class="phase-card"><div class="n">Phase 3</div><div class="t">SLD + Comm Memo</div><div class="d">Needs new approval-chain roles seeded first</div></div>
+    <div class="phase-card"><div class="n">Phase 4</div><div class="t">GNC execution</div><div class="d">Scheduled/Active outages, authorisation, forced outages</div></div>
+    <div class="phase-card"><div class="n">Phase 4</div><div class="t">Handover</div><div class="d">New module, no legacy precedent — build last within Phase 4</div></div>
+    <div class="phase-card"><div class="n">Phase 5</div><div class="t">Polish</div><div class="d">Cross-module stats parity, saved filters, migration script run</div></div>
+  </div>
+</section>
+
+<footer>ICOMS 2.0 · build plan review · cross-checked against URS Modules 1–4 + Database Design Document v1.0</footer>
+
+</div>
