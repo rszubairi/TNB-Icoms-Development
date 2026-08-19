@@ -12,6 +12,8 @@ public class StationConfiguration : IEntityTypeConfiguration<Station>
         builder.HasKey(x => x.StationId);
         builder.Property(x => x.StationName).IsRequired().HasMaxLength(200);
         builder.Property(x => x.StationAbbr).IsRequired().HasMaxLength(20);
+        builder.HasIndex(x => x.StationName).IsUnique();
+        builder.HasIndex(x => x.StationAbbr).IsUnique();
 
         builder.HasOne(x => x.Zone)
             .WithMany(x => x.Stations)

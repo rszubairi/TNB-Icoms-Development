@@ -5,7 +5,10 @@ public class Organisation
     public int OrganisationId { get; set; }
     public string OrganisationName { get; set; } = string.Empty;
     public string? OrganisationCode { get; set; }
+    public int ZoneId { get; set; }
     public bool IsGcu { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public Zone? Zone { get; set; }
 }

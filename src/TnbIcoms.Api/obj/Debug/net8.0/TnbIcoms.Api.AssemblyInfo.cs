@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TnbIcoms.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc3a11b71b12c49bc4cfff84c0c8588aa9b1dc08")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+275cbaa4e87dc0722ba9e4cfc55c636fa509d069")]
 [assembly: System.Reflection.AssemblyProductAttribute("TnbIcoms.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TnbIcoms.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

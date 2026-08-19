@@ -11,6 +11,13 @@ public class OrganisationConfiguration : IEntityTypeConfiguration<Organisation>
         builder.ToTable("Organisations", schema: "config");
         builder.HasKey(x => x.OrganisationId);
         builder.Property(x => x.OrganisationName).IsRequired().HasMaxLength(200);
-        builder.Property(x => x.OrganisationCode).HasMaxLength(30);
+        builder.Property(x => x.OrganisationCode).IsRequired().HasMaxLength(30);
+        builder.HasIndex(x => x.OrganisationCode).IsUnique();
+        builder.HasIndex(x => x.OrganisationName).IsUnique();
+
+        builder.HasOne(x => x.Zone)
+            .WithMany()
+            .HasForeignKey(x => x.ZoneId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
