@@ -21,6 +21,7 @@ using TnbIcoms.Application.Mnemonics;
 using TnbIcoms.Application.Lookups;
 using TnbIcoms.Application.Organisations;
 using TnbIcoms.Application.Outages;
+using TnbIcoms.Application.Statistics;
 using TnbIcoms.Application.OutageScheduleWindows;
 using TnbIcoms.Application.OutageTypeRules;
 using TnbIcoms.Application.Projects;
@@ -108,6 +109,7 @@ builder.Services.AddScoped<ITransmissionLineService, TransmissionLineService>();
 builder.Services.AddScoped<IConflictingLineService, ConflictingLineService>();
 builder.Services.AddScoped<ILinkingLineService, LinkingLineService>();
 builder.Services.AddScoped<IOutageService, OutageService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddScoped<IChangeRequestService, ChangeRequestService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 

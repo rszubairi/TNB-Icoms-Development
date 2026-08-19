@@ -1,0 +1,155 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Statistics</h1>
+    <p class="subtitle">Outage analytics by year and month, broken down by department (zone).</p>
+  </div>
+</div>
+
+<div class="card filter-bar">
+  <label class="form-label">Year</label>
+  <select class="form-select" [ngModel]="selectedYear()" (ngModelChange)="onYearChange($event)">
+    @for (y of years; track y) { <option [value]="y">{{ y }}</option> }
+  </select>
+
+  <label class="form-label">Month</label>
+  <select class="form-select" [ngModel]="selectedMonth()" (ngModelChange)="onMonthChange($event)">
+    <option [value]="null">All months</option>
+    @for (m of months; track m.value) { <option [value]="m.value">{{ m.label }}</option> }
+  </select>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else {
+  <div class="chart-grid">
+    <div class="card chart-card">
+      <h2 class="chart-title">Approved Outages by Department</h2>
+      <p class="chart-subtitle">Bar chart · GNM-approved outages, {{ selectedMonth() ? 'selected month' : 'full year' }}</p>
+      @if (approvedBars().length === 0) {
+        <p class="state-message small">No approved outages for this period.</p>
+      } @else {
+        <svg [attr.viewBox]="'0 0 ' + chartWidth + ' ' + chartHeight" class="bar-chart">
+          @for (bar of approvedBars(); track bar.label; let i = $index) {
+            <g>
+              <rect
+                [attr.x]="20 + i * (chartWidth / approvedBars().length)"
+                [attr.y]="chartHeight - 30 - barHeight(bar.value, maxValue(approvedBars()))"
+                [attr.width]="(chartWidth / approvedBars().length) - 16"
+                [attr.height]="barHeight(bar.value, maxValue(approvedBars()))"
+                fill="#3b82f6"
+                rx="3"
+              ></rect>
+              <text
+                [attr.x]="20 + i * (chartWidth / approvedBars().length) + ((chartWidth / approvedBars().length) - 16) / 2"
+                [attr.y]="chartHeight - 30 - barHeight(bar.value, maxValue(approvedBars())) - 6"
+                text-anchor="middle"
+                class="bar-value"
+              >{{ bar.value }}</text>
+              <text
+                [attr.x]="20 + i * (chartWidth / approvedBars().length) + ((chartWidth / approvedBars().length) - 16) / 2"
+                [attr.y]="chartHeight - 10"
+                text-anchor="middle"
+                class="bar-label"
+              >{{ bar.label }}</text>
+            </g>
+          }
+        </svg>
+      }
+    </div>
+
+    <div class="card chart-card">
+      <h2 class="chart-title">Outage Status by Department</h2>
+      <p class="chart-subtitle">Table · Taken Completed / Not Taken / Taken Active, {{ selectedMonth() ? 'selected month' : 'full year' }}</p>
+      @if ((dashboard()?.statusSummaryByDepartment ?? []).length === 0) {
+        <p class="state-message small">No data for this period.</p>
+      } @else {
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th>Total</th>
+              <th>Taken Completed</th>
+              <th>Not Taken</th>
+              <th>Taken Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of dashboard()?.statusSummaryByDepartment; track row.department) {
+              <tr>
+                <td>{{ row.department }}</td>
+                <td>{{ row.totalOutages }}</td>
+                <td>{{ row.takenCompleted }}</td>
+                <td>{{ row.notTaken }}</td>
+                <td>{{ row.takenActive }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+    <div class="card chart-card">
+      <h2 class="chart-title">Outage Type Breakdown</h2>
+      <p class="chart-subtitle">Pie chart · Planned / Unplanned / Emergency registered, {{ selectedMonth() ? 'selected month' : 'full year' }}</p>
+      @if (typePie().length === 0) {
+        <p class="state-message small">No outages registered for this period.</p>
+      } @else {
+        <div class="pie-layout">
+          <svg viewBox="0 0 200 200" class="pie-chart">
+            @for (slice of typePie(); track slice.label) {
+              <path [attr.d]="slice.path" [attr.fill]="slice.color"></path>
+            }
+          </svg>
+          <ul class="pie-legend">
+            @for (slice of typePie(); track slice.label) {
+              <li><span class="legend-dot" [style.background-color]="slice.color"></span>{{ slice.label }} ({{ slice.value }})</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+
+    <div class="card chart-card">
+      <h2 class="chart-title">Routine Maintenance by Department</h2>
+      <p class="chart-subtitle">Bar chart · Completed vs Pending, {{ selectedYear() }}</p>
+      @if (routineBars().length === 0) {
+        <p class="state-message small">No routine maintenance outages this year.</p>
+      } @else {
+        <svg [attr.viewBox]="'0 0 ' + chartWidth + ' ' + chartHeight" class="bar-chart">
+          @for (bar of routineBars(); track bar.department; let i = $index) {
+            <g>
+              <rect
+                [attr.x]="20 + i * (chartWidth / routineBars().length)"
+                [attr.y]="chartHeight - 30 - barHeight(bar.pending, maxStacked(routineBars())) - barHeight(bar.completed, maxStacked(routineBars()))"
+                [attr.width]="(chartWidth / routineBars().length) - 16"
+                [attr.height]="barHeight(bar.completed, maxStacked(routineBars()))"
+                fill="#10b981"
+                rx="3"
+              ></rect>
+              <rect
+                [attr.x]="20 + i * (chartWidth / routineBars().length)"
+                [attr.y]="chartHeight - 30 - barHeight(bar.pending, maxStacked(routineBars()))"
+                [attr.width]="(chartWidth / routineBars().length) - 16"
+                [attr.height]="barHeight(bar.pending, maxStacked(routineBars()))"
+                fill="#f59e0b"
+                rx="3"
+              ></rect>
+              <text
+                [attr.x]="20 + i * (chartWidth / routineBars().length) + ((chartWidth / routineBars().length) - 16) / 2"
+                [attr.y]="chartHeight - 10"
+                text-anchor="middle"
+                class="bar-label"
+              >{{ bar.department }}</text>
+            </g>
+          }
+        </svg>
+        <div class="mini-legend">
+          <span class="legend-dot" style="background-color:#10b981"></span>Completed
+          <span class="legend-dot" style="background-color:#f59e0b"></span>Pending
+        </div>
+      }
+    </div>
+  </div>
+}
