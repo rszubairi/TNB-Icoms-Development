@@ -14,7 +14,12 @@ export class AuthService {
   isAuthenticated = computed(() => this.currentUser() !== null);
 
   login(request: LoginRequest): Observable<LoginResponse> {
-    return this.api.post<LoginResponse>('/auth/login', request).pipe(
+    const payload = {
+      staffIdOrEmail: request.identifier,
+      password: request.password,
+      rememberDevice: request.rememberMe
+    };
+    return this.api.post<LoginResponse>('/auth/login', payload).pipe(
       tap((response) => {
         localStorage.setItem(TOKEN_KEY, response.accessToken);
         localStorage.setItem(USER_KEY, JSON.stringify(response.user));
