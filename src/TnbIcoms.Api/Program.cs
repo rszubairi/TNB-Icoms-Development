@@ -9,7 +9,9 @@ using TnbIcoms.Application.Auth;
 using TnbIcoms.Application.Common;
 using TnbIcoms.Application.Email;
 using TnbIcoms.Application.Lookups;
+using TnbIcoms.Application.Organisations;
 using TnbIcoms.Application.Roles;
+using TnbIcoms.Application.Stations;
 using TnbIcoms.Application.Users;
 using TnbIcoms.Infrastructure.Identity;
 using TnbIcoms.Infrastructure.Persistence;
@@ -68,6 +70,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleAdminService, RoleAdminService>();
 builder.Services.AddScoped<IZoneService, ZoneService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
+builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

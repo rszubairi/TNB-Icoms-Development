@@ -20,6 +20,7 @@ export class SidebarComponent {
     { label: 'User Management', path: '/admin/users' },
     { label: 'Roles & Permissions', path: '/admin/roles' },
     { label: 'Role Transfer Requests', path: '/admin/role-transfer-requests' },
+    { label: 'Organisations & Stations', path: '/admin/organisations' },
     { label: 'Outage Intake', disabled: true },
     { label: 'TOMS Docket', disabled: true },
     { label: 'Shift Handover', disabled: true }

@@ -1,0 +1,205 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Organisation &amp; Station Management</h1>
+    <p class="page-subtitle">Manage organisations and stations locked to specific operational zones.</p>
+  </div>
+</div>
+
+<div class="card zone-select-card">
+  <label class="form-label" for="zoneSelect">Select Active Zone</label>
+  <select
+    id="zoneSelect"
+    class="form-select"
+    [ngModel]="selectedZoneId()"
+    (ngModelChange)="onZoneChange($event)"
+  >
+    @for (zone of zones(); track zone.zoneId) {
+      <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
+    }
+  </select>
+</div>
+
+@if (errorMessage()) {
+  <div class="card">
+    <p class="state-message error">{{ errorMessage() }}</p>
+  </div>
+} @else if (!selectedZoneId()) {
+  <div class="card">
+    <p class="state-message">No zones configured yet. Create a zone before managing organisations and stations.</p>
+  </div>
+} @else {
+  <div class="panels-grid">
+    <!-- Organisations panel -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h2>Organisations</h2>
+        @if (!isOrgEditMode() || orgDraft().organisationId !== null) {
+          <button type="button" class="btn-outline" (click)="startCreateOrg()">+ Add</button>
+        }
+      </div>
+
+      <div class="inline-form">
+        <input
+          class="form-input"
+          type="text"
+          placeholder="Organisation name"
+          [ngModel]="orgDraft().organisationName"
+          (ngModelChange)="updateOrgName($event)"
+        />
+        <input
+          class="form-input abbr-input"
+          type="text"
+          placeholder="Abbr"
+          [disabled]="isOrgEditMode()"
+          [ngModel]="orgDraft().organisationCode"
+          (ngModelChange)="updateOrgCode($event)"
+        />
+        <label class="checkbox-row">
+          <input type="checkbox" [ngModel]="orgDraft().isGcu" (ngModelChange)="updateOrgIsGcu($event)" />
+          <span>External / GCU</span>
+        </label>
+        @if (isOrgEditMode()) {
+          <label class="checkbox-row">
+            <input type="checkbox" [ngModel]="orgDraft().isActive" (ngModelChange)="updateOrgIsActive($event)" />
+            <span>Active</span>
+          </label>
+        }
+        <div class="inline-form-actions">
+          @if (isOrgEditMode()) {
+            <button type="button" class="btn-secondary" (click)="resetOrgForm()">Cancel</button>
+          }
+          <button type="button" class="btn-primary" [disabled]="orgSaving()" (click)="saveOrg()">
+            {{ orgSaving() ? 'Saving…' : (isOrgEditMode() ? 'Save' : 'Add') }}
+          </button>
+        </div>
+        @if (orgFormError()) {
+          <div class="form-alert">{{ orgFormError() }}</div>
+        }
+      </div>
+
+      <div class="panel-list">
+        @if (loading()) {
+          <p class="state-message">Loading…</p>
+        } @else if (organisations().length === 0) {
+          <p class="state-message">No organisations in this zone yet.</p>
+        } @else {
+          @for (org of organisations(); track org.organisationId) {
+            <div class="list-row">
+              <div class="list-row-main">
+                <span class="list-row-name">{{ org.organisationName }}</span>
+                <span class="mono list-row-abbr">{{ org.organisationCode }}</span>
+                @if (org.isGcu) {
+                  <span class="status-badge status-pending">External</span>
+                }
+                @if (!org.isActive) {
+                  <span class="status-badge status-inactive">Inactive</span>
+                }
+              </div>
+              <div class="list-row-actions">
+                <button type="button" class="icon-btn" (click)="startEditOrg(org)">Edit</button>
+                @if (org.isActive) {
+                  <button
+                    type="button"
+                    class="icon-btn danger"
+                    [disabled]="orgBusyId() === org.organisationId"
+                    (click)="deactivateOrg(org)"
+                  >
+                    {{ orgBusyId() === org.organisationId ? '…' : '✕' }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Stations panel -->
+    <div class="card panel">
+      <div class="panel-header">
+        <h2>Stations</h2>
+        @if (!isStationEditMode()) {
+          <button type="button" class="btn-outline" (click)="startCreateStation()">+ Add</button>
+        }
+      </div>
+
+      <div class="inline-form">
+        <input
+          class="form-input"
+          type="text"
+          placeholder="Station name"
+          [ngModel]="stationDraft().stationName"
+          (ngModelChange)="updateStationName($event)"
+        />
+        <input
+          class="form-input abbr-input"
+          type="text"
+          placeholder="Abbr"
+          [ngModel]="stationDraft().stationAbbr"
+          (ngModelChange)="updateStationAbbr($event)"
+        />
+        <select
+          class="form-select"
+          [ngModel]="stationDraft().orgId"
+          (ngModelChange)="updateStationOrgId($event)"
+        >
+          <option [value]="null">Select organisation…</option>
+          @for (org of organisations(); track org.organisationId) {
+            <option [value]="org.organisationId">{{ org.organisationName }}</option>
+          }
+        </select>
+        @if (isStationEditMode()) {
+          <label class="checkbox-row">
+            <input type="checkbox" [ngModel]="stationDraft().isActive" (ngModelChange)="updateStationIsActive($event)" />
+            <span>Active</span>
+          </label>
+        }
+        <div class="inline-form-actions">
+          @if (isStationEditMode()) {
+            <button type="button" class="btn-secondary" (click)="resetStationForm()">Cancel</button>
+          }
+          <button type="button" class="btn-primary" [disabled]="stationSaving()" (click)="saveStation()">
+            {{ stationSaving() ? 'Saving…' : (isStationEditMode() ? 'Save' : 'Add') }}
+          </button>
+        </div>
+        @if (stationFormError()) {
+          <div class="form-alert">{{ stationFormError() }}</div>
+        }
+      </div>
+
+      <div class="panel-list">
+        @if (loading()) {
+          <p class="state-message">Loading…</p>
+        } @else if (stations().length === 0) {
+          <p class="state-message">No stations in this zone yet.</p>
+        } @else {
+          @for (station of stations(); track station.stationId) {
+            <div class="list-row">
+              <div class="list-row-main">
+                <span class="list-row-name">{{ station.stationName }}</span>
+                <span class="mono list-row-abbr">{{ station.stationAbbr }}</span>
+                <span class="status-badge status-confirmed">{{ station.organisationName }}</span>
+                @if (!station.isActive) {
+                  <span class="status-badge status-inactive">Inactive</span>
+                }
+              </div>
+              <div class="list-row-actions">
+                <button type="button" class="icon-btn" (click)="startEditStation(station)">Edit</button>
+                @if (station.isActive) {
+                  <button
+                    type="button"
+                    class="icon-btn danger"
+                    [disabled]="stationBusyId() === station.stationId"
+                    (click)="deactivateStation(station)"
+                  >
+                    {{ stationBusyId() === station.stationId ? '…' : '✕' }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+}

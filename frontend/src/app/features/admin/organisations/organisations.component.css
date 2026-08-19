@@ -1,0 +1,161 @@
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.zone-select-card {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 22rem;
+}
+
+.zone-select-card .form-label {
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.panels-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.panel {
+  padding: 1.5rem;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.panel-header h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.inline-form .form-input,
+.inline-form .form-select {
+  flex: 2;
+  min-width: 140px;
+}
+
+.abbr-input {
+  flex: 1 !important;
+  min-width: 80px !important;
+  text-transform: uppercase;
+}
+
+.inline-form-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-left: auto;
+}
+
+.form-alert {
+  flex-basis: 100%;
+  background-color: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #be123c;
+  border-radius: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+.panel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #f3f4f6;
+  border-radius: 0.6rem;
+  background-color: #fafafa;
+}
+
+.list-row-main {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.list-row-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.list-row-abbr {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.list-row-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: #374151;
+}
+
+.icon-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.icon-btn.danger {
+  border-color: #fecdd3;
+  color: #be123c;
+}
+
+.icon-btn.danger:hover {
+  background-color: #fff1f2;
+}
+
+.mono {
+  font-family: ui-monospace, monospace;
+}
+
+.state-message {
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.state-message.error {
+  color: #e11d48;
+}
+
+@media (max-width: 900px) {
+  .panels-grid {
+    grid-template-columns: 1fr;
+  }
+}
