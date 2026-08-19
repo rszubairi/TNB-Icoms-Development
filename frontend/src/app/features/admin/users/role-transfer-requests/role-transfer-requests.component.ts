@@ -16,7 +16,7 @@ export class RoleTransferRequestsComponent {
   requests = signal<RoleTransferRequest[]>([]);
   loading = signal(true);
   notAvailable = signal(false);
-  processingId = signal<string | null>(null);
+  processingId = signal<number | null>(null);
 
   constructor() {
     this.load();
@@ -37,7 +37,7 @@ export class RoleTransferRequestsComponent {
     });
   }
 
-  approve(id: string): void {
+  approve(id: number): void {
     this.processingId.set(id);
     this.service.approve(id).subscribe({
       next: () => this.load(),
@@ -45,7 +45,7 @@ export class RoleTransferRequestsComponent {
     });
   }
 
-  reject(id: string): void {
+  reject(id: number): void {
     this.processingId.set(id);
     this.service.reject(id).subscribe({
       next: () => this.load(),

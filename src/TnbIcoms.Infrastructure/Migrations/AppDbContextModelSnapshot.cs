@@ -311,7 +311,10 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.Property<int?>("ApprovedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("FromRoleId")
+                    b.Property<int?>("FromRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FromZoneId")
                         .HasColumnType("int");
 
                     b.Property<string>("Reason")
@@ -331,7 +334,10 @@ namespace TnbIcoms.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("ToRoleId")
+                    b.Property<int?>("ToRoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ToZoneId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -1688,14 +1694,12 @@ namespace TnbIcoms.Infrastructure.Migrations
                     b.HasOne("TnbIcoms.Domain.Entities.Auth.Role", "FromRole")
                         .WithMany()
                         .HasForeignKey("FromRoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("TnbIcoms.Domain.Entities.Auth.Role", "ToRole")
                         .WithMany()
                         .HasForeignKey("ToRoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("TnbIcoms.Domain.Entities.Auth.User", "User")
                         .WithMany()

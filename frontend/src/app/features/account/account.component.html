@@ -1,0 +1,176 @@
+<div class="page-header">
+  <h1 class="font-display">My Account</h1>
+  <p class="page-subtitle">View and update your account information.</p>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+}
+
+@if (!loading() && !errorMessage() && profile(); as profile) {
+  <div class="card account-card">
+    <table class="account-table">
+      <tbody>
+        <tr>
+          <td class="field-label">Name</td>
+          <td>
+            @if (editingProfile()) {
+              <input class="form-input" type="text" [ngModel]="fullName()" (ngModelChange)="fullName.set($event)" />
+            } @else {
+              {{ profile.fullName }}
+            }
+          </td>
+          <td class="field-action">
+            @if (!editingProfile()) {
+              <button type="button" class="btn-outline row-action" (click)="startEditProfile()">Edit</button>
+            }
+          </td>
+        </tr>
+        <tr>
+          <td class="field-label">Role</td>
+          <td>{{ profile.roleName }}</td>
+          <td class="field-action">
+            <button type="button" class="btn-outline row-action" (click)="openTransferForm()">Request Change</button>
+          </td>
+        </tr>
+        <tr>
+          <td class="field-label">Zone</td>
+          <td>{{ profile.zoneName }}</td>
+          <td class="field-action"></td>
+        </tr>
+        <tr>
+          <td class="field-label">Email Address</td>
+          <td>
+            @if (editingProfile()) {
+              <input class="form-input" type="email" [ngModel]="email()" (ngModelChange)="email.set($event)" />
+            } @else {
+              {{ profile.email }}
+            }
+          </td>
+          <td class="field-action"></td>
+        </tr>
+        <tr>
+          <td class="field-label">Phone Number</td>
+          <td>
+            @if (editingProfile()) {
+              <input class="form-input" type="text" [ngModel]="phoneNumber()" (ngModelChange)="phoneNumber.set($event)" />
+            } @else {
+              {{ profile.phoneNumber || '—' }}
+            }
+          </td>
+          <td class="field-action"></td>
+        </tr>
+        <tr>
+          <td class="field-label">Password</td>
+          <td class="mono">•••••••••</td>
+          <td class="field-action">
+            @if (profile.isExternal) {
+              <button type="button" class="btn-outline row-action" (click)="openPasswordForm()">Change Password</button>
+            } @else {
+              <span class="ad-note">Managed via Active Directory</span>
+            }
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    @if (editingProfile()) {
+      @if (profileError()) {
+        <div class="form-alert">{{ profileError() }}</div>
+      }
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancelEditProfile()">Cancel</button>
+        <button type="button" class="btn-primary" [disabled]="savingProfile()" (click)="saveProfile()">
+          {{ savingProfile() ? 'Saving…' : 'Save Changes' }}
+        </button>
+      </div>
+    }
+
+    @if (profileSaved()) {
+      <div class="save-banner">Your account details have been updated.</div>
+    }
+  </div>
+}
+
+@if (showTransferForm()) {
+  <div class="card form-card">
+    <h2 class="form-heading">Request Role / Zone Change</h2>
+    <p class="form-hint">Your request will be sent to the SysAdmin for approval. You cannot change your own role or zone directly.</p>
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label" for="requestedRole">New Role (optional)</label>
+        <select id="requestedRole" class="form-select" [ngModel]="requestedRoleId()" (ngModelChange)="requestedRoleId.set($event ? +$event : null)">
+          <option [value]="null">No change</option>
+          @for (role of roles(); track role.roleId) {
+            <option [value]="role.roleId">{{ role.roleName }}</option>
+          }
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="requestedZone">New Zone (optional)</label>
+        <select id="requestedZone" class="form-select" [ngModel]="requestedZoneId()" (ngModelChange)="requestedZoneId.set($event ? +$event : null)">
+          <option [value]="null">No change</option>
+          @for (zone of zones(); track zone.zoneId) {
+            <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <label class="form-label" for="reason">Request Summary</label>
+    <textarea id="reason" class="form-input reason-input" rows="3" placeholder="Explain why you need this change…" [ngModel]="transferReason()" (ngModelChange)="transferReason.set($event)"></textarea>
+
+    @if (transferError()) {
+      <div class="form-alert">{{ transferError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="closeTransferForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="transferSaving()" (click)="submitTransferRequest()">
+        {{ transferSaving() ? 'Submitting…' : 'Submit Request' }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (transferSubmitted()) {
+  <div class="card save-banner-card">Your role/zone change request has been submitted to the SysAdmin for approval.</div>
+}
+
+@if (showPasswordForm()) {
+  <div class="card form-card">
+    <h2 class="form-heading">Change Password</h2>
+
+    <label class="form-label" for="currentPassword">Old Password</label>
+    <input id="currentPassword" class="form-input" type="password" [ngModel]="currentPassword()" (ngModelChange)="currentPassword.set($event)" />
+
+    <div class="form-grid password-grid">
+      <div>
+        <label class="form-label" for="newPassword">New Password</label>
+        <input id="newPassword" class="form-input" type="password" [ngModel]="newPassword()" (ngModelChange)="newPassword.set($event)" />
+      </div>
+      <div>
+        <label class="form-label" for="confirmPassword">Confirm New Password</label>
+        <input id="confirmPassword" class="form-input" type="password" [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)" />
+      </div>
+    </div>
+
+    @if (passwordError()) {
+      <div class="form-alert">{{ passwordError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="closePasswordForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="passwordSaving()" (click)="submitPasswordChange()">
+        {{ passwordSaving() ? 'Saving…' : 'Change Password' }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (passwordChanged()) {
+  <div class="card save-banner-card">Your password has been changed.</div>
+}

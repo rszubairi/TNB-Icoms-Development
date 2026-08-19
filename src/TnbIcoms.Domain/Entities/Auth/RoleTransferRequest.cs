@@ -4,8 +4,10 @@ public class RoleTransferRequest
 {
     public int RoleTransferRequestId { get; set; }
     public int UserId { get; set; }
-    public int FromRoleId { get; set; }
-    public int ToRoleId { get; set; }
+    public int? FromRoleId { get; set; }
+    public int? ToRoleId { get; set; }
+    public int? FromZoneId { get; set; }
+    public int? ToZoneId { get; set; }
     public string Status { get; set; } = "Pending"; // Pending, Approved, Rejected
     public string? Reason { get; set; }
     public DateTime RequestedAt { get; set; } = DateTime.UtcNow;
@@ -18,3 +20,4 @@ public class RoleTransferRequest
     public Role? FromRole { get; set; }
     public Role? ToRole { get; set; }
 }
+

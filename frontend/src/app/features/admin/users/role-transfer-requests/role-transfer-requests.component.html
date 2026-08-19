@@ -22,6 +22,9 @@
           <th>Name</th>
           <th>Current Role</th>
           <th>Requested Role</th>
+          <th>Current Zone</th>
+          <th>Requested Zone</th>
+          <th>Reason</th>
           <th>Requested</th>
           <th>Status</th>
           <th></th>
@@ -32,8 +35,11 @@
           <tr>
             <td class="mono">{{ req.tnbId }}</td>
             <td>{{ req.fullName }}</td>
-            <td>{{ req.currentRoleName }}</td>
-            <td>{{ req.requestedRoleName }}</td>
+            <td>{{ req.currentRoleName ?? '—' }}</td>
+            <td>{{ req.requestedRoleName ?? '—' }}</td>
+            <td>{{ req.currentZoneName ?? '—' }}</td>
+            <td>{{ req.requestedZoneName ?? '—' }}</td>
+            <td class="reason-cell">{{ req.reason }}</td>
             <td>{{ req.requestedAt | date: 'mediumDate' }}</td>
             <td>
               <span

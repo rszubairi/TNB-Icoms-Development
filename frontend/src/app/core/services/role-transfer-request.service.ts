@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RoleTransferRequest } from '../models/role-transfer-request.model';
+import { CreateRoleTransferRequest, RoleTransferRequest } from '../models/role-transfer-request.model';
 import { ApiService } from './api.service';
 
 @Injectable({ providedIn: 'root' })
@@ -11,11 +11,15 @@ export class RoleTransferRequestService {
     return this.api.get<RoleTransferRequest[]>('/role-transfer-requests');
   }
 
-  approve(id: string): Observable<void> {
+  create(request: CreateRoleTransferRequest): Observable<RoleTransferRequest> {
+    return this.api.post<RoleTransferRequest>('/role-transfer-requests', request);
+  }
+
+  approve(id: number): Observable<void> {
     return this.api.post<void>(`/role-transfer-requests/${id}/approve`, {});
   }
 
-  reject(id: string): Observable<void> {
+  reject(id: number): Observable<void> {
     return this.api.post<void>(`/role-transfer-requests/${id}/reject`, {});
   }
 }

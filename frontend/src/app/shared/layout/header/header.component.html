@@ -2,10 +2,10 @@
   <div class="header-title font-display">System Setup &amp; Administration</div>
   <div class="header-user">
     @if (authService.currentUser(); as user) {
-      <div class="user-info">
+      <a class="user-info" routerLink="/account">
         <span class="user-name">{{ user.fullName }}</span>
         <span class="status-badge status-agreed">{{ user.roleName }}</span>
-      </div>
+      </a>
     }
     <button class="btn-outline logout-btn" (click)="onLogout()">Logout</button>
   </div>
