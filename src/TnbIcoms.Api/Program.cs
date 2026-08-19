@@ -13,6 +13,7 @@ using TnbIcoms.Application.Equipment;
 using TnbIcoms.Application.EquipmentTypes;
 using TnbIcoms.Application.Lookups;
 using TnbIcoms.Application.Organisations;
+using TnbIcoms.Application.Projects;
 using TnbIcoms.Application.Roles;
 using TnbIcoms.Application.Stations;
 using TnbIcoms.Application.Users;
@@ -81,6 +82,7 @@ builder.Services.AddScoped<IEquipmentTypeService, EquipmentTypeService>();
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 builder.Services.AddScoped<IDropdownValueService, DropdownValueService>();
 builder.Services.AddScoped<IDropdownValueAdminService, DropdownValueAdminService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);

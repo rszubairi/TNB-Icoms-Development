@@ -1,0 +1,109 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Project Management</h1>
+    <p class="page-subtitle">Create and manage projects that outages can be tied to.</p>
+  </div>
+  @if (!showForm()) {
+    <button type="button" class="btn-primary" (click)="openCreateForm()">+ Create New Project</button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="card form-card">
+    <h2 class="form-heading">Create New Project</h2>
+    <p class="form-hint">TP Code must be unique and cannot be reused. Project Name (suffix) can be reused across multiple projects.</p>
+
+    <div class="form-grid">
+      <div>
+        <label class="form-label" for="tpCode">TP Code (must be unique)</label>
+        <input id="tpCode" class="form-input" type="text" placeholder="e.g. LEVEL4-2026-004" [ngModel]="tpCode()" (ngModelChange)="tpCode.set($event)" />
+      </div>
+      <div>
+        <label class="form-label" for="suffix">Project Name (can be reused)</label>
+        <input id="suffix" class="form-input" type="text" placeholder="e.g. Grid Modernization" [ngModel]="projectSuffix()" (ngModelChange)="projectSuffix.set($event)" />
+      </div>
+      <div>
+        <label class="form-label" for="zone">Zone (optional)</label>
+        <select id="zone" class="form-select" [ngModel]="zoneId()" (ngModelChange)="zoneId.set($event ? +$event : null)">
+          <option [value]="null">Not zone-specific</option>
+          @for (zone of zones(); track zone.zoneId) {
+            <option [value]="zone.zoneId">{{ zone.zoneName }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    @if (formError()) {
+      <div class="form-alert">{{ formError() }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="closeForm()">Cancel</button>
+      <button type="button" class="btn-primary" [disabled]="saving()" (click)="create()">
+        {{ saving() ? 'Saving…' : 'Create Project' }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+} @else {
+  <div class="stats-row">
+    <div class="card stat-tile">
+      <p class="stat-label">Total Projects</p>
+      <p class="stat-value">{{ projects().length }}</p>
+    </div>
+    <div class="card stat-tile">
+      <p class="stat-label">Open Projects</p>
+      <p class="stat-value open">{{ openProjects().length }}</p>
+    </div>
+    <div class="card stat-tile">
+      <p class="stat-label">Closed Projects</p>
+      <p class="stat-value closed">{{ closedProjects().length }}</p>
+    </div>
+  </div>
+
+  <div class="card">
+    @if (loading()) {
+      <p class="state-message">Loading…</p>
+    } @else {
+      <div class="project-list">
+        @if (openProjects().length === 0 && closedProjects().length === 0) {
+          <p class="state-message">No projects created yet.</p>
+        }
+        @for (project of openProjects(); track project.projectId) {
+          <div class="project-row">
+            <div class="project-main">
+              <span class="project-name">{{ project.projectName }}</span>
+              <span class="status-badge status-confirmed">Open</span>
+              @if (project.openOutageCount > 0) {
+                <span class="status-badge status-pending">{{ project.openOutageCount }} open outage(s)</span>
+              }
+              @if (project.zoneName) {
+                <span class="cell-subtext">{{ project.zoneName }}</span>
+              }
+            </div>
+            <button type="button" class="btn-outline" [disabled]="rowBusyId() === project.projectId" (click)="markComplete(project)">
+              {{ rowBusyId() === project.projectId ? 'Working…' : 'Mark as Closed' }}
+            </button>
+          </div>
+        }
+        @for (project of closedProjects(); track project.projectId) {
+          <div class="project-row inactive">
+            <div class="project-main">
+              <span class="project-name">{{ project.projectName }}</span>
+              <span class="status-badge status-inactive">Closed</span>
+              @if (project.zoneName) {
+                <span class="cell-subtext">{{ project.zoneName }}</span>
+              }
+            </div>
+            <button type="button" class="btn-outline" [disabled]="rowBusyId() === project.projectId" (click)="reopen(project)">
+              {{ rowBusyId() === project.projectId ? 'Working…' : 'Re-open' }}
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

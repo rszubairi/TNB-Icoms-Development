@@ -1,0 +1,140 @@
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.form-card {
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-heading {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.form-hint {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 1.25rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-alert {
+  background-color: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #be123c;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-tile {
+  padding: 1.25rem 1.5rem;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-top: 0.35rem;
+}
+
+.stat-value.open {
+  color: #15803d;
+}
+
+.stat-value.closed {
+  color: #6b7280;
+}
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  gap: 1rem;
+}
+
+.project-row:last-child {
+  border-bottom: none;
+}
+
+.project-row.inactive {
+  opacity: 0.65;
+}
+
+.project-main {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.project-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.cell-subtext {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+.state-message {
+  padding: 2.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.state-message.error {
+  color: #e11d48;
+}
+
+@media (max-width: 720px) {
+  .form-grid,
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+}

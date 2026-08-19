@@ -10,8 +10,10 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     {
         builder.ToTable("Projects", schema: "config");
         builder.HasKey(x => x.ProjectId);
-        builder.Property(x => x.ProjectName).IsRequired().HasMaxLength(200);
-        builder.Property(x => x.ProjectCode).HasMaxLength(50);
+        builder.Property(x => x.TpCode).IsRequired().HasMaxLength(50);
+        builder.Property(x => x.ProjectSuffix).IsRequired().HasMaxLength(150);
+        builder.Property(x => x.ProjectName).IsRequired().HasMaxLength(210);
+        builder.HasIndex(x => x.TpCode).IsUnique();
 
         builder.HasOne(x => x.Zone)
             .WithMany()
