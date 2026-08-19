@@ -92,6 +92,13 @@ export interface OutageListFilter {
   rangeEnd?: string;
 }
 
+export interface StudyUpdateRequest {
+  justification: string | null;
+  highlights: string | null;
+  remark: string | null;
+  underStudyNotes: string | null;
+}
+
 export interface BulkActionResult {
   succeededCount: number;
   errors: string[];

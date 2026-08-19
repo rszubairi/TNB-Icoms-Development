@@ -54,6 +54,28 @@ export class OutageDetailComponent {
   formError = signal<string | null>(null);
   saving = signal(false);
 
+  // --- GNM Study & Approval (URS Module 3 §5.3-5.4) ---
+  studyJustification = signal('');
+  studyHighlights = signal('');
+  studyRemark = signal('');
+  studyUnderStudyNotes = signal('');
+  studySaving = signal(false);
+  studyActionError = signal<string | null>(null);
+  studyActionBusy = signal(false);
+
+  canGnmApprove = computed(() => {
+    const o = this.outage();
+    if (!o) return false;
+    return o.requestorStatus === 'Confirmed' && o.plannerStatus === 'Agreed'
+      && (o.gnmStatus === 'Pending' || o.gnmStatus === 'Under-Study' || o.gnmStatus === 'KIV');
+  });
+
+  canGnmRevert = computed(() => {
+    const o = this.outage();
+    if (!o) return false;
+    return o.gnmStatus === 'Approved' && (!o.gncStatus || o.gncStatus === 'Outage Closed - Not Taken');
+  });
+
   constructor() {
     this.voltageLevelService.list().subscribe({ next: (v) => this.voltageLevels.set(v), error: () => {} });
     this.load();
@@ -67,6 +89,10 @@ export class OutageDetailComponent {
       next: (outage) => {
         this.outage.set(outage);
         this.loading.set(false);
+        this.studyJustification.set(outage.justification ?? '');
+        this.studyHighlights.set(outage.highlights ?? '');
+        this.studyRemark.set(outage.remark ?? '');
+        this.studyUnderStudyNotes.set(outage.underStudyNotes ?? '');
         if (outage.voltageLevelId) {
           this.equipmentService.list({ voltageLevelId: outage.voltageLevelId }).subscribe({
             next: (eq) => this.equipmentOptions.set(eq.filter((e) => e.isActive)),
@@ -138,5 +164,66 @@ export class OutageDetailComponent {
           this.formError.set(err?.error?.error ?? err?.message ?? 'Unable to submit change request.');
         }
       });
+  }
+
+  startStudy(): void {
+    this.studyActionBusy.set(true);
+    this.studyActionError.set(null);
+    this.outageService.startStudy(this.outageId).subscribe({
+      next: () => { this.studyActionBusy.set(false); this.load(); },
+      error: (err) => { this.studyActionBusy.set(false); this.studyActionError.set(err?.error?.error ?? 'Action failed.'); }
+    });
+  }
+
+  saveStudy(notify: boolean): void {
+    this.studySaving.set(true);
+    this.studyActionError.set(null);
+    this.outageService.updateStudy(this.outageId, {
+      justification: this.studyJustification() || null,
+      highlights: this.studyHighlights() || null,
+      remark: this.studyRemark() || null,
+      underStudyNotes: this.studyUnderStudyNotes() || null
+    }, notify).subscribe({
+      next: () => { this.studySaving.set(false); this.load(); },
+      error: (err) => { this.studySaving.set(false); this.studyActionError.set(err?.error?.error ?? 'Unable to save study notes.'); }
+    });
+  }
+
+  setKiv(): void {
+    this.studyActionBusy.set(true);
+    this.studyActionError.set(null);
+    this.outageService.setKiv(this.outageId).subscribe({
+      next: () => { this.studyActionBusy.set(false); this.load(); },
+      error: (err) => { this.studyActionBusy.set(false); this.studyActionError.set(err?.error?.error ?? 'Action failed.'); }
+    });
+  }
+
+  gnmApprove(): void {
+    this.studyActionBusy.set(true);
+    this.studyActionError.set(null);
+    this.outageService.gnmApprove(this.outageId).subscribe({
+      next: () => { this.studyActionBusy.set(false); this.load(); },
+      error: (err) => { this.studyActionBusy.set(false); this.studyActionError.set(err?.error?.error ?? 'Action failed.'); }
+    });
+  }
+
+  gnmDisapprove(): void {
+    if (!confirm('Disapprove this outage?')) return;
+    this.studyActionBusy.set(true);
+    this.studyActionError.set(null);
+    this.outageService.gnmDisapprove(this.outageId).subscribe({
+      next: () => { this.studyActionBusy.set(false); this.load(); },
+      error: (err) => { this.studyActionBusy.set(false); this.studyActionError.set(err?.error?.error ?? 'Action failed.'); }
+    });
+  }
+
+  gnmRevert(): void {
+    if (!confirm('Revert this outage back to Under-Study?')) return;
+    this.studyActionBusy.set(true);
+    this.studyActionError.set(null);
+    this.outageService.gnmRevert(this.outageId).subscribe({
+      next: () => { this.studyActionBusy.set(false); this.load(); },
+      error: (err) => { this.studyActionBusy.set(false); this.studyActionError.set(err?.error?.error ?? 'Action failed.'); }
+    });
   }
 }

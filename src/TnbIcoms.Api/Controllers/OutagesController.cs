@@ -96,6 +96,62 @@ public class OutagesController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
+    [HttpPost("{id:int}/study/start")]
+    public async Task<IActionResult> StartStudy(int id)
+    {
+        var result = await _outageService.StartStudyAsync(id, GetCurrentUserId());
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPut("{id:int}/study")]
+    public async Task<IActionResult> UpdateStudy(int id, [FromBody] StudyUpdateRequestDto request, [FromQuery] bool notify = false)
+    {
+        var result = await _outageService.UpdateStudyAsync(id, request, notify, GetCurrentUserId());
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPost("{id:int}/kiv")]
+    public async Task<IActionResult> SetKiv(int id)
+    {
+        var result = await _outageService.SetKivAsync(id, GetCurrentUserId());
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPost("{id:int}/gnm-approve")]
+    public async Task<IActionResult> GnmApprove(int id)
+    {
+        var result = await _outageService.ApproveAsync(id, GetCurrentUserId());
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPost("{id:int}/gnm-disapprove")]
+    public async Task<IActionResult> GnmDisapprove(int id)
+    {
+        var result = await _outageService.DisapproveAsync(id, GetCurrentUserId());
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPost("{id:int}/gnm-revert")]
+    public async Task<IActionResult> GnmRevert(int id)
+    {
+        var result = await _outageService.RevertApprovalAsync(id, GetCurrentUserId());
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPost("bulk/gnm-approve")]
+    public async Task<IActionResult> BulkGnmApprove([FromBody] BulkActionRequestDto request)
+    {
+        var result = await _outageService.BulkApproveAsync(request, GetCurrentUserId());
+        return Ok(result);
+    }
+
+    [HttpPost("bulk/gnm-disapprove")]
+    public async Task<IActionResult> BulkGnmDisapprove([FromBody] BulkActionRequestDto request)
+    {
+        var result = await _outageService.BulkDisapproveAsync(request, GetCurrentUserId());
+        return Ok(result);
+    }
+
     [HttpPost("bulk/agree")]
     public async Task<IActionResult> BulkAgree([FromBody] BulkActionRequestDto request)
     {

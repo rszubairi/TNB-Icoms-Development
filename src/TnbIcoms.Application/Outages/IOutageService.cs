@@ -37,6 +37,16 @@ public interface IOutageService
     Task<ApiResponse<object>> DisagreeAsync(int outageId, int currentUserId);
     Task<ApiResponse<object>> ConfirmAsync(int outageId, int currentUserId);
     Task<ApiResponse<object>> RejectAsync(int outageId, int currentUserId);
+
+    // GNM Study & Approval workflow (URS Module 3 §5.3-5.4)
+    Task<ApiResponse<object>> StartStudyAsync(int outageId, int currentUserId);
+    Task<ApiResponse<object>> UpdateStudyAsync(int outageId, StudyUpdateRequestDto request, bool notify, int currentUserId);
+    Task<ApiResponse<object>> SetKivAsync(int outageId, int currentUserId);
+    Task<ApiResponse<object>> ApproveAsync(int outageId, int currentUserId);
+    Task<ApiResponse<object>> DisapproveAsync(int outageId, int currentUserId);
+    Task<ApiResponse<object>> RevertApprovalAsync(int outageId, int currentUserId);
+    Task<ApiResponse<BulkActionResultDto>> BulkApproveAsync(BulkActionRequestDto request, int currentUserId);
+    Task<ApiResponse<BulkActionResultDto>> BulkDisapproveAsync(BulkActionRequestDto request, int currentUserId);
     Task<ApiResponse<BulkActionResultDto>> BulkAgreeAsync(BulkActionRequestDto request, int currentUserId);
     Task<ApiResponse<BulkActionResultDto>> BulkDisagreeAsync(BulkActionRequestDto request, int currentUserId);
     Task<ApiResponse<BulkActionResultDto>> BulkConfirmAsync(BulkActionRequestDto request, int currentUserId);

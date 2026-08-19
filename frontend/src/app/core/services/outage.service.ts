@@ -5,7 +5,8 @@ import {
   CreateOutageRequest,
   OutageDetail,
   OutageListFilter,
-  OutageListItem
+  OutageListItem,
+  StudyUpdateRequest
 } from '../models/outage.model';
 import { ApiService } from './api.service';
 
@@ -59,5 +60,37 @@ export class OutageService {
 
   bulkReject(outageIds: number[]): Observable<BulkActionResult> {
     return this.api.post<BulkActionResult>('/outages/bulk/reject', { outageIds });
+  }
+
+  startStudy(outageId: number): Observable<unknown> {
+    return this.api.post(`/outages/${outageId}/study/start`, {});
+  }
+
+  updateStudy(outageId: number, request: StudyUpdateRequest, notify: boolean): Observable<unknown> {
+    return this.api.put(`/outages/${outageId}/study?notify=${notify}`, request);
+  }
+
+  setKiv(outageId: number): Observable<unknown> {
+    return this.api.post(`/outages/${outageId}/kiv`, {});
+  }
+
+  gnmApprove(outageId: number): Observable<unknown> {
+    return this.api.post(`/outages/${outageId}/gnm-approve`, {});
+  }
+
+  gnmDisapprove(outageId: number): Observable<unknown> {
+    return this.api.post(`/outages/${outageId}/gnm-disapprove`, {});
+  }
+
+  gnmRevert(outageId: number): Observable<unknown> {
+    return this.api.post(`/outages/${outageId}/gnm-revert`, {});
+  }
+
+  bulkGnmApprove(outageIds: number[]): Observable<BulkActionResult> {
+    return this.api.post<BulkActionResult>('/outages/bulk/gnm-approve', { outageIds });
+  }
+
+  bulkGnmDisapprove(outageIds: number[]): Observable<BulkActionResult> {
+    return this.api.post<BulkActionResult>('/outages/bulk/gnm-disapprove', { outageIds });
   }
 }

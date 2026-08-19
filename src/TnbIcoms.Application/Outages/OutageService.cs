@@ -345,6 +345,123 @@ public class OutageService : IOutageService
         return ApiResponse<object>.Ok(new { });
     }
 
+    public async Task<ApiResponse<object>> StartStudyAsync(int outageId, int currentUserId)
+    {
+        var outage = await _dbContext.Outages.FirstOrDefaultAsync(o => o.OutageId == outageId && !o.IsDeleted);
+        if (outage is null) return ApiResponse<object>.Fail("Outage not found.");
+        if (outage.GnmStatus != "Pending") return ApiResponse<object>.Fail("Only Pending outages can start study.");
+
+        outage.GnmStatus = "Under-Study";
+        outage.UpdatedAt = DateTime.UtcNow;
+        outage.UpdatedBy = currentUserId;
+        await _dbContext.SaveChangesAsync();
+
+        return ApiResponse<object>.Ok(new { });
+    }
+
+    public async Task<ApiResponse<object>> UpdateStudyAsync(int outageId, StudyUpdateRequestDto request, bool notify, int currentUserId)
+    {
+        var outage = await _dbContext.Outages.Include(o => o.Pics).FirstOrDefaultAsync(o => o.OutageId == outageId && !o.IsDeleted);
+        if (outage is null) return ApiResponse<object>.Fail("Outage not found.");
+
+        outage.Justification = request.Justification;
+        outage.Highlights = request.Highlights;
+        outage.Remark = request.Remark;
+        outage.UnderStudyNotes = request.UnderStudyNotes;
+        outage.UpdatedAt = DateTime.UtcNow;
+        outage.UpdatedBy = currentUserId;
+        await _dbContext.SaveChangesAsync();
+
+        if (notify)
+        {
+            await NotifyPicsAsync(outage, "updated by GNM");
+        }
+
+        return ApiResponse<object>.Ok(new { });
+    }
+
+    public async Task<ApiResponse<object>> SetKivAsync(int outageId, int currentUserId)
+    {
+        var outage = await _dbContext.Outages.FirstOrDefaultAsync(o => o.OutageId == outageId && !o.IsDeleted);
+        if (outage is null) return ApiResponse<object>.Fail("Outage not found.");
+        if (outage.GnmStatus is not ("Pending" or "Under-Study")) return ApiResponse<object>.Fail("Only Pending or Under-Study outages can be set to KIV.");
+
+        outage.GnmStatus = "KIV";
+        outage.UpdatedAt = DateTime.UtcNow;
+        outage.UpdatedBy = currentUserId;
+        await _dbContext.SaveChangesAsync();
+
+        return ApiResponse<object>.Ok(new { });
+    }
+
+    public async Task<ApiResponse<object>> ApproveAsync(int outageId, int currentUserId)
+    {
+        var outage = await _dbContext.Outages.FirstOrDefaultAsync(o => o.OutageId == outageId && !o.IsDeleted);
+        if (outage is null) return ApiResponse<object>.Fail("Outage not found.");
+        if (outage.RequestorStatus != "Confirmed" || outage.PlannerStatus != "Agreed")
+        {
+            return ApiResponse<object>.Fail("This outage is not awaiting GNM approval.");
+        }
+        if (outage.GnmStatus is not ("Pending" or "Under-Study" or "KIV"))
+        {
+            return ApiResponse<object>.Fail($"Cannot approve an outage with GNM status '{outage.GnmStatus}'.");
+        }
+
+        outage.GnmStatus = "Approved";
+        outage.ApprovedById = currentUserId;
+        outage.UpdatedAt = DateTime.UtcNow;
+        outage.UpdatedBy = currentUserId;
+        await _dbContext.SaveChangesAsync();
+
+        return ApiResponse<object>.Ok(new { });
+    }
+
+    public async Task<ApiResponse<object>> DisapproveAsync(int outageId, int currentUserId)
+    {
+        var outage = await _dbContext.Outages.FirstOrDefaultAsync(o => o.OutageId == outageId && !o.IsDeleted);
+        if (outage is null) return ApiResponse<object>.Fail("Outage not found.");
+        if (outage.GnmStatus is not ("Pending" or "Under-Study" or "KIV"))
+        {
+            return ApiResponse<object>.Fail($"Cannot disapprove an outage with GNM status '{outage.GnmStatus}'.");
+        }
+
+        outage.GnmStatus = "Disapproved";
+        outage.UpdatedAt = DateTime.UtcNow;
+        outage.UpdatedBy = currentUserId;
+        await _dbContext.SaveChangesAsync();
+
+        return ApiResponse<object>.Ok(new { });
+    }
+
+    /// <summary>
+    /// URS §5.4: an Approved outage can be backtracked to Under-Study for re-review,
+    /// but only before GNC has taken it active.
+    /// </summary>
+    public async Task<ApiResponse<object>> RevertApprovalAsync(int outageId, int currentUserId)
+    {
+        var outage = await _dbContext.Outages.FirstOrDefaultAsync(o => o.OutageId == outageId && !o.IsDeleted);
+        if (outage is null) return ApiResponse<object>.Fail("Outage not found.");
+        if (outage.GnmStatus != "Approved") return ApiResponse<object>.Fail("Only Approved outages can be reverted.");
+        if (outage.GncStatus is not null and not "Outage Closed - Not Taken")
+        {
+            return ApiResponse<object>.Fail("This outage already has GNC activity and cannot be reverted.");
+        }
+
+        outage.GnmStatus = "Under-Study";
+        outage.ApprovedById = null;
+        outage.UpdatedAt = DateTime.UtcNow;
+        outage.UpdatedBy = currentUserId;
+        await _dbContext.SaveChangesAsync();
+
+        return ApiResponse<object>.Ok(new { });
+    }
+
+    public Task<ApiResponse<BulkActionResultDto>> BulkApproveAsync(BulkActionRequestDto request, int currentUserId) =>
+        RunBulkAsync(request.OutageIds, id => ApproveAsync(id, currentUserId));
+
+    public Task<ApiResponse<BulkActionResultDto>> BulkDisapproveAsync(BulkActionRequestDto request, int currentUserId) =>
+        RunBulkAsync(request.OutageIds, id => DisapproveAsync(id, currentUserId));
+
     public Task<ApiResponse<BulkActionResultDto>> BulkAgreeAsync(BulkActionRequestDto request, int currentUserId) =>
         RunBulkAsync(request.OutageIds, id => AgreeAsync(id, currentUserId));
 

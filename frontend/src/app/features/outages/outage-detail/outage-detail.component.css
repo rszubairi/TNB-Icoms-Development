@@ -12,6 +12,14 @@
   text-decoration: underline;
 }
 
+.gnm-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
 .layout-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;

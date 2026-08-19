@@ -31,10 +31,10 @@ const MODE_CONFIG: Record<OutageListMode, ModeConfig> = {
   },
   pendingApproval: {
     title: 'Outage Pending Approval',
-    subtitle: 'Agreed and confirmed outages waiting for GNM approval. Read-only.',
-    primaryLabel: '',
-    secondaryLabel: null,
-    readOnly: true
+    subtitle: 'Agreed and confirmed outages waiting for GNM approval.',
+    primaryLabel: 'Approve',
+    secondaryLabel: 'Disapprove',
+    readOnly: false
   },
   repository: {
     title: 'Data Repository',
@@ -118,7 +118,10 @@ export class OutageListComponent {
 
   primaryAction(outage: OutageListItem): void {
     this.rowBusyId.set(outage.outageId);
-    const request$ = this.mode() === 'pendingReview' ? this.outageService.agree(outage.outageId) : this.outageService.confirm(outage.outageId);
+    const request$ =
+      this.mode() === 'pendingReview' ? this.outageService.agree(outage.outageId) :
+      this.mode() === 'pendingApproval' ? this.outageService.gnmApprove(outage.outageId) :
+      this.outageService.confirm(outage.outageId);
     request$.subscribe({
       next: () => {
         this.rowBusyId.set(null);
@@ -134,9 +137,13 @@ export class OutageListComponent {
   secondaryAction(outage: OutageListItem): void {
     const isReject = this.mode() === 'confirmation';
     if (isReject && !confirm(`Reject and delete outage ${outage.outageNumber}? This cannot be undone.`)) return;
+    if (this.mode() === 'pendingApproval' && !confirm(`Disapprove outage ${outage.outageNumber}?`)) return;
 
     this.rowBusyId.set(outage.outageId);
-    const request$ = this.mode() === 'pendingReview' ? this.outageService.disagree(outage.outageId) : this.outageService.reject(outage.outageId);
+    const request$ =
+      this.mode() === 'pendingReview' ? this.outageService.disagree(outage.outageId) :
+      this.mode() === 'pendingApproval' ? this.outageService.gnmDisapprove(outage.outageId) :
+      this.outageService.reject(outage.outageId);
     request$.subscribe({
       next: () => {
         this.rowBusyId.set(null);
@@ -157,7 +164,10 @@ export class OutageListComponent {
 
     this.processing.set(true);
     this.actionError.set(null);
-    const request$ = this.mode() === 'pendingReview' ? this.outageService.bulkAgree(ids) : this.outageService.bulkConfirm(ids);
+    const request$ =
+      this.mode() === 'pendingReview' ? this.outageService.bulkAgree(ids) :
+      this.mode() === 'pendingApproval' ? this.outageService.bulkGnmApprove(ids) :
+      this.outageService.bulkConfirm(ids);
     request$.subscribe({
       next: (result) => {
         this.processing.set(false);
@@ -177,10 +187,14 @@ export class OutageListComponent {
 
     const isReject = this.mode() === 'confirmation';
     if (isReject && !confirm(`Reject and delete ${ids.length} outage(s)? This cannot be undone.`)) return;
+    if (this.mode() === 'pendingApproval' && !confirm(`Disapprove ${ids.length} outage(s)?`)) return;
 
     this.processing.set(true);
     this.actionError.set(null);
-    const request$ = this.mode() === 'pendingReview' ? this.outageService.bulkDisagree(ids) : this.outageService.bulkReject(ids);
+    const request$ =
+      this.mode() === 'pendingReview' ? this.outageService.bulkDisagree(ids) :
+      this.mode() === 'pendingApproval' ? this.outageService.bulkGnmDisapprove(ids) :
+      this.outageService.bulkReject(ids);
     request$.subscribe({
       next: (result) => {
         this.processing.set(false);

@@ -50,6 +50,44 @@
           </ul>
         </div>
       }
+      <h2 class="sidebar-heading">GNM Study &amp; Approval</h2>
+      @if (studyActionError()) { <div class="form-alert">{{ studyActionError() }}</div> }
+
+      <label class="form-label">Justification</label>
+      <textarea class="form-input" rows="2" [ngModel]="studyJustification()" (ngModelChange)="studyJustification.set($event)"></textarea>
+
+      <label class="form-label">Highlights</label>
+      <textarea class="form-input" rows="2" [ngModel]="studyHighlights()" (ngModelChange)="studyHighlights.set($event)"></textarea>
+
+      <label class="form-label">Remark</label>
+      <textarea class="form-input" rows="2" [ngModel]="studyRemark()" (ngModelChange)="studyRemark.set($event)"></textarea>
+
+      <label class="form-label">Under-Study Notes</label>
+      <textarea class="form-input" rows="2" [ngModel]="studyUnderStudyNotes()" (ngModelChange)="studyUnderStudyNotes.set($event)"></textarea>
+
+      <div class="cr-form-actions">
+        <button type="button" class="btn-secondary" [disabled]="studySaving()" (click)="saveStudy(false)">Update</button>
+        <button type="button" class="btn-primary" [disabled]="studySaving()" (click)="saveStudy(true)">
+          {{ studySaving() ? 'Saving…' : 'Update & Notify' }}
+        </button>
+      </div>
+
+      <div class="gnm-action-row">
+        @if (o.gnmStatus === 'Pending') {
+          <button type="button" class="btn-secondary" [disabled]="studyActionBusy()" (click)="startStudy()">Start Study</button>
+        }
+        @if (o.gnmStatus === 'Pending' || o.gnmStatus === 'Under-Study') {
+          <button type="button" class="btn-secondary" [disabled]="studyActionBusy()" (click)="setKiv()">Set KIV</button>
+        }
+        @if (canGnmApprove()) {
+          <button type="button" class="btn-primary" [disabled]="studyActionBusy()" (click)="gnmApprove()">Approve</button>
+          <button type="button" class="btn-outline danger" [disabled]="studyActionBusy()" (click)="gnmDisapprove()">Disapprove</button>
+        }
+        @if (canGnmRevert()) {
+          <button type="button" class="btn-secondary" [disabled]="studyActionBusy()" (click)="gnmRevert()">Revert to Under-Study</button>
+        }
+      </div>
+
       <h2 class="sidebar-heading">Change Requests</h2>
 
       @if (canRequestChange() && !hasPendingBatch() && !showForm()) {
