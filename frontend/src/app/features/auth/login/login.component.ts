@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent {
 
   submitting = signal(false);
   errorMessage = signal<string | null>(null);
+  adLoginEnabled = environment.adLoginEnabled;
 
   form = this.fb.nonNullable.group({
     identifier: ['', [Validators.required]],
@@ -44,6 +46,21 @@ export class LoginComponent {
   }
 
   onCorporateSso(): void {
-    this.errorMessage.set('Corporate AD / SSO sign-in is not yet available in this environment.');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.errorMessage.set(null);
+    this.submitting.set(true);
+    this.authService.loginWithAd(this.form.getRawValue()).subscribe({
+      next: () => {
+        this.submitting.set(false);
+        this.router.navigateByUrl('/admin/users');
+      },
+      error: (err) => {
+        this.submitting.set(false);
+        this.errorMessage.set(err?.error?.error ?? err?.message ?? 'AD sign-in failed. Please try again.');
+      }
+    });
   }
 }

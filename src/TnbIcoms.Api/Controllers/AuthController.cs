@@ -24,6 +24,13 @@ public class AuthController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
+    [HttpPost("login-ad")]
+    public async Task<IActionResult> LoginAd([FromBody] LoginRequestDto request)
+    {
+        var result = await _authService.LoginWithAdAsync(request);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequestDto request)
     {

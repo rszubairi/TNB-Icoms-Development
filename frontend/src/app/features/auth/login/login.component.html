@@ -83,11 +83,13 @@
           {{ submitting() ? 'Signing in…' : 'Sign In' }}
         </button>
 
-        <div class="divider"><span>or</span></div>
+        @if (adLoginEnabled) {
+          <div class="divider"><span>or</span></div>
 
-        <button type="button" class="btn-blue full-width" (click)="onCorporateSso()">
-          Corporate AD / SSO
-        </button>
+          <button type="button" class="btn-blue full-width" [disabled]="submitting()" (click)="onCorporateSso()">
+            Corporate AD / SSO
+          </button>
+        }
       </form>
     </div>
   </div>

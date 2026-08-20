@@ -128,7 +128,16 @@ builder.Services.AddScoped<IEmailLogService, EmailLogService>();
 builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 builder.Services.AddScoped<IChangeRequestService, ChangeRequestService>();
-builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
+
+var adEnabled = builder.Configuration.GetValue<bool>("Ad:Enabled");
+if (adEnabled)
+{
+    builder.Services.AddScoped<IAdAuthProvider, LdapAdAuthProvider>();
+}
+else
+{
+    builder.Services.AddScoped<IAdAuthProvider, StubAdAuthProvider>();
+}
 
 builder.Services.AddValidatorsFromAssembly(typeof(IAuthService).Assembly);
 

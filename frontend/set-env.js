@@ -5,10 +5,12 @@ const fs = require('fs');
 const path = require('path');
 
 const apiUrl = process.env['NG_APP_API_URL'] || 'http://localhost:5000/api';
+const adLoginEnabled = process.env['NG_APP_AD_LOGIN_ENABLED'] !== 'false';
 
 const content = `export const environment = {
   production: true,
-  apiUrl: '${apiUrl}'
+  apiUrl: '${apiUrl}',
+  adLoginEnabled: ${adLoginEnabled}
 };
 `;
 

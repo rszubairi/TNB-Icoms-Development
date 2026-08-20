@@ -19,17 +19,20 @@ public class AuthService : IAuthService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly AppDbContext _dbContext;
     private readonly IConfiguration _configuration;
+    private readonly IAdAuthProvider _adAuthProvider;
 
     public AuthService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         AppDbContext dbContext,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IAdAuthProvider adAuthProvider)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _dbContext = dbContext;
         _configuration = configuration;
+        _adAuthProvider = adAuthProvider;
     }
 
     public async Task<ApiResponse<LoginResponseDto>> LoginAsync(LoginRequestDto request)
@@ -48,16 +51,73 @@ public class AuthService : IAuthService
             return ApiResponse<LoginResponseDto>.Fail("Invalid credentials.");
         }
 
-        var domainUser = await _dbContext.AppUsers
-            .Include(u => u.Role)
-            .Include(u => u.Zone)
-            .FirstOrDefaultAsync(u => u.AspNetUserId == identityUser.Id);
-
-        if (domainUser is null || !domainUser.IsActive || domainUser.IsDeleted)
+        var domainUser = await FindDomainUserAsync(identityUser.Id);
+        if (domainUser is null)
         {
             return ApiResponse<LoginResponseDto>.Fail("Account is not active.");
         }
 
+        return IssueLoginResponse(identityUser, domainUser);
+    }
+
+    public async Task<ApiResponse<LoginResponseDto>> LoginWithAdAsync(LoginRequestDto request)
+    {
+        var adEnabled = _configuration.GetValue<bool>("Ad:Enabled");
+        if (!adEnabled)
+        {
+            return ApiResponse<LoginResponseDto>.Fail("Corporate AD / SSO sign-in is not enabled.");
+        }
+
+        var identityUser = await _userManager.FindByEmailAsync(request.StaffIdOrEmail)
+            ?? await _userManager.Users.FirstOrDefaultAsync(u => u.TnbId == request.StaffIdOrEmail);
+
+        if (identityUser is null || !identityUser.IsActive)
+        {
+            return ApiResponse<LoginResponseDto>.Fail("Invalid credentials or inactive account.");
+        }
+
+        var domainUser = await FindDomainUserAsync(identityUser.Id);
+        if (domainUser is null)
+        {
+            return ApiResponse<LoginResponseDto>.Fail("Account is not active.");
+        }
+
+        if (domainUser.AuthType != 1)
+        {
+            return ApiResponse<LoginResponseDto>.Fail("This account is not configured for AD sign-in.");
+        }
+
+        // Testing-only shortcut: when Ad:BypassEnabled is set, the fixed bypass password
+        // authenticates any AD account without contacting the directory or enforcing password
+        // strength. Only ever enable this outside production.
+        var bypassEnabled = _configuration.GetValue<bool>("Ad:BypassEnabled");
+        var bypassPassword = _configuration["Ad:BypassPassword"] ?? "click123";
+        var bypassed = bypassEnabled && request.Password == bypassPassword;
+
+        if (!bypassed)
+        {
+            var adResult = await _adAuthProvider.AuthenticateAsync(identityUser.TnbId ?? request.StaffIdOrEmail, request.Password);
+            if (adResult.Status != AdAuthStatus.Success)
+            {
+                return ApiResponse<LoginResponseDto>.Fail("Invalid AD credentials.");
+            }
+        }
+
+        return IssueLoginResponse(identityUser, domainUser);
+    }
+
+    private async Task<User?> FindDomainUserAsync(string aspNetUserId)
+    {
+        var domainUser = await _dbContext.AppUsers
+            .Include(u => u.Role)
+            .Include(u => u.Zone)
+            .FirstOrDefaultAsync(u => u.AspNetUserId == aspNetUserId);
+
+        return domainUser is null || !domainUser.IsActive || domainUser.IsDeleted ? null : domainUser;
+    }
+
+    private ApiResponse<LoginResponseDto> IssueLoginResponse(ApplicationUser identityUser, User domainUser)
+    {
         var bypass2Fa = _configuration.GetValue<bool>("Authentication:Bypass2FA");
         // External (Membership) users require 2FA in production; internal AD users are always bypassed.
         if (!bypass2Fa && domainUser.AuthType == 2)

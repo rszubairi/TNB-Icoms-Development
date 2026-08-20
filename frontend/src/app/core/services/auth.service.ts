@@ -14,12 +14,20 @@ export class AuthService {
   isAuthenticated = computed(() => this.currentUser() !== null);
 
   login(request: LoginRequest): Observable<LoginResponse> {
+    return this.authenticate('/auth/login', request);
+  }
+
+  loginWithAd(request: LoginRequest): Observable<LoginResponse> {
+    return this.authenticate('/auth/login-ad', request);
+  }
+
+  private authenticate(path: string, request: LoginRequest): Observable<LoginResponse> {
     const payload = {
       staffIdOrEmail: request.identifier,
       password: request.password,
       rememberDevice: request.rememberMe
     };
-    return this.api.post<LoginResponse>('/auth/login', payload).pipe(
+    return this.api.post<LoginResponse>(path, payload).pipe(
       tap((response) => {
         localStorage.setItem(TOKEN_KEY, response.accessToken);
         localStorage.setItem(USER_KEY, JSON.stringify(response.user));
