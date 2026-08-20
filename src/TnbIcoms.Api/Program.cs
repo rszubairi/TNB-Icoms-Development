@@ -24,6 +24,7 @@ using TnbIcoms.Application.Outages;
 using TnbIcoms.Application.Gnc;
 using TnbIcoms.Application.Handover;
 using TnbIcoms.Application.CommissioningMemos;
+using TnbIcoms.Application.Dashboard;
 using TnbIcoms.Application.EmailLogs;
 using TnbIcoms.Application.EmailTemplates;
 using TnbIcoms.Application.ErrorLogs;
@@ -126,6 +127,7 @@ builder.Services.AddScoped<ICommissioningMemoService, CommissioningMemoService>(
 builder.Services.AddScoped<IErrorLogService, ErrorLogService>();
 builder.Services.AddScoped<IEmailLogService, EmailLogService>();
 builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 builder.Services.AddScoped<IChangeRequestService, ChangeRequestService>();
 

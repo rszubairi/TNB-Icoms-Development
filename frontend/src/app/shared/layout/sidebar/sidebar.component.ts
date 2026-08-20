@@ -23,7 +23,7 @@ interface NavGroup {
 })
 export class SidebarComponent implements OnInit {
   topLevelItems: NavItem[] = [
-    { label: 'Dashboard', disabled: true },
+    { label: 'Dashboard', path: '/dashboard' },
     { label: 'System Health', path: '/health-check' }
   ];
 

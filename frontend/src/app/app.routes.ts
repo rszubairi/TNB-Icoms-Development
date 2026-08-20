@@ -40,6 +40,7 @@ import { UserFormComponent } from './features/admin/users/user-form/user-form.co
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
 import { HealthCheckComponent } from './features/health-check/health-check.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -48,7 +49,8 @@ export const routes: Routes = [
     component: ShellComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'admin/users' },
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      { path: 'dashboard', component: DashboardComponent },
       { path: 'admin/users', component: UserListComponent },
       { path: 'admin/users/:id', component: UserFormComponent },
       { path: 'admin/roles', component: RolesComponent },
@@ -91,8 +93,8 @@ export const routes: Routes = [
       { path: 'admin/email-templates', component: EmailTemplatesComponent },
       { path: 'health-check', component: HealthCheckComponent },
       { path: 'outages/:id', component: OutageDetailComponent },
-      { path: '**', redirectTo: 'admin/users' }
+      { path: '**', redirectTo: 'dashboard' }
     ]
   },
-  { path: '**', redirectTo: 'admin/users' }
+  { path: '**', redirectTo: 'dashboard' }
 ];

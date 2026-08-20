@@ -1,0 +1,139 @@
+<div class="page-header">
+  <div>
+    <h1 class="font-display">Dashboard</h1>
+    <p class="subtitle">Outage activity at a glance.</p>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="card"><p class="state-message">Loading…</p></div>
+} @else if (errorMessage()) {
+  <div class="card"><p class="state-message error">{{ errorMessage() }}</p></div>
+}
+
+@if (!loading() && !errorMessage() && dashboard(); as d) {
+  <div class="metrics-grid">
+    <div class="card metric-card">
+      <span class="metric-value">{{ d.metrics.totalOutages }}</span>
+      <span class="metric-label">Total Outages</span>
+    </div>
+    <div class="card metric-card">
+      <span class="metric-value">{{ d.metrics.pendingPlannerReview }}</span>
+      <span class="metric-label">Pending Planner Review</span>
+    </div>
+    <div class="card metric-card">
+      <span class="metric-value">{{ d.metrics.pendingGnmApproval }}</span>
+      <span class="metric-label">Pending GNM Approval</span>
+    </div>
+    <div class="card metric-card">
+      <span class="metric-value">{{ d.metrics.activeNow }}</span>
+      <span class="metric-label">Active Now</span>
+    </div>
+    <div class="card metric-card" [class.alert]="d.metrics.emergencyOpen > 0">
+      <span class="metric-value">{{ d.metrics.emergencyOpen }}</span>
+      <span class="metric-label">Emergency Open</span>
+    </div>
+    <div class="card metric-card">
+      <span class="metric-value">{{ d.metrics.closedThisMonth }}</span>
+      <span class="metric-label">Closed This Month</span>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="card chart-card">
+      <h2 class="chart-title">Outage Requests by Week</h2>
+      <p class="chart-subtitle">Bar chart · rolling 12 weeks, by request date</p>
+      @if (d.weeklyOutageCounts.length === 0) {
+        <p class="state-message small">No outages recorded yet.</p>
+      } @else {
+        <svg [attr.viewBox]="'0 0 ' + chartWidth + ' ' + chartHeight" class="bar-chart">
+          @for (w of d.weeklyOutageCounts; track w.weekStart; let i = $index) {
+            <g>
+              <rect
+                [attr.x]="20 + i * (chartWidth / d.weeklyOutageCounts.length)"
+                [attr.y]="chartHeight - 30 - barHeight(w.count)"
+                [attr.width]="(chartWidth / d.weeklyOutageCounts.length) - 10"
+                [attr.height]="barHeight(w.count)"
+                fill="#3b82f6"
+                rx="3"
+              ></rect>
+              <text
+                [attr.x]="20 + i * (chartWidth / d.weeklyOutageCounts.length) + ((chartWidth / d.weeklyOutageCounts.length) - 10) / 2"
+                [attr.y]="chartHeight - 30 - barHeight(w.count) - 6"
+                text-anchor="middle"
+                class="bar-value"
+              >{{ w.count }}</text>
+              <text
+                [attr.x]="20 + i * (chartWidth / d.weeklyOutageCounts.length) + ((chartWidth / d.weeklyOutageCounts.length) - 10) / 2"
+                [attr.y]="chartHeight - 10"
+                text-anchor="middle"
+                class="bar-label"
+              >{{ w.weekLabel }}</text>
+            </g>
+          }
+        </svg>
+      }
+    </div>
+
+    <div class="card chart-card">
+      <h2 class="chart-title">Outage Requests by Status</h2>
+      <p class="chart-subtitle">Pie chart · Requestor status, all outages</p>
+      @if (statusPie().length === 0) {
+        <p class="state-message small">No outages recorded yet.</p>
+      } @else {
+        <div class="pie-layout">
+          <svg viewBox="0 0 190 190" class="pie-chart">
+            @for (slice of statusPie(); track slice.label) {
+              <path [attr.d]="slice.path" [attr.fill]="slice.color"></path>
+            }
+          </svg>
+          <ul class="pie-legend">
+            @for (slice of statusPie(); track slice.label) {
+              <li><span class="legend-dot" [style.background-color]="slice.color"></span>{{ slice.label }} ({{ slice.value }})</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="lists-grid">
+    <div class="card list-card">
+      <h2 class="chart-title">In Progress</h2>
+      <p class="chart-subtitle">Most recently active outages, not yet closed</p>
+      @if (d.inProgress.length === 0) {
+        <p class="state-message small">Nothing currently in progress.</p>
+      } @else {
+        <ul class="outage-list">
+          @for (o of d.inProgress; track o.outageId) {
+            <li>
+              <a [routerLink]="['/outages', o.outageId]" class="outage-link">{{ o.outageNumber }}</a>
+              <span class="status-badge">{{ o.requestorStatus }}</span>
+              <span class="cell-subtext">{{ o.stationName }} · {{ o.equipmentName }}</span>
+              <span class="cell-subtext">{{ o.plannedStartAt | date: 'short' }} → {{ o.plannedEndAt | date: 'short' }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <div class="card list-card">
+      <h2 class="chart-title">Emergency Requests</h2>
+      <p class="chart-subtitle">Open emergency outages requiring attention</p>
+      @if (d.emergencyRequests.length === 0) {
+        <p class="state-message small">No open emergency requests.</p>
+      } @else {
+        <ul class="outage-list">
+          @for (o of d.emergencyRequests; track o.outageId) {
+            <li class="emergency-item">
+              <a [routerLink]="['/outages', o.outageId]" class="outage-link">{{ o.outageNumber }}</a>
+              <span class="status-badge emergency">{{ o.requestorStatus }}</span>
+              <span class="cell-subtext">{{ o.stationName }} · {{ o.equipmentName }}</span>
+              <span class="cell-subtext">{{ o.plannedStartAt | date: 'short' }} → {{ o.plannedEndAt | date: 'short' }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+}
