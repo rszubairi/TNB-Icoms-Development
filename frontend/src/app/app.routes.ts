@@ -39,6 +39,7 @@ import { EmailTemplatesComponent } from './features/admin/email-templates/email-
 import { UserFormComponent } from './features/admin/users/user-form/user-form.component';
 import { UserListComponent } from './features/admin/users/user-list/user-list.component';
 import { ShellComponent } from './shared/layout/shell/shell.component';
+import { HealthCheckComponent } from './features/health-check/health-check.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -88,6 +89,7 @@ export const routes: Routes = [
       { path: 'admin/error-logs', component: ErrorLogsComponent },
       { path: 'admin/email-logs', component: EmailLogsComponent },
       { path: 'admin/email-templates', component: EmailTemplatesComponent },
+      { path: 'health-check', component: HealthCheckComponent },
       { path: 'outages/:id', component: OutageDetailComponent },
       { path: '**', redirectTo: 'admin/users' }
     ]

@@ -22,7 +22,10 @@ interface NavGroup {
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent implements OnInit {
-  topLevelItems: NavItem[] = [{ label: 'Dashboard', disabled: true }];
+  topLevelItems: NavItem[] = [
+    { label: 'Dashboard', disabled: true },
+    { label: 'System Health', path: '/health-check' }
+  ];
 
   navGroups: NavGroup[] = [
     {

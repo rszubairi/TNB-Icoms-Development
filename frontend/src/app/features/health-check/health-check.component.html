@@ -1,0 +1,65 @@
+<div class="page-header">
+  <h1>System Health Check</h1>
+  <p class="subtitle">Pings a read-only endpoint for every module and reports whether it responded successfully. Use this as a quick smoke test after a deploy or environment change.</p>
+</div>
+
+<div class="summary-card card" [class]="'status-' + overallStatus()">
+  <div class="summary-main">
+    <div class="summary-count">
+      <span class="summary-fraction">{{ done() }}/{{ total() }}</span>
+      <span class="summary-label">checks complete</span>
+    </div>
+    <div class="summary-pills">
+      <span class="pill pill-pass">{{ passed() }} passed</span>
+      <span class="pill pill-fail" *ngIf="failed() > 0">{{ failed() }} failed</span>
+    </div>
+  </div>
+
+  <div class="progress-track">
+    <div class="progress-fill progress-pass" [style.width.%]="total() ? (passed() / total()) * 100 : 0"></div>
+    <div class="progress-fill progress-fail" [style.width.%]="total() ? (failed() / total()) * 100 : 0"></div>
+  </div>
+
+  <div class="summary-footer">
+    <span class="status-line" *ngIf="overallStatus() === 'running'">Running checks…</span>
+    <span class="status-line status-line-ok" *ngIf="overallStatus() === 'healthy'">All systems healthy — {{ total() }}/{{ total() }} checks passed.</span>
+    <span class="status-line status-line-bad" *ngIf="overallStatus() === 'degraded'">{{ failed() }} of {{ total() }} checks failed — see details below.</span>
+    <span class="last-run" *ngIf="lastRunAt()">Last run: {{ lastRunAt() | date:'medium' }}</span>
+    <button class="btn-secondary" type="button" (click)="run()" [disabled]="running()">
+      {{ running() ? 'Running…' : 'Run Again' }}
+    </button>
+  </div>
+</div>
+
+<div class="card fail-summary" *ngIf="failedChecks().length > 0">
+  <h3>Failures</h3>
+  <ul class="fail-list">
+    <li *ngFor="let f of failedChecks()">
+      <span class="fail-label">{{ f.group }} — {{ f.label }}</span>
+      <span class="fail-error">{{ f.error }}</span>
+    </li>
+  </ul>
+</div>
+
+<div class="group-grid">
+  <div class="card group-card" *ngFor="let group of groups()">
+    <div class="group-header">
+      <h3>{{ group.name }}</h3>
+      <span class="group-tally" [class.group-tally-fail]="group.failed > 0">
+        {{ group.passed }}/{{ group.total }}
+      </span>
+    </div>
+    <ul class="check-list">
+      <li class="check-row" *ngFor="let check of group.checks">
+        <span class="check-icon" [ngSwitch]="check.status">
+          <span *ngSwitchCase="'pending'" class="icon icon-pending" title="Pending">&#9679;</span>
+          <span *ngSwitchCase="'running'" class="icon icon-running" title="Running">&#8635;</span>
+          <span *ngSwitchCase="'passed'" class="icon icon-passed" title="Passed">&#10003;</span>
+          <span *ngSwitchCase="'failed'" class="icon icon-failed" title="Failed">&#10007;</span>
+        </span>
+        <span class="check-label">{{ check.label }}</span>
+        <span class="check-duration" *ngIf="check.durationMs !== undefined">{{ check.durationMs }}ms</span>
+      </li>
+    </ul>
+  </div>
+</div>
