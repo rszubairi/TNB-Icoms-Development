@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CreateUserRequest, UpdateUserRequest, UserDetail, UserListItem } from '../models/user.model';
+import { Observable, map } from 'rxjs';
+import { CreateUserRequest, PagedResult, UpdateUserRequest, UserDetail, UserListItem } from '../models/user.model';
 import { ApiService } from './api.service';
 
 @Injectable({ providedIn: 'root' })
@@ -8,7 +8,9 @@ export class UserService {
   private api = inject(ApiService);
 
   list(): Observable<UserListItem[]> {
-    return this.api.get<UserListItem[]>('/users');
+    return this.api
+      .get<PagedResult<UserListItem>>('/users')
+      .pipe(map((result) => result.items));
   }
 
   getById(tnbId: string): Observable<UserDetail> {

@@ -74,3 +74,57 @@
   opacity: 0.3;
   cursor: not-allowed;
 }
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.nav-group-header:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-group.expanded .nav-group-header {
+  color: #fff;
+}
+
+.chevron {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.nav-group.expanded .chevron {
+  transform: rotate(180deg);
+}
+
+.nav-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.125rem 0 0.375rem 0.75rem;
+}
+
+.nav-group-items .nav-link {
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+}

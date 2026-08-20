@@ -8,7 +8,7 @@
   </div>
 
   <nav class="sidebar-nav">
-    @for (item of navItems; track item.label) {
+    @for (item of topLevelItems; track item.label) {
       @if (item.path) {
         <a
           class="nav-link"
@@ -21,6 +21,41 @@
       } @else {
         <span class="nav-link disabled">{{ item.label }}</span>
       }
+    }
+
+    @for (group of navGroups; track group.label) {
+      <div class="nav-group" [class.expanded]="group.expanded">
+        <button
+          type="button"
+          class="nav-group-header"
+          (click)="toggleGroup(group)"
+          [attr.aria-expanded]="group.expanded"
+        >
+          <span>{{ group.label }}</span>
+          <svg class="chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        @if (group.expanded) {
+          <div class="nav-group-items">
+            @for (item of group.items; track item.label) {
+              @if (item.path) {
+                <a
+                  class="nav-link"
+                  [routerLink]="item.path"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: false }"
+                >
+                  {{ item.label }}
+                </a>
+              } @else {
+                <span class="nav-link disabled">{{ item.label }}</span>
+              }
+            }
+          </div>
+        }
+      </div>
     }
   </nav>
 </aside>
