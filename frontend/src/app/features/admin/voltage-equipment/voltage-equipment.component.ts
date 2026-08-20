@@ -43,14 +43,18 @@ export class VoltageEquipmentComponent {
   voltageFormError = signal<string | null>(null);
   voltageSaving = signal(false);
   voltageBusyId = signal<number | null>(null);
+  isAddingVoltage = signal(false);
 
   typeDraft = signal<TypeDraft>({ ...emptyTypeDraft });
   typeFormError = signal<string | null>(null);
   typeSaving = signal(false);
   typeBusyId = signal<number | null>(null);
+  isAddingType = signal(false);
 
   isVoltageEditMode = computed(() => this.voltageDraft().voltageLevelId != null);
   isTypeEditMode = computed(() => this.typeDraft().equipmentTypeId != null);
+  showVoltageForm = computed(() => this.isVoltageEditMode() || this.isAddingVoltage());
+  showTypeForm = computed(() => this.isTypeEditMode() || this.isAddingType());
 
   selectedVoltage = computed(() => this.voltageLevels().find((v) => v.voltageLevelId === this.selectedVoltageLevelId()) ?? null);
 
@@ -100,6 +104,7 @@ export class VoltageEquipmentComponent {
   startCreateVoltage(): void {
     this.voltageFormError.set(null);
     this.voltageDraft.set({ ...emptyVoltageDraft });
+    this.isAddingVoltage.set(true);
   }
 
   startEditVoltage(level: VoltageLevel): void {
@@ -115,6 +120,7 @@ export class VoltageEquipmentComponent {
   resetVoltageForm(): void {
     this.voltageDraft.set({ ...emptyVoltageDraft });
     this.voltageFormError.set(null);
+    this.isAddingVoltage.set(false);
   }
 
   updateVoltageName(value: string): void {
@@ -173,6 +179,7 @@ export class VoltageEquipmentComponent {
   startCreateType(): void {
     this.typeFormError.set(null);
     this.typeDraft.set({ ...emptyTypeDraft });
+    this.isAddingType.set(true);
   }
 
   startEditType(type: EquipmentType): void {
@@ -187,6 +194,7 @@ export class VoltageEquipmentComponent {
   resetTypeForm(): void {
     this.typeDraft.set({ ...emptyTypeDraft });
     this.typeFormError.set(null);
+    this.isAddingType.set(false);
   }
 
   updateTypeName(value: string): void {

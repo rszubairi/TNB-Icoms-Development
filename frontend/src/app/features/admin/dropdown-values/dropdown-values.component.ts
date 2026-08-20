@@ -34,8 +34,10 @@ export class DropdownValuesComponent {
   formError = signal<string | null>(null);
   saving = signal(false);
   rowBusyId = signal<number | null>(null);
+  isAdding = signal(false);
 
   isEditMode = computed(() => this.draft().dropdownValueId != null);
+  showForm = computed(() => this.isEditMode() || this.isAdding());
   selectedCategory = computed(() => this.categories().find((c) => c.code === this.selectedCategoryCode()) ?? null);
 
   constructor() {
@@ -84,6 +86,7 @@ export class DropdownValuesComponent {
   startCreate(): void {
     this.formError.set(null);
     this.draft.set({ ...emptyDraft });
+    this.isAdding.set(true);
   }
 
   startEdit(value: DropdownValue): void {
@@ -99,6 +102,7 @@ export class DropdownValuesComponent {
   resetForm(): void {
     this.draft.set({ ...emptyDraft });
     this.formError.set(null);
+    this.isAdding.set(false);
   }
 
   updateLabel(value: string): void {

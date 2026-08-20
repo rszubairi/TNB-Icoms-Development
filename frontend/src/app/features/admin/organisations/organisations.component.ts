@@ -51,14 +51,18 @@ export class OrganisationsComponent {
   orgFormError = signal<string | null>(null);
   orgSaving = signal(false);
   orgBusyId = signal<number | null>(null);
+  isAddingOrg = signal(false);
 
   stationDraft = signal<StationDraft>({ ...emptyStationDraft });
   stationFormError = signal<string | null>(null);
   stationSaving = signal(false);
   stationBusyId = signal<number | null>(null);
+  isAddingStation = signal(false);
 
   isOrgEditMode = computed(() => this.orgDraft().organisationId != null);
   isStationEditMode = computed(() => this.stationDraft().stationId != null);
+  showOrgForm = computed(() => this.isOrgEditMode() || this.isAddingOrg());
+  showStationForm = computed(() => this.isStationEditMode() || this.isAddingStation());
 
   constructor() {
     this.zoneService.list().subscribe({
@@ -114,6 +118,7 @@ export class OrganisationsComponent {
   startCreateOrg(): void {
     this.orgFormError.set(null);
     this.orgDraft.set({ ...emptyOrgDraft });
+    this.isAddingOrg.set(true);
   }
 
   startEditOrg(org: Organisation): void {
@@ -130,6 +135,7 @@ export class OrganisationsComponent {
   resetOrgForm(): void {
     this.orgDraft.set({ ...emptyOrgDraft });
     this.orgFormError.set(null);
+    this.isAddingOrg.set(false);
   }
 
   updateOrgName(value: string): void {
@@ -208,6 +214,7 @@ export class OrganisationsComponent {
   startCreateStation(): void {
     this.stationFormError.set(null);
     this.stationDraft.set({ ...emptyStationDraft });
+    this.isAddingStation.set(true);
   }
 
   startEditStation(station: Station): void {
@@ -224,6 +231,7 @@ export class OrganisationsComponent {
   resetStationForm(): void {
     this.stationDraft.set({ ...emptyStationDraft });
     this.stationFormError.set(null);
+    this.isAddingStation.set(false);
   }
 
   updateStationName(value: string): void {

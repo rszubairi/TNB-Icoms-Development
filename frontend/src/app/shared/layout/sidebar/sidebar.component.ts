@@ -116,15 +116,18 @@ export class SidebarComponent implements OnInit {
   }
 
   toggleGroup(group: NavGroup): void {
-    group.expanded = !group.expanded;
+    const expanding = !group.expanded;
+    for (const g of this.navGroups) {
+      g.expanded = g === group && expanding;
+    }
   }
 
   private expandGroupForUrl(url: string): void {
     const match = this.navGroups.find((group) =>
       group.items.some((item) => item.path && url.startsWith(item.path))
     );
-    if (match) {
-      match.expanded = true;
+    for (const g of this.navGroups) {
+      g.expanded = g === match;
     }
   }
 }

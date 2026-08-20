@@ -38,45 +38,45 @@
               }
             </p>
           </div>
-          @if (!isEditMode()) {
+          @if (!showForm()) {
             <button type="button" class="btn-outline" (click)="startCreate()">+ Add</button>
           }
         </div>
 
-        <div class="inline-form">
-          <input
-            class="form-input"
-            type="text"
-            placeholder="Enter new option…"
-            [ngModel]="draft().valueLabel"
-            (ngModelChange)="updateLabel($event)"
-          />
-          @if (category.hasParent) {
-            <select class="form-select" [ngModel]="draft().parentCode" (ngModelChange)="updateParentCode($event)">
-              <option [value]="null">All outage types</option>
-              @for (parent of outageTypeParents(); track parent) {
-                <option [value]="parent">{{ parent }}</option>
-              }
-            </select>
-          }
-          @if (isEditMode()) {
-            <label class="checkbox-row">
-              <input type="checkbox" [ngModel]="draft().isActive" (ngModelChange)="updateIsActive($event)" />
-              <span>Active</span>
-            </label>
-          }
-          <div class="inline-form-actions">
-            @if (isEditMode()) {
-              <button type="button" class="btn-secondary" (click)="resetForm()">Cancel</button>
+        @if (showForm()) {
+          <div class="inline-form">
+            <input
+              class="form-input"
+              type="text"
+              placeholder="Enter new option…"
+              [ngModel]="draft().valueLabel"
+              (ngModelChange)="updateLabel($event)"
+            />
+            @if (category.hasParent) {
+              <select class="form-select" [ngModel]="draft().parentCode" (ngModelChange)="updateParentCode($event)">
+                <option [value]="null">All outage types</option>
+                @for (parent of outageTypeParents(); track parent) {
+                  <option [value]="parent">{{ parent }}</option>
+                }
+              </select>
             }
-            <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
-              {{ saving() ? 'Saving…' : (isEditMode() ? 'Save' : 'Add') }}
-            </button>
+            @if (isEditMode()) {
+              <label class="checkbox-row">
+                <input type="checkbox" [ngModel]="draft().isActive" (ngModelChange)="updateIsActive($event)" />
+                <span>Active</span>
+              </label>
+            }
+            <div class="inline-form-actions">
+              <button type="button" class="btn-secondary" (click)="resetForm()">Cancel</button>
+              <button type="button" class="btn-primary" [disabled]="saving()" (click)="save()">
+                {{ saving() ? 'Saving…' : (isEditMode() ? 'Save' : 'Add') }}
+              </button>
+            </div>
+            @if (formError()) {
+              <div class="form-alert">{{ formError() }}</div>
+            }
           </div>
-          @if (formError()) {
-            <div class="form-alert">{{ formError() }}</div>
-          }
-        </div>
+        }
 
         <div class="value-list">
           @if (loading()) {
