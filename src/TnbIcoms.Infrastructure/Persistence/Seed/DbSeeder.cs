@@ -103,6 +103,103 @@ public static class DbSeeder
         }
 
         await SeedEmailTemplatesAsync(dbContext);
+        await SeedDropdownValuesAsync(dbContext);
+    }
+
+    /// <summary>
+    /// Default dropdown option lists per URS Module 1 §5.2.6 (Table: Dropdown Options).
+    /// Existing rows are never overwritten — only missing (Category, ValueCode) pairs are inserted —
+    /// so an admin's edits and re-orderings always survive a redeploy/reseed.
+    /// </summary>
+    private static async Task SeedDropdownValuesAsync(AppDbContext dbContext)
+    {
+        var jobTypeLabels = new[]
+        {
+            "Conditional Monitoring", "Defect Correction", "Fault Investigation", "Inspection",
+            "Routine Maintenance", "SCADA & SAS", "Testing", "Projects", "Others",
+            "Distribution Work", "Transfer of Asset", "Repair and Rehabilitation"
+        };
+
+        // Kept in sync with TnbIcoms.Application.DropdownValues.DropdownCategories.OutageTypeParents.
+        var outageTypeParents = new[] { "Planned", "Unplanned", "Emergency", "Forced" };
+
+        var seeds = new List<(string Category, string Label, string? ParentCode, string? CodeOverride)>();
+        foreach (var outageType in outageTypeParents)
+        {
+            seeds.AddRange(jobTypeLabels.Select(label =>
+                ("JobType", label, (string?)outageType, (string?)$"{outageType}_{ToValueCode(label)}")));
+        }
+
+        seeds.AddRange(new (string, string, string?, string?)[]
+        {
+            ("WorkType", "Live", null, null),
+            ("WorkType", "Dead", null, null),
+
+            ("Sequence", "One at a time", null, null),
+            ("Sequence", "All at the same time", null, null),
+            ("Sequence", "Not applicable", null, null),
+
+            ("Restoration", "Immediately", null, null),
+            ("Restoration", "15 Minutes", null, null),
+            ("Restoration", "30 Minutes", null, null),
+            ("Restoration", "45 Minutes", null, null),
+            ("Restoration", "1 Hour", null, null),
+            ("Restoration", "1.5 Hours", null, null),
+            ("Restoration", "2 Hours", null, null),
+            ("Restoration", "More than 2 Hours", null, null),
+            ("Restoration", "Not Applicable", null, null),
+
+            ("GcuType", "Data Centre", null, null),
+            ("GcuType", "Large Scale Solar", null, null),
+            ("GcuType", "Large Power Consumer", null, null),
+
+            ("MvaRating", "240 MVA", null, null),
+            ("MvaRating", "180 MVA", null, null),
+            ("MvaRating", "90 MVA", null, null),
+            ("MvaRating", "245 MVA", null, null),
+            ("MvaRating", "30 MVA", null, null)
+        });
+
+        var existingKeys = (await dbContext.DropdownValues
+                .Select(d => new { d.CategoryCode, d.ValueCode })
+                .ToListAsync())
+            .Select(d => (d.CategoryCode, d.ValueCode))
+            .ToHashSet();
+
+        var sortOrders = await dbContext.DropdownValues
+            .GroupBy(d => d.CategoryCode)
+            .Select(g => new { Category = g.Key, MaxSortOrder = g.Max(d => d.SortOrder) })
+            .ToDictionaryAsync(g => g.Category, g => g.MaxSortOrder);
+
+        foreach (var (category, label, parentCode, codeOverride) in seeds)
+        {
+            var code = codeOverride ?? ToValueCode(label);
+            if (!existingKeys.Add((category, code)))
+            {
+                continue;
+            }
+
+            var nextSortOrder = sortOrders.TryGetValue(category, out var max) ? max + 1 : 1;
+            sortOrders[category] = nextSortOrder;
+
+            dbContext.DropdownValues.Add(new DropdownValue
+            {
+                CategoryCode = category,
+                ValueCode = code,
+                ValueLabel = label,
+                ParentCode = parentCode,
+                SortOrder = nextSortOrder,
+                IsActive = true
+            });
+        }
+
+        await dbContext.SaveChangesAsync();
+    }
+
+    private static string ToValueCode(string label)
+    {
+        var cleaned = new string(label.Where(c => char.IsLetterOrDigit(c) || c == ' ').ToArray());
+        return cleaned.Replace(" ", "_").ToUpperInvariant();
     }
 
     /// <summary>
