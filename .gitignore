@@ -2,5 +2,9 @@ node_modules/
 package.json
 package-lock.json
 
+# .NET build output
+bin/
+obj/
+
 # Local file storage uploads (Mnemonic PDFs, etc.)
 src/TnbIcoms.Api/App_Data/
