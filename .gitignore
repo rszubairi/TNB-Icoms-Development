@@ -8,3 +8,4 @@ obj/
 
 # Local file storage uploads (Mnemonic PDFs, etc.)
 src/TnbIcoms.Api/App_Data/
+/src/.vs/TnbIcoms
