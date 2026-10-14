@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\frontend\TnbIcoms.client.esproj" />
     <ProjectReference Include="..\TnbIcoms.Application\TnbIcoms.Application.csproj" />
     <ProjectReference Include="..\TnbIcoms.Infrastructure\TnbIcoms.Infrastructure.csproj" />
   </ItemGroup>

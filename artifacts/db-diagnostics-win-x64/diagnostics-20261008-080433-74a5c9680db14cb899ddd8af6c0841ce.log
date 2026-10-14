@@ -1,0 +1,533 @@
+2026-10-08T08:04:33.2070302Z Machine=LAPTOP-09BVLM94; OS-user=Khurum Khan; process64bit=True; environment=Production
+2026-10-08T08:04:33.2083033Z Server=10.52.9.28; Database=TnbIcomsDev; Pooling=True; Encrypt=True; TrustServerCertificate=True
+2026-10-08T08:04:33.2093304Z Infrastructure=D:\ProjectDirectory\Icoms\artifacts\db-diagnostics-win-x64\TnbIcoms.Infrastructure.dll; Version=1.0.0.0; EF=8.0.31.0; SqlClient=5.0.0.0
+2026-10-08T08:04:33.2094620Z Retries=True; CommandTimeout=60; Report=D:\ProjectDirectory\Icoms\artifacts\db-diagnostics-win-x64\diagnostics-20261008-080433-74a5c9680db14cb899ddd8af6c0841ce.log
+2026-10-08T08:04:33.2218197Z START Raw: open + SELECT 1
+2026-10-08T08:04:33.4940467Z Raw rows=1; elapsed=44ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5009321Z PASS Raw: open + SELECT 1 (279ms)
+2026-10-08T08:04:33.5015875Z START Raw: repeated queries on one held-open connection
+2026-10-08T08:04:33.5033727Z Iteration 1/10
+2026-10-08T08:04:33.5090506Z Raw rows=1; elapsed=5ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5096067Z Iteration 2/10
+2026-10-08T08:04:33.5124281Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5126041Z Iteration 3/10
+2026-10-08T08:04:33.5153929Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5155453Z Iteration 4/10
+2026-10-08T08:04:33.5181397Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5182651Z Iteration 5/10
+2026-10-08T08:04:33.5204042Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5205910Z Iteration 6/10
+2026-10-08T08:04:33.5226685Z Raw rows=1; elapsed=1ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5228870Z Iteration 7/10
+2026-10-08T08:04:33.5255111Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5256551Z Iteration 8/10
+2026-10-08T08:04:33.5277711Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5279952Z Iteration 9/10
+2026-10-08T08:04:33.5306760Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5307865Z Iteration 10/10
+2026-10-08T08:04:33.5329302Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5331511Z PASS Raw: repeated queries on one held-open connection (31ms)
+2026-10-08T08:04:33.5332722Z START Raw: open/query/close 1/10
+2026-10-08T08:04:33.5367822Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5372381Z PASS Raw: open/query/close 1/10 (3ms)
+2026-10-08T08:04:33.5373890Z START Raw: open/query/close 2/10
+2026-10-08T08:04:33.5401418Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5402945Z PASS Raw: open/query/close 2/10 (2ms)
+2026-10-08T08:04:33.5404170Z START Raw: open/query/close 3/10
+2026-10-08T08:04:33.5433812Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5435911Z PASS Raw: open/query/close 3/10 (3ms)
+2026-10-08T08:04:33.5437798Z START Raw: open/query/close 4/10
+2026-10-08T08:04:33.5466496Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5468254Z PASS Raw: open/query/close 4/10 (3ms)
+2026-10-08T08:04:33.5469303Z START Raw: open/query/close 5/10
+2026-10-08T08:04:33.5495719Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5497328Z PASS Raw: open/query/close 5/10 (2ms)
+2026-10-08T08:04:33.5498430Z START Raw: open/query/close 6/10
+2026-10-08T08:04:33.5525732Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5527551Z PASS Raw: open/query/close 6/10 (2ms)
+2026-10-08T08:04:33.5528631Z START Raw: open/query/close 7/10
+2026-10-08T08:04:33.5557413Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5559563Z PASS Raw: open/query/close 7/10 (3ms)
+2026-10-08T08:04:33.5560988Z START Raw: open/query/close 8/10
+2026-10-08T08:04:33.5587392Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5588761Z PASS Raw: open/query/close 8/10 (2ms)
+2026-10-08T08:04:33.5590012Z START Raw: open/query/close 9/10
+2026-10-08T08:04:33.5617896Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5619310Z PASS Raw: open/query/close 9/10 (2ms)
+2026-10-08T08:04:33.5620414Z START Raw: open/query/close 10/10
+2026-10-08T08:04:33.5648177Z Raw rows=1; elapsed=2ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:33.5650075Z PASS Raw: open/query/close 10/10 (2ms)
+2026-10-08T08:04:34.4480260Z START EF/Identity: same LoginAd identity lookup
+2026-10-08T08:04:35.9899982Z dbug: 8/10/2026 16:04:35.988 CoreEventId.ContextInitialized[10403] (Microsoft.EntityFrameworkCore.Infrastructure) 
+      Entity Framework Core 8.0.31 initialized 'AppDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.31' with options: DetailedErrorsEnabled CommandTimeout=60 
+2026-10-08T08:04:36.0220324Z dbug: 8/10/2026 16:04:36.022 CoreEventId.QueryCompilationStarting[10111] (Microsoft.EntityFrameworkCore.Query) 
+      Compiling query expression: 
+      'DbSet<ApplicationUser>()
+          .Where(u => u.NormalizedEmail == __normalizedEmail_0)
+          .SingleOrDefault()'
+2026-10-08T08:04:36.2682545Z dbug: 8/10/2026 16:04:36.268 CoreEventId.QueryExecutionPlanned[10107] (Microsoft.EntityFrameworkCore.Query) 
+      Generated query execution expression: 
+      'queryContext => new SingleQueryingEnumerable<ApplicationUser>(
+          (RelationalQueryContext)queryContext, 
+          RelationalCommandCache.QueryExpression(
+              Projection Mapping:
+                  EmptyProjectionMember -> Dictionary<IProperty, int> { [Property: ApplicationUser.Id (string) Required PK AfterSave:Throw, 0], [Property: ApplicationUser.AccessFailedCount (int) Required, 1], [Property: ApplicationUser.ConcurrencyStamp (string) Concurrency, 2], [Property: ApplicationUser.Email (string) MaxLength(256), 3], [Property: ApplicationUser.EmailConfirmed (bool) Required, 4], [Property: ApplicationUser.FullName (string) Required, 5], [Property: ApplicationUser.IsActive (bool) Required, 6], [Property: ApplicationUser.LockoutEnabled (bool) Required, 7], [Property: ApplicationUser.LockoutEnd (DateTimeOffset?), 8], [Property: ApplicationUser.NormalizedEmail (string) Index MaxLength(256), 9], [Property: ApplicationUser.NormalizedUserName (string) Index MaxLength(256), 10], [Property: ApplicationUser.PasswordHash (string), 11], [Property: ApplicationUser.PhoneNumber (string), 12], [Property: ApplicationUser.PhoneNumberConfirmed (bool) Required, 13], [Property: ApplicationUser.SecurityStamp (string), 14], [Property: ApplicationUser.TnbId (string), 15], [Property: ApplicationUser.TwoFactorEnabled (bool) Required, 16], [Property: ApplicationUser.UserName (string) MaxLength(256), 17] }
+              SELECT TOP(2) a.Id, a.AccessFailedCount, a.ConcurrencyStamp, a.Email, a.EmailConfirmed, a.FullName, a.IsActive, a.LockoutEnabled, a.LockoutEnd, a.NormalizedEmail, a.NormalizedUserName, a.PasswordHash, a.PhoneNumber, a.PhoneNumberConfirmed, a.SecurityStamp, a.TnbId, a.TwoFactorEnabled, a.UserName
+              FROM AspNetUsers AS a
+              WHERE a.NormalizedEmail == @__normalizedEmail_0), 
+          ReaderColumn[] { ReaderColumn<object>, ReaderColumn<int>, ReaderColumn<object>, ReaderColumn<object>, ReaderColumn<bool>, ReaderColumn<object>, ReaderColumn<bool>, ReaderColumn<bool>, ReaderColumn<DateTimeOffset>, ReaderColumn<object>, ReaderColumn<object>, ReaderColumn<object>, ReaderColumn<object>, ReaderColumn<bool>, ReaderColumn<object>, ReaderColumn<object>, ReaderColumn<bool>, ReaderColumn<object> }, 
+          Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, ApplicationUser>, 
+          TnbIcoms.Infrastructure.Persistence.AppDbContext, 
+          False, 
+          True, 
+          True
+      )
+          .SingleOrDefault()'
+2026-10-08T08:04:36.3131024Z dbug: 8/10/2026 16:04:36.313 RelationalEventId.ConnectionCreating[20005] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Creating DbConnection.
+2026-10-08T08:04:36.3181672Z dbug: 8/10/2026 16:04:36.318 RelationalEventId.ConnectionCreated[20006] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Created DbConnection. (3ms).
+2026-10-08T08:04:36.3208043Z dbug: 8/10/2026 16:04:36.320 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.3230658Z dbug: 8/10/2026 16:04:36.323 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.3260828Z dbug: 8/10/2026 16:04:36.326 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.3306369Z dbug: 8/10/2026 16:04:36.330 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (2ms).
+2026-10-08T08:04:36.3353982Z dbug: 8/10/2026 16:04:36.335 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (10ms).
+2026-10-08T08:04:36.3416694Z dbug: 8/10/2026 16:04:36.341 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[IsActive], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TnbId], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [AspNetUsers] AS [a]
+      WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2026-10-08T08:04:36.4704347Z info: 8/10/2026 16:04:36.470 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (127ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[IsActive], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TnbId], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [AspNetUsers] AS [a]
+      WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+2026-10-08T08:04:36.5179593Z dbug: 8/10/2026 16:04:36.517 CoreEventId.StartedTracking[10806] (Microsoft.EntityFrameworkCore.ChangeTracking) 
+      Context 'AppDbContext' started tracking 'ApplicationUser' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-10-08T08:04:36.5627381Z dbug: 8/10/2026 16:04:36.562 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.5671265Z dbug: 8/10/2026 16:04:36.567 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 79ms reading results.
+2026-10-08T08:04:36.5698050Z dbug: 8/10/2026 16:04:36.569 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.5711613Z dbug: 8/10/2026 16:04:36.571 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (1ms).
+2026-10-08T08:04:36.5719181Z Identity found=True; active=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.5720396Z PASS EF/Identity: same LoginAd identity lookup (2124ms)
+2026-10-08T08:04:36.5721932Z START EF: same LoginAd domain lookup 1/10
+2026-10-08T08:04:36.5810032Z dbug: 8/10/2026 16:04:36.580 CoreEventId.QueryCompilationStarting[10111] (Microsoft.EntityFrameworkCore.Query) 
+      Compiling query expression: 
+      'DbSet<User>()
+          .Include(u => u.Role)
+          .Include(u => u.Zone)
+          .Where(u => u.AspNetUserId == __identityId_0 && u.IsActive && !(u.IsDeleted))
+          .FirstOrDefault()'
+2026-10-08T08:04:36.5980216Z dbug: 8/10/2026 16:04:36.598 CoreEventId.NavigationBaseIncluded[10112] (Microsoft.EntityFrameworkCore.Query) 
+      Including navigation: 'User.Role'.
+2026-10-08T08:04:36.6002038Z dbug: 8/10/2026 16:04:36.600 CoreEventId.NavigationBaseIncluded[10112] (Microsoft.EntityFrameworkCore.Query) 
+      Including navigation: 'User.Zone'.
+2026-10-08T08:04:36.6585232Z dbug: 8/10/2026 16:04:36.658 CoreEventId.QueryExecutionPlanned[10107] (Microsoft.EntityFrameworkCore.Query) 
+      Generated query execution expression: 
+      'queryContext => ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<User>(
+          asyncEnumerable: new SingleQueryingEnumerable<User>(
+              (RelationalQueryContext)queryContext, 
+              RelationalCommandCache.QueryExpression(
+                  Client Projections:
+                      0 -> Dictionary<IProperty, int> { [Property: User.UserId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd, 0], [Property: User.AspNetUserId (string), 1], [Property: User.AuthType (byte) Required, 2], [Property: User.CreatedAt (DateTime) Required, 3], [Property: User.CreatedBy (int) Required, 4], [Property: User.Email (string) Required MaxLength(256), 5], [Property: User.FullName (string) Required MaxLength(200), 6], [Property: User.GcuTypeId (int?), 7], [Property: User.IsActive (bool) Required, 8], [Property: User.IsDeleted (bool) Required, 9], [Property: User.OrganisationId (int?) FK Index, 10], [Property: User.PhoneNumber (string) MaxLength(30), 11], [Property: User.RoleId (int) Required FK Index, 12], [Property: User.TnbId (string) MaxLength(50), 13], [Property: User.UpdatedAt (DateTime?), 14], [Property: User.UpdatedBy (int?), 15], [Property: User.ZoneId (int) Required FK Index, 16] }
+                      1 -> Dictionary<IProperty, int> { [Property: Role.RoleId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd, 17], [Property: Role.CreatedAt (DateTime) Required, 18], [Property: Role.IsActive (bool) Required, 19], [Property: Role.IsExternal (bool) Required, 20], [Property: Role.RoleCode (string) Required MaxLength(30), 21], [Property: Role.RoleName (string) Required MaxLength(100), 22] }
+                      2 -> Dictionary<IProperty, int> { [Property: Zone.ZoneId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd, 23], [Property: Zone.CreatedAt (DateTime) Required, 24], [Property: Zone.IsActive (bool) Required, 25], [Property: Zone.ZoneAbbr (string) Required MaxLength(20), 26], [Property: Zone.ZoneName (string) Required MaxLength(150), 27] }
+                  SELECT TOP(1) u.UserId, u.AspNetUserId, u.AuthType, u.CreatedAt, u.CreatedBy, u.Email, u.FullName, u.GcuTypeId, u.IsActive, u.IsDeleted, u.OrganisationId, u.PhoneNumber, u.RoleId, u.TnbId, u.UpdatedAt, u.UpdatedBy, u.ZoneId, r.RoleId, r.CreatedAt, r.IsActive, r.IsExternal, r.RoleCode, r.RoleName, z.ZoneId, z.CreatedAt, z.IsActive, z.ZoneAbbr, z.ZoneName
+                  FROM auth.Users AS u
+                  INNER JOIN auth.Roles AS r ON u.RoleId == r.RoleId
+                  INNER JOIN config.Zones AS z ON u.ZoneId == z.ZoneId
+                  WHERE ((u.AspNetUserId == @__identityId_0) && u.IsActive) && Not(u.IsDeleted)), 
+              ReaderColumn[] { ReaderColumn<int>, ReaderColumn<object>, ReaderColumn<byte>, ReaderColumn<DateTime>, ReaderColumn<int>, ReaderColumn<object>, ReaderColumn<object>, ReaderColumn<int>, ReaderColumn<bool>, ReaderColumn<bool>, ReaderColumn<int>, ReaderColumn<object>, ReaderColumn<int>, ReaderColumn<object>, ReaderColumn<DateTime>, ReaderColumn<int>, ReaderColumn<int>, ReaderColumn<int>, ReaderColumn<DateTime>, ReaderColumn<bool>, ReaderColumn<bool>, ReaderColumn<object>, ReaderColumn<object>, ReaderColumn<int>, ReaderColumn<DateTime>, ReaderColumn<bool>, ReaderColumn<object>, ReaderColumn<object> }, 
+              Func<QueryContext, DbDataReader, ResultContext, SingleQueryResultCoordinator, User>, 
+              TnbIcoms.Infrastructure.Persistence.AppDbContext, 
+              False, 
+              True, 
+              True
+          ), 
+          cancellationToken: queryContext.CancellationToken)'
+2026-10-08T08:04:36.6780811Z dbug: 8/10/2026 16:04:36.678 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.6798429Z dbug: 8/10/2026 16:04:36.679 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.6800864Z dbug: 8/10/2026 16:04:36.680 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.6802678Z dbug: 8/10/2026 16:04:36.680 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.6804564Z dbug: 8/10/2026 16:04:36.680 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.6809730Z dbug: 8/10/2026 16:04:36.680 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.6892697Z info: 8/10/2026 16:04:36.689 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (8ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.7106147Z dbug: 8/10/2026 16:04:36.710 CoreEventId.StartedTracking[10806] (Microsoft.EntityFrameworkCore.ChangeTracking) 
+      Context 'AppDbContext' started tracking 'User' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-10-08T08:04:36.7647965Z dbug: 8/10/2026 16:04:36.764 CoreEventId.ReferenceChangeDetected[10805] (Microsoft.EntityFrameworkCore.ChangeTracking) 
+      The navigation 'User.Role' was detected as changed. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-10-08T08:04:36.7663828Z dbug: 8/10/2026 16:04:36.766 CoreEventId.StartedTracking[10806] (Microsoft.EntityFrameworkCore.ChangeTracking) 
+      Context 'AppDbContext' started tracking 'Role' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-10-08T08:04:36.7943626Z dbug: 8/10/2026 16:04:36.794 CoreEventId.ReferenceChangeDetected[10805] (Microsoft.EntityFrameworkCore.ChangeTracking) 
+      The navigation 'User.Zone' was detected as changed. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-10-08T08:04:36.7947973Z dbug: 8/10/2026 16:04:36.794 CoreEventId.StartedTracking[10806] (Microsoft.EntityFrameworkCore.ChangeTracking) 
+      Context 'AppDbContext' started tracking 'Zone' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2026-10-08T08:04:36.8085313Z dbug: 8/10/2026 16:04:36.808 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8090552Z dbug: 8/10/2026 16:04:36.809 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 114ms reading results.
+2026-10-08T08:04:36.8111627Z dbug: 8/10/2026 16:04:36.811 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8117968Z dbug: 8/10/2026 16:04:36.811 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8122900Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8124201Z PASS EF: same LoginAd domain lookup 1/10 (240ms)
+2026-10-08T08:04:36.8125215Z START EF: same LoginAd domain lookup 2/10
+2026-10-08T08:04:36.8155778Z dbug: 8/10/2026 16:04:36.815 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8158088Z dbug: 8/10/2026 16:04:36.815 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8161385Z dbug: 8/10/2026 16:04:36.816 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8162801Z dbug: 8/10/2026 16:04:36.816 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8164410Z dbug: 8/10/2026 16:04:36.816 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8166788Z dbug: 8/10/2026 16:04:36.816 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8182601Z info: 8/10/2026 16:04:36.818 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (2ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8189109Z dbug: 8/10/2026 16:04:36.818 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8190566Z dbug: 8/10/2026 16:04:36.819 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8192702Z dbug: 8/10/2026 16:04:36.819 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8194238Z dbug: 8/10/2026 16:04:36.819 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8195345Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8196329Z PASS EF: same LoginAd domain lookup 2/10 (7ms)
+2026-10-08T08:04:36.8197284Z START EF: same LoginAd domain lookup 3/10
+2026-10-08T08:04:36.8203200Z dbug: 8/10/2026 16:04:36.820 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8204811Z dbug: 8/10/2026 16:04:36.820 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8206061Z dbug: 8/10/2026 16:04:36.820 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8207402Z dbug: 8/10/2026 16:04:36.820 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8208805Z dbug: 8/10/2026 16:04:36.820 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8210370Z dbug: 8/10/2026 16:04:36.821 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8224535Z info: 8/10/2026 16:04:36.822 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8230413Z dbug: 8/10/2026 16:04:36.823 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8231871Z dbug: 8/10/2026 16:04:36.823 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8234349Z dbug: 8/10/2026 16:04:36.823 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8235866Z dbug: 8/10/2026 16:04:36.823 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8236994Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8238017Z PASS EF: same LoginAd domain lookup 3/10 (4ms)
+2026-10-08T08:04:36.8238950Z START EF: same LoginAd domain lookup 4/10
+2026-10-08T08:04:36.8243544Z dbug: 8/10/2026 16:04:36.824 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8245116Z dbug: 8/10/2026 16:04:36.824 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8246513Z dbug: 8/10/2026 16:04:36.824 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8248050Z dbug: 8/10/2026 16:04:36.824 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8250179Z dbug: 8/10/2026 16:04:36.825 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8252015Z dbug: 8/10/2026 16:04:36.825 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8269238Z info: 8/10/2026 16:04:36.826 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (2ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8276415Z dbug: 8/10/2026 16:04:36.827 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8277990Z dbug: 8/10/2026 16:04:36.827 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8280325Z dbug: 8/10/2026 16:04:36.828 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8282073Z dbug: 8/10/2026 16:04:36.828 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8284742Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8285979Z PASS EF: same LoginAd domain lookup 4/10 (4ms)
+2026-10-08T08:04:36.8287104Z START EF: same LoginAd domain lookup 5/10
+2026-10-08T08:04:36.8293730Z dbug: 8/10/2026 16:04:36.829 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8295561Z dbug: 8/10/2026 16:04:36.829 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8297067Z dbug: 8/10/2026 16:04:36.829 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8298517Z dbug: 8/10/2026 16:04:36.829 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8300063Z dbug: 8/10/2026 16:04:36.829 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8301708Z dbug: 8/10/2026 16:04:36.830 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8316851Z info: 8/10/2026 16:04:36.831 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (2ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8325916Z dbug: 8/10/2026 16:04:36.832 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8327350Z dbug: 8/10/2026 16:04:36.832 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8329502Z dbug: 8/10/2026 16:04:36.832 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8330958Z dbug: 8/10/2026 16:04:36.833 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8332160Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8333182Z PASS EF: same LoginAd domain lookup 5/10 (4ms)
+2026-10-08T08:04:36.8334084Z START EF: same LoginAd domain lookup 6/10
+2026-10-08T08:04:36.8338796Z dbug: 8/10/2026 16:04:36.833 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8340291Z dbug: 8/10/2026 16:04:36.834 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8341564Z dbug: 8/10/2026 16:04:36.834 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8343010Z dbug: 8/10/2026 16:04:36.834 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8344680Z dbug: 8/10/2026 16:04:36.834 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8346258Z dbug: 8/10/2026 16:04:36.834 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8360139Z info: 8/10/2026 16:04:36.836 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8366691Z dbug: 8/10/2026 16:04:36.836 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8368053Z dbug: 8/10/2026 16:04:36.836 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8369973Z dbug: 8/10/2026 16:04:36.836 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8371435Z dbug: 8/10/2026 16:04:36.837 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8372496Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8373562Z PASS EF: same LoginAd domain lookup 6/10 (3ms)
+2026-10-08T08:04:36.8374496Z START EF: same LoginAd domain lookup 7/10
+2026-10-08T08:04:36.8381909Z dbug: 8/10/2026 16:04:36.838 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8383502Z dbug: 8/10/2026 16:04:36.838 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8384804Z dbug: 8/10/2026 16:04:36.838 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8386031Z dbug: 8/10/2026 16:04:36.838 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8387406Z dbug: 8/10/2026 16:04:36.838 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8388871Z dbug: 8/10/2026 16:04:36.838 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8406147Z info: 8/10/2026 16:04:36.840 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (2ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8412528Z dbug: 8/10/2026 16:04:36.841 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8414169Z dbug: 8/10/2026 16:04:36.841 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8417703Z dbug: 8/10/2026 16:04:36.841 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8419800Z dbug: 8/10/2026 16:04:36.841 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8421107Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8422188Z PASS EF: same LoginAd domain lookup 7/10 (4ms)
+2026-10-08T08:04:36.8423579Z START EF: same LoginAd domain lookup 8/10
+2026-10-08T08:04:36.8430565Z dbug: 8/10/2026 16:04:36.843 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8432383Z dbug: 8/10/2026 16:04:36.843 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8433613Z dbug: 8/10/2026 16:04:36.843 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8434862Z dbug: 8/10/2026 16:04:36.843 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8436211Z dbug: 8/10/2026 16:04:36.843 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8437516Z dbug: 8/10/2026 16:04:36.843 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8452453Z info: 8/10/2026 16:04:36.845 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8459041Z dbug: 8/10/2026 16:04:36.845 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8460380Z dbug: 8/10/2026 16:04:36.846 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8462871Z dbug: 8/10/2026 16:04:36.846 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8464658Z dbug: 8/10/2026 16:04:36.846 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8465975Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8467052Z PASS EF: same LoginAd domain lookup 8/10 (4ms)
+2026-10-08T08:04:36.8468006Z START EF: same LoginAd domain lookup 9/10
+2026-10-08T08:04:36.8473372Z dbug: 8/10/2026 16:04:36.847 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8475079Z dbug: 8/10/2026 16:04:36.847 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8476521Z dbug: 8/10/2026 16:04:36.847 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8477872Z dbug: 8/10/2026 16:04:36.847 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8480453Z dbug: 8/10/2026 16:04:36.848 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8482198Z dbug: 8/10/2026 16:04:36.848 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8497091Z info: 8/10/2026 16:04:36.849 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8502817Z dbug: 8/10/2026 16:04:36.850 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8504186Z dbug: 8/10/2026 16:04:36.850 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8506447Z dbug: 8/10/2026 16:04:36.850 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8508064Z dbug: 8/10/2026 16:04:36.850 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8509373Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8510395Z PASS EF: same LoginAd domain lookup 9/10 (4ms)
+2026-10-08T08:04:36.8511414Z START EF: same LoginAd domain lookup 10/10
+2026-10-08T08:04:36.8516218Z dbug: 8/10/2026 16:04:36.851 RelationalEventId.ConnectionOpening[20000] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opening connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8517658Z dbug: 8/10/2026 16:04:36.851 RelationalEventId.ConnectionOpened[20001] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Opened connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8519212Z dbug: 8/10/2026 16:04:36.851 RelationalEventId.CommandCreating[20103] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Creating DbCommand for 'ExecuteReader'.
+2026-10-08T08:04:36.8520621Z dbug: 8/10/2026 16:04:36.852 RelationalEventId.CommandCreated[20104] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Created DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8522214Z dbug: 8/10/2026 16:04:36.852 RelationalEventId.CommandInitialized[20106] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Initialized DbCommand for 'ExecuteReader' (0ms).
+2026-10-08T08:04:36.8523825Z dbug: 8/10/2026 16:04:36.852 RelationalEventId.CommandExecuting[20100] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executing DbCommand [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8537705Z info: 8/10/2026 16:04:36.853 RelationalEventId.CommandExecuted[20101] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Executed DbCommand (1ms) [Parameters=[@__identityId_0='?' (Size = 4000)], CommandType='Text', CommandTimeout='60']
+      SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+      FROM [auth].[Users] AS [u]
+      INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+      INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+      WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8544192Z dbug: 8/10/2026 16:04:36.854 RelationalEventId.DataReaderClosing[20301] (Microsoft.EntityFrameworkCore.Database.Command) 
+      Closing data reader to 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8545812Z dbug: 8/10/2026 16:04:36.854 RelationalEventId.DataReaderDisposing[20300] (Microsoft.EntityFrameworkCore.Database.Command) 
+      A data reader for 'TnbIcomsDev' on server '10.52.9.28' is being disposed after spending 0ms reading results.
+2026-10-08T08:04:36.8548150Z dbug: 8/10/2026 16:04:36.854 RelationalEventId.ConnectionClosing[20002] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8549993Z dbug: 8/10/2026 16:04:36.854 RelationalEventId.ConnectionClosed[20003] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Closed connection to database 'TnbIcomsDev' on server '10.52.9.28' (0ms).
+2026-10-08T08:04:36.8551174Z Domain user found=True; ContextId=0cad53db-5109-4efc-ba52-31b7285651e0:0
+2026-10-08T08:04:36.8552211Z PASS EF: same LoginAd domain lookup 10/10 (4ms)
+2026-10-08T08:04:36.8554462Z START Raw: replay exact captured EF command and parameters
+2026-10-08T08:04:36.8569966Z Captured EF SQL: SELECT TOP(1) [u].[UserId], [u].[AspNetUserId], [u].[AuthType], [u].[CreatedAt], [u].[CreatedBy], [u].[Email], [u].[FullName], [u].[GcuTypeId], [u].[IsActive], [u].[IsDeleted], [u].[OrganisationId], [u].[PhoneNumber], [u].[RoleId], [u].[TnbId], [u].[UpdatedAt], [u].[UpdatedBy], [u].[ZoneId], [r].[RoleId], [r].[CreatedAt], [r].[IsActive], [r].[IsExternal], [r].[RoleCode], [r].[RoleName], [z].[ZoneId], [z].[CreatedAt], [z].[IsActive], [z].[ZoneAbbr], [z].[ZoneName]
+FROM [auth].[Users] AS [u]
+INNER JOIN [auth].[Roles] AS [r] ON [u].[RoleId] = [r].[RoleId]
+INNER JOIN [config].[Zones] AS [z] ON [u].[ZoneId] = [z].[ZoneId]
+WHERE [u].[AspNetUserId] = @__identityId_0 AND [u].[IsActive] = CAST(1 AS bit) AND [u].[IsDeleted] = CAST(0 AS bit)
+2026-10-08T08:04:36.8590253Z Exact replay rows=1; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:36.8592373Z PASS Raw: replay exact captured EF command and parameters (3ms)
+2026-10-08T08:04:36.8593480Z START Raw: equivalent LoginAd join
+2026-10-08T08:04:36.8614845Z Raw rows=1; elapsed=1ms; ClientConnectionId=f755c2f7-3c62-4dc6-935d-5f8fae2ab560
+2026-10-08T08:04:36.8619605Z PASS Raw: equivalent LoginAd join (2ms)
+2026-10-08T08:04:36.8620698Z COMPLETE Failures=0
+2026-10-08T08:04:36.8638877Z dbug: 8/10/2026 16:04:36.863 CoreEventId.ContextDisposed[10407] (Microsoft.EntityFrameworkCore.Infrastructure) 
+      'AppDbContext' disposed.
+2026-10-08T08:04:36.8660289Z dbug: 8/10/2026 16:04:36.866 RelationalEventId.ConnectionDisposing[20007] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Disposing connection to database 'TnbIcomsDev' on server '10.52.9.28'.
+2026-10-08T08:04:36.8674226Z dbug: 8/10/2026 16:04:36.867 RelationalEventId.ConnectionDisposed[20008] (Microsoft.EntityFrameworkCore.Database.Connection) 
+      Disposed connection to database '' on server '' (1ms).

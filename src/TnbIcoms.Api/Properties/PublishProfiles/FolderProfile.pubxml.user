@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\ProjectDirectory\Icoms\src\TnbIcoms.Api\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2026-10-05T09:13:57.1507335Z||;True|2026-10-01T12:29:58.9959424+08:00||;True|2026-09-30T15:12:11.2889417+08:00||;True|2026-09-30T14:49:15.6780520+08:00||;True|2026-09-28T17:23:25.3037670+08:00||;True|2026-09-23T17:32:59.8169222+08:00||;True|2026-09-23T17:09:38.9888671+08:00||;True|2026-09-23T16:10:59.5611790+08:00||;True|2026-09-23T15:06:07.8937039+08:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

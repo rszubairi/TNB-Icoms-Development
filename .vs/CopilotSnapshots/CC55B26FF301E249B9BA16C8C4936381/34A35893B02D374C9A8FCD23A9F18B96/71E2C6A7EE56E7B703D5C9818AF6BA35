@@ -1,0 +1,31 @@
+﻿{
+  "ConnectionStrings": {
+    "Default": "Server=52.74.111.85;Database=TnbIcomsDev;User Id=sa;Password=Khan151681*;TrustServerCertificate=True;Connect Timeout=30;"
+  },
+  "Jwt": {
+    "Issuer": "TnbIcoms",
+    "Audience": "TnbIcomsClient",
+    "Key": "REPLACE_WITH_A_STRONG_SECRET_KEY_AT_LEAST_32_CHARS"
+  },
+  "Authentication": {
+    "Bypass2FA": false
+  },
+  "Ad": {
+    "Enabled": true,
+    "Domain": "YOUR_AD_DOMAIN_HERE",
+    "BypassEnabled": false,
+    "BypassPassword": "click123"
+  },
+  "Email": {
+    "Provider": "Stub",
+    "ResendApiKey": "",
+    "FromAddress": "TNB ICOMS <noreply@tnb-icoms.dev>"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}

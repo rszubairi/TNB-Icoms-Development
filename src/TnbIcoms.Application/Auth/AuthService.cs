@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Net.Http.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,23 +21,27 @@ public class AuthService : IAuthService
     private readonly AppDbContext _dbContext;
     private readonly IConfiguration _configuration;
     private readonly IAdAuthProvider _adAuthProvider;
+    private readonly IHttpClientFactory _httpClientFactory;
 
     public AuthService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         AppDbContext dbContext,
         IConfiguration configuration,
-        IAdAuthProvider adAuthProvider)
+        IAdAuthProvider adAuthProvider,
+        IHttpClientFactory httpClientFactory)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _dbContext = dbContext;
         _configuration = configuration;
         _adAuthProvider = adAuthProvider;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<ApiResponse<LoginResponseDto>> LoginAsync(LoginRequestDto request)
     {
+
         var identityUser = await _userManager.FindByEmailAsync(request.StaffIdOrEmail)
             ?? await _userManager.Users.FirstOrDefaultAsync(u => u.TnbId == request.StaffIdOrEmail);
 
@@ -51,7 +56,12 @@ public class AuthService : IAuthService
             return ApiResponse<LoginResponseDto>.Fail("Invalid credentials.");
         }
 
-        var domainUser = await FindDomainUserAsync(identityUser.Id);
+        // Fetch domain user with optimized query to reduce database round-trips
+        var domainUser = await _dbContext.AppUsers
+            .Include(u => u.Role)
+            .Include(u => u.Zone)
+            .FirstOrDefaultAsync(u => u.AspNetUserId == identityUser.Id && u.IsActive && !u.IsDeleted);
+
         if (domainUser is null)
         {
             return ApiResponse<LoginResponseDto>.Fail("Account is not active.");
@@ -62,58 +72,82 @@ public class AuthService : IAuthService
 
     public async Task<ApiResponse<LoginResponseDto>> LoginWithAdAsync(LoginRequestDto request)
     {
-        var adEnabled = _configuration.GetValue<bool>("Ad:Enabled");
-        if (!adEnabled)
+        try
         {
-            return ApiResponse<LoginResponseDto>.Fail("Corporate AD / SSO sign-in is not enabled.");
-        }
-
-        var identityUser = await _userManager.FindByEmailAsync(request.StaffIdOrEmail)
-            ?? await _userManager.Users.FirstOrDefaultAsync(u => u.TnbId == request.StaffIdOrEmail);
-
-        if (identityUser is null || !identityUser.IsActive)
-        {
-            return ApiResponse<LoginResponseDto>.Fail("Invalid credentials or inactive account.");
-        }
-
-        var domainUser = await FindDomainUserAsync(identityUser.Id);
-        if (domainUser is null)
-        {
-            return ApiResponse<LoginResponseDto>.Fail("Account is not active.");
-        }
-
-        if (domainUser.AuthType != 1)
-        {
-            return ApiResponse<LoginResponseDto>.Fail("This account is not configured for AD sign-in.");
-        }
-
-        // Testing-only shortcut: when Ad:BypassEnabled is set, the fixed bypass password
-        // authenticates any AD account without contacting the directory or enforcing password
-        // strength. Only ever enable this outside production.
-        var bypassEnabled = _configuration.GetValue<bool>("Ad:BypassEnabled");
-        var bypassPassword = _configuration["Ad:BypassPassword"] ?? "click123";
-        var bypassed = bypassEnabled && request.Password == bypassPassword;
-
-        if (!bypassed)
-        {
-            var adResult = await _adAuthProvider.AuthenticateAsync(identityUser.TnbId ?? request.StaffIdOrEmail, request.Password);
-            if (adResult.Status != AdAuthStatus.Success)
+            var adEnabled = _configuration.GetValue<bool>("Ad:Enabled");
+            if (!adEnabled)
             {
-                return ApiResponse<LoginResponseDto>.Fail("Invalid AD credentials.");
+                return ApiResponse<LoginResponseDto>.Fail("Corporate AD / SSO sign-in is not enabled.");
             }
+
+            var identityUser = await _userManager.FindByEmailAsync(request.StaffIdOrEmail)
+                ?? await _userManager.Users.FirstOrDefaultAsync(u => u.TnbId == request.StaffIdOrEmail);
+
+            if (identityUser is null || !identityUser.IsActive)
+            {
+                return ApiResponse<LoginResponseDto>.Fail("Invalid credentials or inactive account.");
+            }
+
+            // Fetch domain user with optimized query to reduce database round-trips
+            var domainUser = await _dbContext.AppUsers
+                .Include(u => u.Role)
+                .Include(u => u.Zone)
+                .FirstOrDefaultAsync(u => u.AspNetUserId == identityUser.Id && u.IsActive && !u.IsDeleted);
+
+            if (domainUser is null)
+            {
+                return ApiResponse<LoginResponseDto>.Fail("Account is not active.");
+            }
+
+            if (domainUser.AuthType != 1)
+            {
+                return ApiResponse<LoginResponseDto>.Fail("This account is not configured for AD sign-in.");
+            }
+
+
+
+            // Testing-only shortcut: when Ad:BypassEnabled is set, the fixed bypass password
+            // authenticates any AD account without contacting the directory or enforcing password
+            // strength. Only ever enable this outside production.
+            var bypassEnabled = _configuration.GetValue<bool>("Ad:BypassEnabled");
+            var bypassPassword = _configuration["Ad:BypassPassword"] ?? "click123";
+            var bypassed = bypassEnabled && request.Password == bypassPassword;
+
+            if (!bypassed)
+            {
+                var adResult = await _adAuthProvider.AuthenticateAsync(identityUser.TnbId ?? request.StaffIdOrEmail, request.Password);
+                if (adResult.Status != AdAuthStatus.Success)
+                {
+                    return ApiResponse<LoginResponseDto>.Fail("Invalid AD credentials.");
+                }
+            }
+
+            return IssueLoginResponse(identityUser, domainUser);
+        }
+        catch (Exception ex)
+        {
+            return  ApiResponse<LoginResponseDto>.Fail($"{ex.ToString()}{ex.InnerException?.ToString()}");
+
+
         }
 
-        return IssueLoginResponse(identityUser, domainUser);
     }
 
-    private async Task<User?> FindDomainUserAsync(string aspNetUserId)
+    public async Task<ApiResponse<LoginResponseDto>> LoginWithAdGatewayAsync(LoginRequestDto request)
     {
-        var domainUser = await _dbContext.AppUsers
-            .Include(u => u.Role)
-            .Include(u => u.Zone)
-            .FirstOrDefaultAsync(u => u.AspNetUserId == aspNetUserId);
-
-        return domainUser is null || !domainUser.IsActive || domainUser.IsDeleted ? null : domainUser;
+        if (!_configuration.GetValue<bool>("Ad:Enabled")) return ApiResponse<LoginResponseDto>.Fail("Corporate AD / SSO sign-in is not enabled.");
+        var client = _httpClientFactory.CreateClient("LoginAdGateway");
+        var url = (_configuration["Gateway:BaseUrl"] ?? "http://127.0.0.1:5099").TrimEnd('/');
+        using var response = await client.PostAsJsonAsync(url + "/login-ad-query", new { request.StaffIdOrEmail });
+        if (!response.IsSuccessStatusCode) throw new InvalidOperationException($"Gateway HTTP {(int)response.StatusCode}: {await response.Content.ReadAsStringAsync()}");
+        var lookup = await response.Content.ReadFromJsonAsync<GatewayLookupResponse>() ?? throw new InvalidOperationException("Empty gateway response.");
+        if (lookup.Identity is not { IsActive: true } identity) return ApiResponse<LoginResponseDto>.Fail("Invalid credentials or inactive account.");
+        var domain = lookup.DomainUser;
+        if (domain == null || !domain.IsActive || domain.IsDeleted) return ApiResponse<LoginResponseDto>.Fail("Account is not active.");
+        if (domain.AuthType != 1) return ApiResponse<LoginResponseDto>.Fail("This account is not configured for AD sign-in.");
+        var bypassed = _configuration.GetValue<bool>("Ad:BypassEnabled") && request.Password == (_configuration["Ad:BypassPassword"] ?? "click123");
+        if (!bypassed && (await _adAuthProvider.AuthenticateAsync(identity.TnbId ?? request.StaffIdOrEmail, request.Password)).Status != AdAuthStatus.Success) return ApiResponse<LoginResponseDto>.Fail("Invalid AD credentials.");
+        return IssueLoginResponse(new ApplicationUser { Id = identity.Id, Email = identity.Email, TnbId = identity.TnbId, IsActive = identity.IsActive }, domain);
     }
 
     private ApiResponse<LoginResponseDto> IssueLoginResponse(ApplicationUser identityUser, User domainUser)

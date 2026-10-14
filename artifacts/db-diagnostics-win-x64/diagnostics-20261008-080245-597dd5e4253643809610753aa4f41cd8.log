@@ -1,0 +1,5 @@
+2026-10-08T08:02:45.4191267Z Machine=LAPTOP-09BVLM94; OS-user=Khurum Khan; process64bit=True; environment=Production
+2026-10-08T08:02:45.4205548Z Server=52.74.111.85; Database=TnbIcomsDev; Pooling=True; Encrypt=True; TrustServerCertificate=True
+2026-10-08T08:02:45.4232225Z Infrastructure=D:\ProjectDirectory\Icoms\artifacts\db-diagnostics-win-x64\TnbIcoms.Infrastructure.dll; Version=1.0.0.0; EF=8.0.31.0; SqlClient=5.0.0.0
+2026-10-08T08:02:45.4233746Z Retries=True; CommandTimeout=60; Report=D:\ProjectDirectory\Icoms\artifacts\db-diagnostics-win-x64\diagnostics-20261008-080245-597dd5e4253643809610753aa4f41cd8.log
+2026-10-08T08:02:45.4353843Z START Raw: open + SELECT 1

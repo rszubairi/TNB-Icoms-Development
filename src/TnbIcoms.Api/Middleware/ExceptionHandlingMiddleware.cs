@@ -10,11 +10,16 @@ public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    private readonly IConfiguration _configuration;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+    public ExceptionHandlingMiddleware(
+        RequestDelegate next,
+        ILogger<ExceptionHandlingMiddleware> logger,
+        IConfiguration configuration)
     {
         _next = next;
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -43,7 +48,11 @@ public class ExceptionHandlingMiddleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            var response = ApiResponse<object>.Fail("An unexpected error occurred. Please try again later.");
+            var includeExceptionDetails = _configuration.GetValue<bool>("ErrorHandling:IncludeExceptionDetails");
+            var error =
+               $"{ex}\nTraceId: {context.TraceIdentifier}";
+               
+            var response = ApiResponse<object>.Fail(error);
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }

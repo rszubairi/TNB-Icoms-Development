@@ -52,7 +52,16 @@ var builder = WebApplication.CreateBuilder(args);
 #endif
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("Default"),
+        sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorNumbersToAdd: null);
+            sqlOptions.CommandTimeout(60);
+        }));
 
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -90,16 +99,23 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularDev", policy =>
     {
-        policy.WithOrigins("http://localhost:4200", "https://tnb-icoms-development.vercel.app")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+        policy.WithOrigins(
+        "http://localhost",
+        "http://10.52.9.20",
+        "http://localhost:4200",
+        "https://tnb-icoms-development.vercel.app")
+
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials();
+
     });
 });
 
 builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient("LoginAdGateway", client => client.Timeout = TimeSpan.FromSeconds(180));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleAdminService, RoleAdminService>();
 builder.Services.AddScoped<IZoneService, ZoneService>();
@@ -195,22 +211,24 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    using var scope = app.Services.CreateScope();
-    await TnbIcoms.Infrastructure.Persistence.Seed.DbSeeder.SeedAsync(scope.ServiceProvider);
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    using var scope = app.Services.CreateScope();
+//    await TnbIcoms.Infrastructure.Persistence.Seed.DbSeeder.SeedAsync(scope.ServiceProvider);
+//}
 
 app.UseMiddleware<TnbIcoms.Api.Middleware.ExceptionHandlingMiddleware>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+
+//TODO: lets do on live
+//app.UseHttpsRedirection();
 app.UseCors("AngularDev");
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

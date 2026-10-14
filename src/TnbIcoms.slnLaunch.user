@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "..\\frontend\\TnbIcoms.client.esproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "TnbIcoms.Api\\TnbIcoms.Api.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

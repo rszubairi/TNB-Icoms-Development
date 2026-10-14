@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+  <ItemGroup><PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.9" />
+    <ProjectReference Include="../TnbIcoms.Domain/TnbIcoms.Domain.csproj" />
+    <Compile Include="../TnbIcoms.Application/Auth/Dtos/GatewayLookupResponse.cs" Link="GatewayLookupResponse.cs" />
+  </ItemGroup>
+</Project>

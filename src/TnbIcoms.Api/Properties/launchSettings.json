@@ -2,11 +2,26 @@
   "profiles": {
     "TnbIcoms.Api": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:56550;http://localhost:56551"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:54605/",
+      "sslPort": 44381
     }
   }
 }
